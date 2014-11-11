@@ -1,0 +1,1026 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  Copyright (c) 2006 by Nicolas Chapados
+%%  Contact: Nicolas Chapados (chapados@iro.umontreal.ca)
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Required Packages (PDF-independent)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Programming packages
+\usepackage{etex}               % to avoid error "no room for new count"
+\usepackage{ifthen}		% support for \ifthenelse, etc.
+\usepackage{calc}               % arithmetic calculations on lengths, etc.
+
+%%% Fonts and typographical features
+\usepackage{t1enc}              % new font encoding  (hyphenate words w/accents)
+\usepackage{ae}                 % use virtual fonts for getting good PDF
+%\usepackage{aeguill}            % re-enable the French guillemets
+\usepackage[english,french]{babel}	% support for French typography
+%\usepackage[english]{babel}	% support for French typography
+\usepackage{amsmath}		% basic features of AMS-LaTeX
+\usepackage{amssymb}		% provide some more AMS-LaTeX symbols
+\usepackage{amsthm}             % required for \begin{proof}
+\usepackage{mathtools}          % provides misc. symbols, like vcentcolon
+\usepackage{pifont}             % Use PostScript ZapfDingbats
+\usepackage{array}		% extensions to tabular and array
+\usepackage{float}		% custom float styles like Programme
+%\usepackage{subfigure}         % used for side by side figures -- DEPRECATED
+%\usepackage{caption}            % used in deep tempering paper
+\usepackage[font=footnotesize,labelfont=bf]{caption}
+\usepackage{subcaption}         % used in deep tempering paper
+\usepackage{dcolumn}		% align on decimal points in tabular and array
+\usepackage{multirow}		% support collapsing several rows into one
+\usepackage{tabularx}		% support correct-width tables
+\usepackage{longtable}          % support tables that span several pages
+%\usepackage{picins}             % paragraph with rectangular hole (for figure)
+\usepackage{lettrine}           % produce fancy drop-capitals
+\usepackage{alltt}              % all-typewriter environment
+\usepackage{listings}           % fancy pretty-printer for code and algorithms
+%\usepackage{changepage}         % change page layout in the middle of document
+
+\usepackage{natbib}
+\usepackage[normalem]{ulem}
+
+%%% Graphics packages
+%\usepackage{epic}		% cute figures
+%\usepackage{eepic}		% cute figures (bis) [[required for lines]]
+
+%%% Miscellaneous standard packages
+\usepackage{moreverb}		% more verbatim-like commands, e.g. boxedverbatim
+\usepackage{fancyvrb}           % fancy Verbatim environment: lots of options
+\usepackage{changebar}		% insert change bars in text
+\usepackage{layout}             % print out page layout settings
+%\usepackage{footnpag}           % number side/footnotes WITHIN pages
+%\usepackage[refpage]{nomencl}   % nomenclature: for making the glossary
+\usepackage{nomencl}
+\usepackage{appendix}           % allows appendixes at the end of a chapter
+
+%%% Miscellaneous local packages (in current directory)
+%\usepackage{aiengchicago}       % English Chicago bib style (+ fix for author index)
+\usepackage{mparhack}           % fix the marginpar command
+\usepackage{multicol}           % Multicolumn environment
+\usepackage{ifpdf}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Support for PDF and required packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Basic switch to detect whether to use PDF or not
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%  \pdffalse
+%  \newcommand{\mypdfoption}{{}}
+%\else
+%  \pdfoutput=1
+%  \pdftrue
+%  \newcommand{\mypdfoption}{pdftex}
+%  \pdfcompresslevel=9
+%\fi
+
+\ifpdf
+   \newcommand{\mypdfoption}{pdftex}
+ \else
+   \newcommand{\mypdfoption}{{}}
+\fi
+%%% Packages that behave differently in PDF and non-PDF
+\usepackage[\mypdfoption]{graphicx}	% enhanced pictures import (w/ PDF)
+\usepackage[\mypdfoption]{rotating}	% rotate stuff on the page
+\usepackage[\mypdfoption]{color}      % color support
+\usepackage[\mypdfoption]{colortbl}   % Add color and shading to tables
+
+%%% Declare graphics file extensions as .pdf or .eps for \includegraphics.
+%%% (You must NOT specify any extension in the filenames!  \includegraphics
+%%% will by itself determine the correct extension.)
+\ifpdf
+  \DeclareGraphicsExtensions{.jpg,.png,.pdf,.mps} % .png before .pdf ==> okay!
+\else
+  \DeclareGraphicsExtensions{.jpg,.eps,.png,.mps} % .eps before .png ==> okay!
+\fi
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Page Settings (margins, headers and footers)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\hspace{1em}#1}}
+%\lhead[\fancyplain{}{\bfseries\thepage}]%	% even pages
+%      {\fancyplain{}{\bfseries\rightmark}}	% odd  pages
+%\rhead[\fancyplain{}{\bfseries\leftmark}]%	% even pages
+%      {\fancyplain{}{\bfseries\thepage}}	% odd  pages
+\lhead[\fancyplain{}]{}
+\rhead[\fancyplain{}]{}
+\cfoot[\fancyplain{}]{\bfseries\thepage}
+
+%%% Line spacing control
+%%% According to LaTeX Companion:
+%%% spacing	10 pt	11 pt	12 pt
+%%% 1.5		1.25	1.21	1.24
+%%% 2		1.67	1.62	1.66
+%\newcommand{\mybaselinestretch}{1.21}
+%\renewcommand{\baselinestretch}{\mybaselinestretch}
+
+%%% Define font and colors
+\definecolor{sideheadbg}{rgb}{1,1,1}
+\definecolor{sidetitleline}{rgb}{0.05,0.25,0.6}
+\definecolor{headingtext}{rgb}{0,0,0}
+\definecolor{chapternumbertext}{rgb}{1,1,1}
+\definecolor{quotationcolor}{rgb}{0.6,0.45,0.45}
+\definecolor{contentscolor}{rgb}{0.6,0.2,0.2}
+\definecolor{captionarrowcolor}{rgb}{0.6,0.2,0.2}
+\definecolor{linkcolor}{rgb}{0.05,0.25,0.5}
+
+\definecolor{sidebarcaptioncolor}{rgb}{0.6,0.2,0.2}
+\definecolor{sidebarcontentscolor}{rgb}{1,0.8,0.8}
+
+\definecolor{keypointcolor}{cmyk}{0.25,0.11,0,0.11}
+
+
+\newcommand{\headingfont}{%
+  \usefont{T1}{cmr}{b}{n}\fontsize{36}{30}\selectfont}
+\newcommand{\chapnumberfont}{%
+  \usefont{OT1}{cmss}{b}{n}\fontsize{24}{24}\selectfont}
+\newcommand{\sidequotefont}{\it\Large}
+\newcommand{\keypointfont}{\it\fontsize{48}{40}\selectfont}
+
+
+%%% Page style and headers
+
+% Template de Nicolas Chapados
+%\setlength{\textwidth}{360pt}
+%\setlength{\evensidemargin}{90pt}
+%\setlength{\oddsidemargin}{18pt}
+%\setlength{\marginparsep}{14pt}
+
+% Petite marges a droite ET a gauche
+%\setlength{\textwidth}{432}
+%\setlength{\evensidemargin}{18pt}
+%\setlength{\oddsidemargin}{18pt}
+%\setlength{\marginparsep}{14pt}
+
+% Original UdeM template
+%\setlength\topmargin{0.0in}
+%\setlength\oddsidemargin{1.6cm}
+%\setlength\evensidemargin{1.6cm}
+%\setlength\textwidth{14.8cm}
+%\setlength\textheight{21.3cm}
+
+% Original UdeM template
+\setlength\topmargin{0.0in}
+\setlength\oddsidemargin{1.6cm}
+\setlength\evensidemargin{1.6cm}
+\setlength\textwidth{14.8cm}
+\setlength\textheight{21.3cm}
+
+\setlength{\marginparwidth}{108pt}	% 1.5 in
+\setlength{\marginparpush}{18pt}	% minimum space between side notes
+
+\setlength{\floatsep}{18pt plus 4pt minus 4pt}      % space between floats
+\setlength{\textfloatsep}{28pt plus 8pt minus 8pt}  % space floats/text
+
+\setlength{\voffset}{-12pt}
+\setlength{\headheight}{0pt}
+\setlength{\headsep}{48pt}
+\setlength{\topmargin}{0pt}
+\setlength{\textheight}{8.5in}
+
+\newlength{\@origtextwidth}
+\newlength{\@widetextwidth}
+\setlength{\@origtextwidth}{\textwidth}
+\setlength{\@widetextwidth}{\@origtextwidth+\marginparsep+\marginparwidth}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Format for side notes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Add a simple marginal note (always use the OUTSIDE margin).  The first
+%%% \mbox{} is necessary to ensure proper vertical alignment in case it's used
+%%% at the beginning of a paragraph.  The \hspace{0pt} is used to enable
+%%% hyphenation of the first word in case it's too long.
+\newcommand{\rawsidenote}[1]{%
+  \mbox{}\marginpar{\raggedright\hspace{0pt}\small\sl #1}}
+
+%%% Add a side note that acts like a footnote 
+%%% (and that uses the footnote counter).
+\newcommand{\sidenote}[1]{%
+  \footnotemark\rawsidenote{\@makefnmark {#1}}}
+
+%%% This redefines the footnote marker style to use symbols instead of numbers
+%\renewcommand{\thefootnote}{\roman{footnote}}
+
+%%% Like \rawsidenote, but the BOTTOM of the note is aligned to the baseline
+%%% where the \sidenote occurs.
+\newcommand{\rupsidenote}[1]{%
+  \mbox{}\marginpar{\parbox[b]{\marginparwidth}{%
+  \raggedright\hspace{0pt}\small\sl #1}}}
+
+%%% Like \sidenote, but the BOTTOM of the note is aligned to the baseline
+%%% where the \sidenote occurs.  Insert footnotemark just like sidenote.
+\newcommand{\upsidenote}[1]{%
+  \footnotemark\rupsidenote{\@makefnmark {#1}}}
+
+%%% Like \rawsidenote, but does not consider the item as float 
+%%% Inspired by a similar macro from  David Carlisle, with modifications
+%%% (by N. Chapados) to properly support both sides of the page.
+%%% There seems to remain small spacing problems when used within regular
+%%% text, so this macro should be reserved for captions only.
+%%% The first optional argument is used to provide additional spacing
+%%% between the ``top'' of the note and the actual text.
+%%% This command is defined differently depending on whether we are
+%%% typesetting on twoside (switching margin pars) or one side.
+\if@mparswitch                  % switch side based or odd or even
+\newcounter{mym@rginp@r}
+\setcounter{mym@rginp@r}{0}
+\newcommand{\mymarginpar}[2][0in]{%
+  \addtocounter{mym@rginp@r}{1}%
+  \label{m@rginp@r:\arabic{mym@rginp@r}}%
+  \ifthenelse{\isodd{\pageref{m@rginp@r:\arabic{mym@rginp@r}}}}{%
+    {\smash{\rlap{\hspace{\textwidth}\kern\marginparsep%
+      \parbox[t]{\marginparwidth}{%
+      \vspace{#1}%
+      \raggedright\hspace{0pt}\small\it #2}}}}}{%
+    {\smash{\llap{\parbox[t]{\marginparwidth}{%
+      \vspace{#1}%
+      \raggedright\hspace{0pt}\small\sl #2}\kern\marginparsep}}}}}
+\else                           % typeset for right side only
+\newcommand{\mymarginpar}[2][0in]{%
+    {\smash{\rlap{\hspace{\textwidth}\kern\marginparsep%
+      \parbox[t]{\marginparwidth}{%
+      \vspace{#1}%
+      \raggedright\hspace{0pt}\small\it #2}}}}}
+\fi
+
+%%% The ``up'' version is bottom-aligned and grows up
+\if@mparswitch                  % switch side based or odd or even
+\newcommand{\myupmarginpar}[2][0in]{%
+  \addtocounter{mym@rginp@r}{1}%
+  \label{m@rginp@r:\arabic{mym@rginp@r}}%
+  \ifthenelse{\isodd{\pageref{m@rginp@r:\arabic{mym@rginp@r}}}}{%
+    {\smash{\rlap{\hspace{\textwidth}\kern\marginparsep%
+      \parbox[b]{\marginparwidth}{%
+      \vspace{#1}%
+      \raggedright\hspace{0pt}\small\sl #2}}}}}{%
+    {\smash{\llap{\parbox[b]{\marginparwidth}{%
+      \vspace{#1}%
+      \raggedright\hspace{0pt}\small\sl #2}\kern\marginparsep}}}}}
+\else                           % typeset for right side only
+\newcommand{\myupmarginpar}[2][0in]{%
+    {\smash{\rlap{\hspace{\textwidth}\kern\marginparsep%
+      \parbox[b]{\marginparwidth}{%
+      \vspace{#1}%
+      \raggedright\hspace{0pt}\small\it #2}}}}}
+\fi
+
+
+%%% A home-grown marginpar that's always in the right margin
+\newcommand{\myrightmarginpar}[2][0in]{%
+    \smash{\rlap{\hspace{\textwidth}\kern\marginparsep%
+      \parbox[t]{\marginparwidth}{%
+      \vspace{#1}%
+      \raggedright\hspace{0pt}\small\it #2}}}}
+
+
+% %%% Make a nice quote in the margin.  The devil is in the details.
+% %%% If YOU think you understand what this is doing, then you don't.
+% %%% Immolate yourself thrice before changing one nibble of this macro.
+\newlength{\sidequoteht}
+\newlength{\sidequotedp}
+% \newcommand{\sidequote}[2][\rawsidenote]{%
+%   \settoheight{\sidequoteht}{\parbox{\marginparwidth}{\raggedright\sidequotefont #2}}%
+%   \settodepth{\sidequotedp}{\parbox{\marginparwidth}{\raggedright\sidequotefont #2}}%
+%   \addtolength{\sidequoteht}{\sidequotedp}%
+%   \addtolength{\sidequoteht}{12pt}%
+%   #1{\smash{\makebox[\marginparwidth]{%
+%        \color{quotationcolor}%
+%        \hspace{-8pt}\resizebox{24pt}{!}{\ding{125}}%
+%        \hfill%
+%        \raisebox{-\sidequoteht}{\resizebox{24pt}{!}{\ding{126}}}}}%
+%      \vspace{-16pt}%
+%      {\raggedright\sidequotefont \par{}#2\par{}}}}
+
+\newcommand{\sidequote}[2][\rawsidenote]{%
+  \settoheight{\sidequoteht}{\parbox{\marginparwidth}{\raggedright\sidequotefont #2}}%
+  \settodepth{\sidequotedp}{\parbox{\marginparwidth}{\raggedright\sidequotefont #2}}%
+  \addtolength{\sidequoteht}{\sidequotedp}%
+  \addtolength{\sidequoteht}{16pt}%
+  #1{\smash{\makebox[\marginparwidth][l]{%
+       \color{quotationcolor}%
+       \makebox[0pt][l]{\rule[-\sidequoteht]{\marginparwidth}{4pt}}%
+       \hspace*{-28pt}%
+       \raisebox{-158pt}{\resizebox{116pt}{!}{``}}}}%
+     {\raggedright\sidequotefont \par{}#2\par{}}}}
+
+
+%%% Place a sentence in the main text, and simultaneously make a sidequote
+%%% out of it.
+\newcommand{\pullquote}[2][\rawsidenote]{{#2}{\sidequote[#1]{#2}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Properly typeset the table of contents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setcounter{tocdepth}{2}
+\renewcommand{\l@chapter}[2]{\vspace*{13pt}\@dottedtocline{0}{0pt}{16pt}{\bf\raggedright #1}{\textbf{#2}}\vspace*{0pt}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Glossary stuff
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%% Command for creating a ``side glossary''.  This command works as follows:
+%%%
+%%% \sideglossary[Neural Network]{neural networks}{Computer algorithm used to 
+%%% approximate smooth non-linear functions.}
+%%%
+%%% - The first (optional) argument is the title of the glossary entry, if
+%%%   different from the second argument.
+%%% - The second (mandatory) argument is how it appears in the text
+%%%   (automatically italicized).
+%%% - The third (mandatory) argument is the definition, appearing both in
+%%%   the side text and in the glossary.
+%\newcommand{\sideglossary}[3][!*!,!]{\textit{#2}%
+%  \ifthenelse{\equal{#1}{!*!,!}}%
+%     {\sidenote{\textsc{\MakeLowercase{#2}}: #3}\nomenclature{#2}{#3}}%
+%     {\sidenote{\textsc{\MakeLowercase{#1}}: #3}\nomenclature{#1}{#3}}}
+
+%\newcommand{\upsideglossary}[3][!*!,!]{\textit{#2}%
+%  \ifthenelse{\equal{#1}{!*!,!}}%
+%     {\upsidenote{\textsc{\MakeLowercase{#2}}: #3}\nomenclature{#2}{#3}}%
+%     {\upsidenote{\textsc{\MakeLowercase{#1}}: #3}\nomenclature{#1}{#3}}}
+
+%%% invoke the nomencl package
+\renewcommand{\nomname}{Glossary}
+\renewcommand{\nomlabel}[1]{\textsc{\MakeLowercase{#1}}}
+\renewcommand{\pagedeclaration}[1]{ \hfill(Page~#1)}
+\makenomenclature
+
+
+%%% Command for creating abbreviations. This works as follows:
+%%% \newabbreviation takes three arguments: 1) the command name associated
+%%% with the abbreviation, 2) the abbreviation itself (set in small caps, so
+%%% you should use lowercase), 3) its full definition.  The first time the
+%%% abbreviation is used in the document (through its command name), the
+%%% full definition is typeset in the margin; the other times, it is not.
+%%% Eventually, the list of all abbreviations shall be compiled into an
+%%% abbreviation list.
+%%%
+%%% IMPORTANT NOTE: both the abbreviation command (obviously) and the 
+%%% abbreviation text cannot contain any spaces!  I am sorry but this is
+%%% an implementation restriction...
+%%%
+%%% Usage example: \newabbreviation{\MLP}{mlp}{Multi-Layer Perceptron}
+
+%\newcommand{\newabbreviation}[3]{%
+%  \newcounter{@bbr:#2}%
+%  \setcounter{@bbr:#2}{0}%
+%  %%%
+%  %%% ==> First abbreviation command for regular text
+%  \newcommand{#1}{%
+%    \textsc{#2}%
+%    \addtocounter{@bbr:#2}{1}%
+%    \ifthenelse{\equal{\arabic{@bbr:#2}}{1}}%
+%        % Insert sidenote upon first reference; add to glossary
+%        {\sidenote{#3.}\nomenclature{#2}{#3.}}
+%        {}}%               Otherwise insert nothing
+%  }
+
+%\newcommand{\newabbreviationIT}[3]{%    in-text version
+%  \newcounter{@bbr:#2}%
+%  \setcounter{@bbr:#2}{0}%
+%  %%%
+%  %%% ==> First abbreviation command for regular text
+%  \newcommand{#1}{%
+%    \addtocounter{@bbr:#2}{1}%
+%    \ifthenelse{\equal{\arabic{@bbr:#2}}{1}}%
+%        % Insert parenthesis upon first reference; add to glossary
+%        {#3 (\textsc{#2})\nomenclature{#2}{#3.}}
+%        {\textsc{#2}}}%               Otherwise insert abbreviation
+%  }
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Miscellaneous Formatting Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Configuration for the Lettrine packages (to produce fancy drop capitals)
+\setcounter{DefaultLines}{2}
+\renewcommand{\DefaultLoversize}{0.1}
+\renewcommand{\DefaultLhang}{0.0}
+
+%%% Big capital at the beginning of a chapter (eventually a drop cap).
+%%% First argument is what's to be big, 2nd is what to typeset in smallcaps.
+\newcommand{\bigcapital}[2]{\lettrine{\textbf{#1}}{#2}}
+
+%%% Format a ``key point'' in the beginning of the report
+\newcommand{\KeyPoint}[2]{%
+  \myrightmarginpar[2\baselineskip]{\smash{\makebox[0pt][l]{%
+    \hspace{-1in}%
+    \color{keypointcolor}\keypointfont{}#2}}}%
+    \lettrine{#1}{}}
+
+%%% Format a ``scanned page'' include, end of report.  First argument is
+%%% the path to the page to include.  The second argument is the caption
+%%% contents.
+\newcommand{\scannedpageinclude}[2]{%
+  \begin{figure}[H]
+  \figcaption{#2}
+  \framebox[\textwidth]{\resizebox{\textwidth}{!}{\includegraphics{#1}}}
+  \end{figure}}
+
+%%% Format a ``minor paragraph'', without as much spacing as \paragraph
+\newcommand{\minorparagraph}[1]{%
+  \medskip%
+  \par\noindent\textbf{#1}}
+
+%%% Format an ``arrow paragraph'', i.e. whose title starts with a
+%%% blacktriangle and ends with a colon
+\newcommand{\arrowparagraph}[1]{\paragraph{$\blacktriangleright$~{#1}~:}}
+
+%%% Format an ``arrow paragraph'', i.e. whose title starts with a
+%%% blacktriangle and ends with a colon; minor, without as much spacing
+%%% as \paragraph
+\newcommand{\arrowminorparagraph}[1]{%
+  \medskip%
+  \par\noindent\textbf{$\blacktriangleright$~{#1}~:}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  New environments for sidebars (encadrés)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newsavebox{\@sidebarcap}
+\newlength{\@sidebarht}
+\newlength{\@sidebarwd}
+\newlength{\@sidebarof}
+
+\newlength{\@sidebarvspace}     % inner vertical margin
+\newlength{\@sidebarhspace}     % inner horizontal margin
+\setlength{\@sidebarvspace}{4pt}
+\setlength{\@sidebarhspace}{6pt}
+
+\newlength{\@sidebarhoffset}    % offset for wide sidebars (odd/even)
+\setlength{\@sidebarhoffset}{0pt}
+
+\newcommand{\sidebar@fullcap}[2]{%
+      {\@fs@cfont #1}\kern1.5em #2}%
+
+\newcommand{\sidebar@reducedcap}[2]{#2}%
+
+\newcommand{\sidebarcaption}{%
+  \refstepcounter\@captype%
+  \@dblarg{\float@caption\@captype}}
+
+%%% Make the caption
+\newcommand{\floatc@sidebar}[2]{%
+  \savebox{\@sidebarcap}[\columnwidth][l]{%
+    {\hspace{\@sidebarhspace}%
+    \color{white}\bf%
+    \sidebar@cap@internal{#1}{#2}}%
+    \color{black}}%
+  \setlength{\@sidebarof}{\dp\@sidebarcap}%
+  \addtolength{\@sidebarof}{\@sidebarvspace}%
+  \setlength{\@sidebarht}{\ht\@sidebarcap}%
+  \addtolength{\@sidebarht}{\@sidebarof}%
+  \addtolength{\@sidebarht}{\@sidebarvspace}%
+  \setlength{\@sidebarwd}{\textwidth}%
+  \addtolength{\@sidebarwd}{2\@sidebarhspace}%
+  % Following offset is usually zero, except for wide sidebars on even pages
+  \hspace{\@sidebarhoffset}%
+  {\color{sidebarcaptioncolor}%
+  \makebox[0pt][l]{\smash{\rule[-\@sidebarof]{\@sidebarwd}{\@sidebarht}}}%
+  \color{black}}%
+  \usebox{\@sidebarcap}}
+
+%%% Typeset the sidebar body
+\newcommand\fs@sidebar{%
+  \def\@fs@cfont{\bfseries}%     Define font for caption
+  \let\@fs@capt\floatc@sidebar%  Define command for typesetting caption
+  \def\@fs@pre{\kern\@sidebarvspace}%
+  \def\@fs@post{\kern\@sidebarvspace}%
+  \def\@fs@mid{%
+    \kern2\@sidebarvspace% Factor of 2: account for space above+below caption
+    \setlength{\@sidebarht}{\ht\@currbox}%
+    \addtolength{\@sidebarht}{\dp\@currbox}%
+    \setlength{\@sidebarof}{\@sidebarht}%
+    \addtolength{\@sidebarof}{\@sidebarvspace}%
+    \addtolength{\@sidebarht}{2\@sidebarvspace}%
+    % Following offset is usually zero, except for wide sidebars on even pages
+    \hspace{\@sidebarhoffset}%
+    {\color{sidebarcontentscolor}%
+    \smash{\makebox[0pt][l]{\rule[-\@sidebarof]{\textwidth}{\@sidebarht}}}%
+    \color{black}}}%
+  \let\@fs@iftopcapt\iftrue}
+
+%%% Define the basic sidebar
+\newcommand{\sidebarname}{Encadré}
+\floatstyle{sidebar}
+\newfloat{sidebarinternal}{tbp}{sidebar}[chapter]
+\floatname{sidebarinternal}{\sidebarname}
+
+\newenvironment{sidebar}[1][tbp]{%
+  \begin{sidebarinternal}[#1]%
+  \let\sidebar@cap@internal\sidebar@fullcap%
+  \addtolength{\columnwidth}{-2\@sidebarhspace}%
+  \setlength{\leftskip}{\@sidebarhspace}%
+  % Following offset is usually zero, except for wide sidebars on even pages
+  \hspace{\@sidebarhoffset}%
+  \begin{minipage}{\columnwidth}}%
+  {\end{minipage}\end{sidebarinternal}}
+
+%%% Define the star-sidebar (without the note ``Encadré x'' in the caption
+\floatstyle{sidebar}
+\newfloat{sidebarinternalZ}{tbp}{sidebarZ}[chapter]
+
+\newenvironment{sidebar*}[1][tbp]{%
+  \begin{sidebarinternalZ}[#1]%
+  \let\sidebar@cap@internal\sidebar@reducedcap%
+  \addtolength{\columnwidth}{-2\@sidebarhspace}%
+  \setlength{\leftskip}{\@sidebarhspace}%
+  % Following offset is usually zero, except for wide sidebars on even pages
+  \hspace{\@sidebarhoffset}%
+  \begin{minipage}{\columnwidth}}%
+  {\end{minipage}\end{sidebarinternalZ}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  New environments for wide sidebars (take up whole page width)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcounter{@widesidebarnum}
+\setcounter{@widesidebarnum}{0}
+\newcommand{\@GetInWideSidebar}{%
+  \addtocounter{@widesidebarnum}{1}%
+  \label{@sidebar:\arabic{@widesidebarnum}}%
+  \if@mparswitch%
+    \ifthenelse{\isodd{\pageref{@sidebar:\arabic{@widesidebarnum}}}}%
+               {}%
+               {\addtolength{\@sidebarhoffset}{-\marginparsep}%
+                \addtolength{\@sidebarhoffset}{-\marginparwidth}}%
+    \fi%
+  \setlength{\textwidth}{\@widetextwidth}%
+  \setlength{\columnwidth}{\@widetextwidth}}
+
+\newcommand{\@GetOutWideSidebar}{%
+  \setlength{\@sidebarhoffset}{0pt}}
+
+\newenvironment{widesidebar}[1][bp]{%
+  \@GetInWideSidebar\begin{sidebar}[#1]}%
+  {\end{sidebar}\@GetOutWideSidebar}
+
+\newenvironment{widesidebar*}[1][bp]{%
+  \@GetInWideSidebar\begin{sidebar*}[#1]}%
+  {\end{sidebar*}\@GetOutWideSidebar}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  New environments for figures and figure captions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Colored arrows from the caption pointing to the figure
+\newcommand{\caparrowup}{\ensuremath{\color{captionarrowcolor}\blacktriangle}~}
+\newcommand{\caparrowdown}{\ensuremath{\color{captionarrowcolor}\blacktriangledown}~}
+\newcommand{\caparrowleft}{\ensuremath{\color{captionarrowcolor}\blacktriangleleft}~}
+\newcommand{\caparrowright}{\ensuremath{\color{captionarrowcolor}\blacktriangleright}~}
+
+%%% New environment for wide figures.  If printing on two sides, switch
+%%% left and right sides; if printing on one side, overflow into right
+%%% margin only.
+\newcounter{@inwidefigure}
+\setcounter{@inwidefigure}{0}
+\newcounter{@widefignum}
+\setcounter{@widefignum}{0}
+\newenvironment{widefigure}[1][tbp]%
+  {\begin{figure}[#1]%
+    \addtocounter{@inwidefigure}{1}%
+    \addtocounter{@widefignum}{1}%
+    \label{@widefig:\arabic{@widefignum}}%
+    \if@mparswitch%
+      \ifthenelse{\isodd{\pageref{@widefig:\arabic{@widefignum}}}}%
+        {}%
+        {\hspace{-\marginparsep}\hspace{-\marginparwidth}}%
+    \fi%
+    \setlength{\textwidth}{\@widetextwidth}}%
+  {\addtocounter{@inwidefigure}{-1}%
+    \setlength{\textwidth}{\@origtextwidth}%
+    \end{figure}}%
+
+%%% New environment for landscape figures
+\newenvironment{landscapefigure}[1][tbp]%
+  {\begin{sidewaysfigure}[#1]%
+    \addtocounter{@inwidefigure}{1}}%
+  {\addtocounter{@inwidefigure}{-1}%
+    \end{sidewaysfigure}}%
+
+%%% Special captions for wide figures
+\newcommand{\widec@ption}[2][\@origtextwidth]{%
+   \parbox[t]{#1}{\raggedright\hspace{0pt}\small\sl #2}}
+
+%%% Define caption fonts
+\newcommand{\captionheadfont}{\normalfont\small\sl\bf}
+\newcommand{\captionbodyfont}{\normalfont\small\sl}
+
+%%% Redefine the caption command to be an error
+%\renewcommand{\caption}[1]{PLEASE DON'T USE THE CAPTION COMMAND!  USE
+%FIGCAPTION OR TABCAPTION INSTEAD.}
+
+%%% Special caption command for figures.
+%%% The caption can operate in two mode: in a regular figure environment,
+%%% put the caption in the side-note portion of the page.  In a widefigure
+%%% environment, use widecaption instead.
+\newcommand{\figcaption}[2][\@origtextwidth]{%
+        \refstepcounter{figure}%
+        \ifthenelse{\arabic{@inwidefigure} > 0}%
+            {\widec@ption[#1]{\captionheadfont\caparrowup%
+             \figurename~\mbox{\thechapter.\arabic{figure}}.~%
+             \captionbodyfont{#2}}}%
+            {\mymarginpar{\captionheadfont%
+             \if@mparswitch% Typeset differently based on one or two sides
+               \ifthenelse{\isodd{\pageref{m@rginp@r:\arabic{mym@rginp@r}}}}%
+                  {\caparrowleft}{\caparrowright}%
+             \else%
+               {\caparrowleft}%
+             \fi%
+             \figurename~\mbox{\thechapter.\arabic{figure}}.~%
+             \captionbodyfont{#2}}}}%
+
+%%% Insert a text in the list of figures.  This must immediately come after 
+%%% a \figcaption command.
+\newcommand{\lofcaption}[1]{%
+  \addcontentsline{lof}{figure}{%
+    \protect\numberline{\thefigure}{\ignorespaces #1}}}
+
+%%% Special caption for when the caption must go INSIDE the figure, and not
+%%% in the side margin.  This is useful for small figures.  The first
+%%% parameter is a width, and the second is the contents.  The caption is
+%%% typeset inside a parbox that is bottom-aligned with the figure, with
+%%% some appropriate filling inserted.
+\newcommand{\infigcaption}[2]{%
+        \refstepcounter{figure}%
+        \hfill%
+        \parbox[b]{#1}{%
+                \captionheadfont%
+                \caparrowleft%
+                \figurename~\mbox{\thechapter.\arabic{figure}}.~%
+                \captionbodyfont{#2}}}
+
+%%% Figure command that puts the caption in the correct position.  
+%%% - The first argument is for the caption
+%%% - The second argument is for the figure contents.
+\newcommand{\smartfigure}[2]{%
+  \figcaption{#1}#2}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  New environments for tables and table captions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Counter for keeping track of current shading in alternating-shaded tables
+\newcounter{sh@denumber}
+\setcounter{sh@denumber}{0}
+
+%%% The two colors between which the auto-shader shall alternate
+\definecolor{LightRowColor}{cmyk}{0,0,0,0}
+\definecolor{DarkRowColor}{cmyk}{0,0,0,.05}
+
+%%% Shade a table row in LightRowColor or DarkRowColor depending on counter
+%\newcommand{\shaderow}{%
+%  \ifthenelse{\isodd{\arabic{sh@denumber}}}%
+%    {\rowcolor{LightRowColor}}%
+%    {\rowcolor{DarkRowColor}}}
+
+%%% For now, always shade a row in DarkRowColor
+\newcommand{\shaderow}{\rowcolor{DarkRowColor}}
+
+%%% Perform \shaderow followed by stepping the counter
+\newcommand{\shadestep}{%
+  \shaderow\addtocounter{sh@denumber}{1}}
+
+%%% Shade the contents of the argument (intended for current table cell).
+\newcommand{\shadeleft}[1]{\multicolumn{1}{@{}sl@{}}{#1}}
+\newcommand{\shadecenter}[1]{\multicolumn{1}{@{}sc@{}}{#1}}
+\newcommand{\shaderight}[1]{\multicolumn{1}{@{}sr@{}}{#1}}
+\newcommand{\shadecell}[1]{\shaderight{#1}}
+
+%%% Create new column types:
+%%% - d{n} for an n-column column of numbers aligned on the decimal point 
+%%%   (typeset in math-mode)
+%%% - . for a column of numbers of any width, CENTERED around the decimal
+%%%   point (typeset in math-mode)
+%%% - E is a bold version of D (useful for statistical significance)
+%%% - S for a shaded column
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+\newcolumntype{.}{D{.}{.}{-1}}
+\newcolumntype{E}[3]{>{\boldmath\DC@{#1}{#2}{#3}}c<{\DC@end}} % bold
+\newcolumntype{S}{>{\columncolor{DarkRowColor}}}
+\newcolumntype{s}{>{\columncolor{DarkRowColor}[0pt][0pt]}}
+
+
+%%% New environments for tables and captions.  Here are their meaning:
+%%%     narrowtable       Less than 5-inch wide table
+%%%     normaltable       Exactly 5 inches (text width)
+%%%     widetable         482-point-wide table (text+sidenote width)
+%%%     landscapetable    Turn around the table
+%%%     longnormaltable   Non-float normal table that can span multiple pages
+%%%     longwidetable     Non-float wide   table that can span multiple pages
+
+\newcounter{@innarrowtable}     \setcounter{@innarrowtable}{0}
+\newcounter{@innormaltable}     \setcounter{@innormaltable}{0}
+\newcounter{@inwidetable}       \setcounter{@inwidetable}{0}
+\newcounter{@inlandscapetable}  \setcounter{@inlandscapetable}{0}
+\newcounter{@inlongnormaltable} \setcounter{@inlongnormaltable}{0}
+\newcounter{@inlongwidetable}   \setcounter{@inlongwidetable}{0}
+\newcounter{@tabularnum}        \setcounter{@tabularnum}{0}
+
+\newenvironment{narrowtable}[1][tbp]%
+  {\begin{table}[#1]\addtocounter{@innarrowtable}{1}}%
+  {\addtocounter{@innarrowtable}{-1}\end{table}}
+
+\newenvironment{normaltable}[1][tbp]%
+  {\begin{table}[#1]\addtocounter{@innormaltable}{1}}%
+  {\addtocounter{@innormaltable}{-1}\end{table}}
+
+\newenvironment{widetable}[1][tbp]%
+  {\begin{table}[#1]\addtocounter{@inwidetable}{1}}%
+  {\addtocounter{@inwidetable}{-1}\end{table}}
+
+\newenvironment{longnormaltable}%
+  {\addtocounter{@inlongnormaltable}{1}}%
+  {\addtocounter{@inlongnormaltable}{-1}}
+
+\newenvironment{longwidetable}%
+  {\addtocounter{@inlongwidetable}{1}}%
+  {\addtocounter{@inlongwidetable}{-1}}
+
+\newenvironment{landscapetable}[1][tbp]%
+  {\begin{sidewaystable}[#1]\addtocounter{@inlandscapetable}{1}}%
+  {\addtocounter{@inlandscapetable}{-1}\end{sidewaystable}}
+
+
+%%% Special setup for longtable
+\setcounter{LTchunksize}{100}   % We have enough memory -- less passes required
+
+%%% There is a bug in the \ifthenelse macro that makes it impossible to use
+%%% when closing the icbctabular environment.  Then we have to set in
+%%% advance how to close the open tabular environment.  This is done with
+%%% the \@endicbctabular macro, which is redefined appropriately.
+\newcommand{\@endlisatabular}{}
+
+%%% New environment lisatabular that looks for its enclosing environment to
+%%% determine how to set up the tabular material.  ASSUME NO NESTING!!!
+%%% In addition, it starts the table with the standard two horizontal
+%%% lines, and ends it with a single horizontal line.  The table contents
+%%% are typeset in smaller characters.
+
+\newenvironment{lisatabular}[2][{}]%
+  %% Open environment stuff; switch according to enclosing environment
+  {%
+        %% Common stuff
+        \addtocounter{@tabularnum}{1}%
+        \label{@tabular:\arabic{@tabularnum}}%
+        \setcounter{sh@denumber}{0}%
+        \footnotesize%
+        \renewcommand{\arraystretch}{1.25}%
+        #1%
+        %%
+        %% Narrowtable stuff
+        \ifthenelse{\value{@innarrowtable} > 0}{%
+            \renewcommand{\@endlisatabular}{\end{tabular}}%
+            \begin{tabular}{@{}#2@{}}%
+        }%
+        %%
+        %% Normaltable stuff
+        {\ifthenelse{\value{@innormaltable} > 0}{%
+            \renewcommand{\@endlisatabular}{\end{tabular*}}%
+            \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}#2@{}}%
+        }%
+        %%
+        %% Widetable stuff
+        {\ifthenelse{\value{@inwidetable} > 0}{%
+            \if@mparswitch% Switch to proper side if printing on two sides
+              \ifthenelse{\isodd{\pageref{@tabular:\arabic{@tabularnum}}}}%
+                  {}%
+                  {\hspace{-\marginparsep}\hspace{-\marginparwidth}}%
+            \fi%
+            \setlength{\textwidth}{\@widetextwidth}%
+            \renewcommand{\@endlisatabular}{\end{tabular*}}%
+            \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}#2@{}}%
+        }%
+        %%
+        %% Landscapetable stuff
+        {\ifthenelse{\value{@inlandscapetable} > 0}{%
+            \renewcommand{\@endlisatabular}{\end{tabular*}}%
+            \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}#2@{}}%
+        }%
+        %%
+        %% Longnormaltable stuff
+        {\ifthenelse{\value{@inlongnormaltable} > 0}{%
+            \nopagebreak%
+            \renewcommand{\@endlisatabular}{\end{longtable}}%
+            \setlength\LTleft{0pt}%
+            \setlength\LTright{0pt}%
+            \begin{longtable}{@{\extracolsep{\fill}}#2@{}}%
+            \\ \kill
+        }%
+        %%
+        %% Longwidetable stuff
+        {\ifthenelse{\value{@inlongwidetable} > 0}{%
+            \nopagebreak%
+            \if@mparswitch% Switch to proper side if printing on two sides
+              \ifthenelse{\isodd{\pageref{@tabular:\arabic{@tabularnum}}}}%
+                  {}%
+                  {\hspace{-\marginparsep}\hspace{-\marginparwidth}}%
+            \fi%
+            \setlength{\textwidth}{\@widetextwidth}%
+            \renewcommand{\@endlisatabular}{\end{longtable}}%
+            \setlength\LTleft{0pt}%
+            \setlength\LTright{0pt}%
+            \begin{longtable}{@{\extracolsep{\fill}}#2@{}}%
+        }%
+        {ERROR! No enclosing environment for lisatabular}}}}}}%
+        %%
+        %% Common stuff (inside tabular)
+        \hline\hline%
+  }%
+  %%
+  %% Close environment stuff
+  {%
+        \\ \hline
+        \@endlisatabular%
+        \setlength{\textwidth}{\@origtextwidth}%
+  }
+
+
+%%% Special caption command for tables.  Put the caption in the side-note
+%%% portion of the page
+\newcommand{\tabcaption}[2][0in]{%
+        \refstepcounter{table}%
+        \ifthenelse{\(\arabic{@inwidetable} > 0\) \or
+                    \(\arabic{@inlongwidetable} > 0\) \or
+                    \(\arabic{@inlandscapetable} > 0\)}%
+            {\widec@ption[\linewidth]{\captionheadfont%
+             \tablename~\mbox{\thechapter.\arabic{table}}.~%
+             \captionbodyfont{#2}}%
+             \par\smallskip}%
+            {\mymarginpar{\captionheadfont%
+             \tablename~\mbox{\thechapter.\arabic{table}}.~%
+             \captionbodyfont{#2}}}
+        }
+
+%%% Insert a text in the list of tables.  This must immediately come after 
+%%% a \tabcaption command.
+\newcommand{\lotcaption}[1]{%
+  \addcontentsline{lot}{table}{%
+    \protect\numberline{\thetable}{\ignorespaces #1}}}
+
+%%% Special caption for when the caption must go INSIDE the table, and not
+%%% in the side margin.  This is useful for small tables.  The first
+%%% parameter is a width, and the second is the contents.  The caption is
+%%% typeset inside a parbox that is vertically center-aligned with the
+%%% table, with some appropriate filling inserted.
+\newcommand{\intabcaption}[2]{%
+        \refstepcounter{table}%
+        \hfill%
+        \parbox[c]{#1}{%
+                \captionheadfont%
+                \tablename~\mbox{\thechapter.\arabic{table}}.~%
+                \captionbodyfont{#2}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Additional macros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Insert a cross-reference in the document of the form S section/p. page
+\newcommand{\xref}[1]{\mbox{\S\ref{#1}/p.\:\pageref{#1}}}
+
+%%% Special font for features
+%\newcommand{\feature}[1]{{\sffamily #1}}
+\newcommand{\feature}[1]{{\tt #1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Format for chapter and section headings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%% New section format
+\renewcommand{\section}{\@startsection
+	{section}%		% name
+	{1}%			% level
+	{0em}%			% indent
+	{-2\baselineskip plus -2\baselineskip minus \baselineskip}%
+                                % beforeskip (positive => indent afterwards)
+	{.75\baselineskip}%	% afterskip  (positive => display heading)
+	{\Large\bfseries\scshape\raggedright%
+	\noindent%
+	\raisebox{-.5ex}[0pt][0pt]{%
+		\makebox[0pt][l]{%
+			\rule[2.5ex]{\textwidth}{2pt}%
+		}}}}
+
+
+%%% A chapter that is moved up somehow to take up less space
+\newlength{\ch@ptervoffset}
+\setlength{\ch@ptervoffset}{0pt}
+\newlength{\shortchapteroffset}
+\setlength{\shortchapteroffset}{-0.5in}
+
+\newcommand{\shortchapter}[1]{%
+  \setlength{\ch@ptervoffset}{\shortchapteroffset}%
+  \chapter{#1}%
+  \setlength{\ch@ptervoffset}{0pt}}
+
+\newcommand{\shortchapterstar}[1]{%
+  \setlength{\ch@ptervoffset}{\shortchapteroffset}%
+  \chapter*{#1}%
+  \setlength{\ch@ptervoffset}{0pt}}
+
+
+
+%%% New chapter and star-chapter format.  The \hspace{-1pt} inside the
+%%% title text parbox is fairly specific to French typography: it sets back
+%%% the FIRST LINE of the title by 1 pt, in order to visually align it
+%%% with the following lines (for long titles), which usually start with a 
+%%% lower-case letter (in French typography, only the first letter of titles
+%%% is uppercase).
+\renewcommand{\@makechapterhead}[1]{%
+  \vspace*{\ch@ptervoffset}%  Move up optionally for a short chapter
+  \vspace*{36\p@}\noindent%
+  \raisebox{0pt}[0pt][0pt]{\makebox[0pt][l]{%
+    \hspace{-500pt}%
+    \color{sidetitleline}%
+    \rule[-2pt]{490pt}{3in}}}%
+  \hspace{-9pt}%
+  \smash{\makebox[0pt][r]{\scalebox{3}{\chapnumberfont\color{chapternumbertext}\thechapter}}}%
+  \hspace{9pt}%
+  \smash{\parbox[b]{400pt}{\raggedright\headingfont\color{headingtext}%
+    \hspace*{-1pt}#1}}%
+  \par\nobreak\vskip 40\p@
+}
+
+\renewcommand{\@makeschapterhead}[1]{%
+  \vspace*{\ch@ptervoffset}%  Move up optionally for a short chapter
+  \vspace*{36\p@}\noindent%
+  \raisebox{0pt}[0pt][0pt]{\makebox[0pt][l]{%
+    \hspace{-500pt}%
+    \color{sidetitleline}%
+    \rule[-2pt]{490pt}{3in}}}%
+  \smash{\parbox[b]{400pt}{\raggedright\headingfont\color{headingtext}%
+    \hspace*{-1pt}#1}}%
+  \par\nobreak\vskip 40\p@%
+%  {\addcontentsline{toc}{chapter}{\numberline{}#1}}%
+}
+
+%%% Updated list-of-figures and list-of-tables to REMOVE 
+%%% the uppercase in header line
+\renewcommand\listoffigures{%
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+    \chapter*{\listfigurename}%
+      \@mkboth{\listfigurename}{\listfigurename}%
+    \@starttoc{lof}%
+    \if@restonecol\twocolumn\fi
+    }
+\renewcommand\listoftables{%
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+    \chapter*{\listtablename}%
+      \@mkboth{\listtablename}{\listtablename}%
+    \@starttoc{lot}%
+    \if@restonecol\twocolumn\fi
+    }
+
+%%% Changes to index formatting.
+\renewenvironment{theindex}%
+{%
+  \chapter*{\indexname}
+  \@mkboth{\indexname}%
+          {\indexname}%
+  %\setlength{\marginparsep}{0pt}
+  %\setlength{\marginparwidth}{0pt}
+  \begin{adjustwidth*}{}{}%-36pt}
+  \begin{multicols}{2}%
+  \begin{flushleft}
+  \footnotesize%
+  \parskip\z@ \@plus .3\p@\relax
+  \columnseprule \z@
+  \columnsep 35\p@
+  \let\item\@idxitem}%
+{\end{flushleft}\end{multicols}\end{adjustwidth*}}

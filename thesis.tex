@@ -1,0 +1,212 @@
+%%% Style file taken from Nicolas Chapados's thesis
+%\documentclass[12pt]{book}
+\documentclass[12pt]{report}
+
+
+
+%\documentclass[11pt,draft]{book}
+\usepackage{packages/thesis_style}
+\usepackage{packages/coverpage}
+%\usepackage{subfigure}
+
+
+\selectlanguage{english}
+\renewcommand{\sidebarname}{Sidebar}
+\newlength{\tablepagespacer}    % Used for landscape tables...
+
+\usepackage[final]{pdfpages}
+
+
+\newif\ifPrintVersion
+\PrintVersionfalse
+\ifPrintVersion
+	% Otherwise, the \url's won't work
+	\usepackage{url}
+	%\usepackage[pageref]{backref}
+\else
+\usepackage[pdftex,bookmarks=true,%
+   bookmarksnumbered=true,%
+   %hypertexnames=false,%
+   breaklinks=true,%
+   colorlinks=true,%
+   linkcolor=linkcolor,%
+   citecolor=linkcolor,%
+   pdffitwindow=true,%     % window fit to page when opened
+   pdfstartview={FitH},%  % fits the width of the page to the window
+   pdftitle={Apprentissage d'Espaces S\'{e}mantiques},% % title
+   pdfauthor={Gr\'{e}goire Mesnil},%    % author
+   pdfnewwindow=true,%      % links in new window
+   plainpages=false,%
+   pdfpagelabels,%
+   %backref=page,%
+   %pagebackref,%
+   %backref=page% For a weirdo reason, these don't get generated as links.... and when they do (without the backref package), they point to the wrong thing :(
+ ]{hyperref}   % for hyperreferences in PDF; must be LAST pkg!
+\fi
+\usepackage{algorithm}   % algorithmic' and 'algorithm' (for pseudocode)
+\usepackage{algorithmic}
+
+%\usepackage[hyperpageref]{backref}
+% Very fancy back-references
+%\renewcommand*{\backref}[1]{}
+%\renewcommand*{\backrefalt}[4]{%
+%\ifcase #1 %
+%(Arg:#1,#2,#3,#4)%
+%\or
+%(Cited on page~#2.)%
+%\else
+%(Cited on pages~#2.)%
+%\fi}
+%\renewcommand*{\backrefsep}{, }
+%\renewcommand*{\backreftwosep}{ and~}
+%\renewcommand*{\backreflastsep}{ and~}
+
+% PDF output options
+\pdfcompresslevel9 %this is lossless compression
+\pdfimageresolution=600 % just in case
+\pdfpkresolution=600
+\pdfminorversion=5 % version 1.5 of PDF output
+\pdfobjcompresslevel=2
+
+%%%%% GLOBAL MATH DEFINITIONS %%%%%
+\newcommand{\train}{\mathcal{D}}
+\newcommand{\valid}{\mathcal{D_{\mathrm{valid}}}}
+\newcommand{\test}{\mathcal{D_{\mathrm{test}}}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Ls}{\mathcal{L}}
+%\newcommand{\R}{\mathcal{R}}
+\newcommand{\emp}{\pi}
+\newcommand{\lr}{\epsilon}
+\newcommand{\reg}{\lambda}
+\newcommand{\sigm}{\mathrm{sigmoid}}
+\newcommand{\softmax}{\mathrm{softmax}}
+\newcommand{\KL}{\mathrm{KL}}
+\newcommand{\vq}{q}  % variational distribution
+\newcommand{\R}{\mathbb{R}}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+%
+%%% List of chapters to include in final typesetting
+%\includeonly{
+%misc/summary,
+%misc/resume,
+%misc/abbreviation,
+%misc/dedicace,
+%misc/thanks,
+%intro/intro,
+%deep/deep,
+%tempering/tempering,
+%modeling/modeling,
+%}
+
+\graphicspath{
+    {./}
+    %{intro/},
+    %{prob_models/}
+    %{tpami/},
+    %{nips13_mpdbm},
+    %{icml13_maxout},
+    %{transcription/},
+    %{modeling/}
+    %{misc/}
+    %{uldfl10_smlapt/}
+    %{s3c/}
+    %{iclr13_mfng/}
+    %{arxiv_bilinear/}
+}
+
+\newcommand{\figwidthmult}{0.65}
+\newcommand{\myarraystretchA}{1.5}   % normal value=1.5
+\newcommand{\myarraystretchB}{1.35}  % normal value=1.35
+
+\begin{document}
+
+% package `babel` auto-insert spaces before colon, which break citations in the
+% <author>:<year> format. This makes the two compatible. See below for details:
+% http://tex.stackexchange.com/questions/89016/colon-in-bibliography-keys-incompatible-with-babel-biblatex-and-tex4ht
+\shorthandoff{:} 
+
+%%% Front matter is typeset using roman page numbers
+\pagenumbering{roman}
+
+\Auteur{Gr\'{e}goire}{Mesnil}
+
+\President{SHOULD NOT APPEAR}{SHOULD NOT APPEAR}{SHOULD NOT APPEAR}{SHOULD NOT APPEAR}
+
+\Directeur{SHOULD NOT APPEAR}{SHOULD NOT APPEAR}{SHOULD NOT APPEAR}{SHOULD NOT APPEAR}
+
+\Membres{1}{SHOULD NOT APPEAR}{SHOULD NOT APPEAR}{SHOULD NOT APPEAR}{SHOULD NOT APPEAR}
+
+%Pour un doctorat, changer simplement \MSc par \PhD
+%titre: 15 mots, max. 175 caracteres
+\PhD{Apprentissage d'Espaces S\'{e}mantiques}
+    {}
+    {d'informatique et de recherche op\'{e}rationnelle}
+    {informatique}
+    {Janvier}
+    {2015}
+
+\PagesCouverture
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+
+\cleardoublepage%
+\pagebreak
+%\include{misc/summary}
+
+\cleardoublepage%
+\pagebreak
+\addcontentsline{toc}{chapter}{\numberline{}Contents}
+\tableofcontents
+
+\cleardoublepage%
+\pagebreak
+\addcontentsline{toc}{chapter}{\numberline{}List of Figures}
+\listoffigures
+
+\cleardoublepage%
+\pagebreak
+\addcontentsline{toc}{chapter}{\numberline{}List of Tables}
+\listoftables
+%\include{misc/abbreviation}
+
+\cleardoublepage\pagebreak
+\markboth{\nomname}{\nomname}
+%\cleardoublepage%
+%\pagebreak
+%\addcontentsline{toc}{chapter}{\numberline{}Glossary}
+\printnomenclature
+
+%\cleardoublepage%
+%\pagebreak
+%\include{misc/thanks}
+
+%%% Body of report is typeset using arabic page numbers
+\cleardoublepage%
+\pagebreak
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+\onehalfspacing
+
+\include{article1/utlc}
+%\include{prob_models/prob_models}
+%\include{deep_sup}
+%\include{tpami/intro}
+%\include{tpami/rev_2}
+%\include{conclusion}
+%\appendix
+%\include{transcription/appendix}
+
+\cleardoublepage\pagebreak
+\bibliographystyle{chicago}
+\markboth{References}{References}
+\addcontentsline{toc}{chapter}{\numberline{}References}
+\bibliography{bib/strings,bib/ml,bib/aigaion}
+
+\end{document}
