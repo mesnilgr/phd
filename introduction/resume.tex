@@ -4,4 +4,38 @@ lala
 
 \chapter*{Summary}
 
-lala
+In this work, we focus on learning semantic spaces for different domains, e.g.
+words and images, but also at the intersection of different domains. We use
+different machine learning algorithms to learn representations with interesting
+intrinsic properties. These properties range from better mixing (a space where
+it's easier to perform sampling), to better linear separability (a space where
+it's easier to discriminate with an hyperplane). The semantic space is where
+the learned representation lives. This space is called semantic if "similar"
+entities from a human perspective have their similarity preserved in this
+space.\\
+
+The first article presents a pipeline including many different unsupervised
+learning techniques used to win a challenge in 2011. No prior on the structure
+of the data could be used during this competition since the different datasets
+(arabic manuscript recognition, human actions, NLP, ecology data, CIFAR10) were
+anonymous. In the second article, we present a way to learn from structured
+context ($177$ object detections at different poses and scales) for performing
+scene categorization. We show that using the structure of the data combined
+with unsupervised learning algorithms allow us to reduce the dimensionality by
+a factor of $97\%$ while improving the scene recognition $+5\%$ to $+11\%$
+depending on the dataset.\\
+
+In the third article, we focus on the space structure learned by deep
+representations. Several hypothesis are experimentally tested and show that
+abstract representation spaces have better mixing properties (exploring all the
+different classes during the sampling procedure).\\
+
+In the fourth article, we tackle a semantic parsing problem with Recurrent
+Neural Network architectures and context windows of word embeddings. We show an
+improvement over the state of the art on several datasets and interesting
+semantic properties in the learned word "embedding" space.  An investigation on
+learning a single semantic space at the intersection of words and images is
+presented in the fifth article. We propose a way to perform "augmented search"
+by learning a semantic space where a search on an image containing an object
+would also return images of the object's parts, e.g. searching for "car" images
+would return "windshield", "trunk" or "wheel" images in addition to car images.
