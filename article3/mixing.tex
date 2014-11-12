@@ -1,0 +1,932 @@
+
+%\documentclass[english]{article}
+
+% For figures
+%\usepackage{graphicx} % more modern
+%\usepackage{epsfig} % less modern
+%\usepackage{subfigure} 
+%\usepackage[utf8]{inputenc}
+% For citations
+%\usepackage{natbib}
+
+% For algorithms
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+
+% As of 2011, we use the hyperref package to produce hyperlinks in the
+% resulting PDF.  If this breaks your system, please commend out the
+% following usepackage line and replace \usepackage{icml2013} with
+% \usepackage[nohyperref]{icml2013} above.
+%\usepackage{hyperref}
+
+% Packages hyperref and algorithmic misbehave sometimes.  We can fix
+% this with the following command.
+%\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+% Employ the following version of the ``usepackage'' statement for
+% submitting the draft version of the paper for review.  This will set
+% the note in the first column to ``Under review.  Do not distribute.''
+%\usepackage{icml2013} 
+% Employ this version of the ``usepackage'' statement after the paper has
+% been accepted, when creating the final version.  This will set the
+% note in the first column to ``Proceedings of the...''
+%\usepackage[accepted]{icml2013}
+
+
+%\documentclass{article} % For LaTeX2e
+%\usepackage{nips11submit_e,times}
+%\documentstyle[nips10submit_09,times,art10]{article} % For LaTeX 2.09
+
+%\usepackage{amsfonts}
+
+% For figures
+%\usepackage{graphicx} % more modern
+%\usepackage{epsfig} % less modern
+%\usepackage{subfigure} 
+
+
+% For citations
+%\usepackage{natbib}
+
+
+%\newif\ifenoughspace
+%\enoughspacefalse
+
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+%\newcommand{\fix}{\marginpar{FIX}}
+%\newcommand{\fix}[1]{#1\marginpar{*}}
+%\newcommand{\new}{\marginpar{NEW}}
+\def\W{{\mathbf W}}
+\def\b{{\mathbf b}}
+\def\s{{\mathbf s}}
+\newcommand{\diag}{\mathop{\mathrm{diag}}}
+\newcommand{\trace}{\mathop{\mathrm{Tr}}}
+\newcommand{\vect}{\mathop{\mathrm{vec}}}
+% \newcommand{\R}{\mathbb{R}}                                                                                                                                                                                    
+%\newcommand{\R}{{\sf{I\!R}}}
+\newcommand{\N}{\mathbb{N}}
+%\newcommand{\sigm}{\mathop{\mathrm{sigmoid}}}
+%\newcommand{\argmin}[0]{\operatorname*{arg\,min}}                                                                                                                                                               
+%\newcommand{\argmin}[1]{\operatornamewithlimits{arg\,min}_{#1}}
+%\newcommand{\argmax}[1]{\operatornamewithlimits{arg\,max}_{#1}}
+
+%\newcommand{\E}{\mathbb{E}}
+\newcommand{\J}{\mathcal{J}}
+
+
+%\nipsfinalcopy % Uncomment for camera-ready version
+
+\iffalse
+\twocolumn[
+
+\icmltitle{Better Mixing via Deep Representations}
+
+\vspace*{-3mm}
+\icmlauthor{Yoshua Bengio$^{1}$}{CheckMy@WebPage.ca} % {bengioy@iro.umontreal.ca}
+\icmladdress{Dept. IRO, Université de Montréal. Montréal (QC), H2C 3J7, Canada}
+\icmlauthor{Grégoire Mesnil$^{1}$}{CheckMy@WebPage.ca} % {mesnilgr@iro.umontreal.ca}
+\icmladdress{Dept. IRO, Université de Montréal. Montréal (QC), H2C 3J7, Canada\\
+LITIS EA 4108, Université de Rouen. 768000 Saint Etienne du Rouvray, France}
+\icmlauthor{Yann Dauphin}{CheckMy@WebPage.ca} % {dauphiya@iro.umontreal.ca}
+\icmlauthor{Salah Rifai}{CheckMy@WebPage.ca} %{rifaisal@iro.umontreal.ca}
+\icmladdress{Dept. IRO, Université de Montréal. Montréal (QC), H2C 3J7, Canada}
+
+\vskip 0.1in
+]
+
+\footnotetext[1]{Indicates equal contribution}
+\setcounter{footnote}{1}
+
+%\author{
+%Yoshua Bengio$^{1,*}$, Grégoire Mesnil$^{1,2,}$\footnote{Indicates equal contribution}, Yann Dauphin$^{1}$ and Salah Rifai$^{1}$\\
+%$^{1}$ Dept. IRO, University of Montreal, Canada\\
+%$^{2}$ Dept. LITIS, University of Rouen, France
+%\texttt{\{?\}@iro.umontreal.ca} \\
+%}
+%
+
+%\maketitle
+
+\vspace*{-1.5mm}
+\begin{abstract}
+  It has been hypothesized, and supported with experimental evidence, that deeper representations, when well trained, tend to do a better job at disentangling the underlying factors of variation.  We study the following related conjecture: better representations, in the sense of better disentangling, can be exploited to produce Markov chains that mix faster between modes. Consequently, mixing between modes would be more efficient at higher levels of representation.  To better understand this, we propose a secondary conjecture: the higher-level samples fill more uniformly the space they occupy and the high-density manifolds tend to unfold when represented at higher levels.  The paper discusses these hypotheses and tests them experimentally through visualization and measurements of mixing between modes and interpolating between samples.
+\end{abstract}
+\vspace*{-1.5mm}
+
+\vspace*{-1mm}
+\fi
+
+\chapter{Better Mixing via Deep Representations}
+\section{Introduction and Background}
+
+Deep learning algorithms attempt to discover multiple levels of
+representation of the given data (see~\citep{Bengio-2009} for a review),
+with higher levels of representation defined hierarchically in terms of
+lower level ones. The central motivation is that higher-level
+representations can potentially capture relevant higher-level abstractions.
+Mathematical results in the case of
+specific function families have shown that choosing a sufficient depth of
+representation can yield exponential benefits, in terms of
+size of the model, to represent some
+functions~\citep{Hastad86,Hastad91,Bengio-localfailure-NIPS-2006,Bengio+Lecun-chapter2007,Bengio+Delalleau-ALT-2011}. The intuition
+behind these theoretical advantages is that lower-level features or latent
+variables can be {\em re-used} in many ways to construct higher-level ones,
+and the potential gain becomes exponential with respect to depth of the
+circuit that relates lower-level features and higher-level ones (thanks to
+the exponential number of paths in between). The ability of deep learning
+algorithms to construct abstract features or latent variables on top of the
+observed variables relies on this idea of re-use, which
+brings with it not only computational but also statistical advantages in
+terms of {\em sharing of statistical strength}, e.g., as already exploited in 
+multi-task learning~\citep{caruana95,baxter97,CollobertR2008} and
+learning algorithms involving {\em parameter
+  sharing}~\citep{Lang+Hinton88,LeCun89a}.
+
+There is another -- less commonly discussed -- motivation for deep
+representations, introduced in~\citet{Bengio-2009}: the idea that they may
+help to {\em disentangle} the underlying factors of
+variation. Clearly, if we had learning algorithms that could do a good job
+of discovering and separating out the underlying causes and factors of
+variation present in the data, it would make further processing (typically,
+taking decisions) much easier. One could even say that the ultimate goal of
+AI research is to build machines that can understand the world around us,
+i.e., disentangle the factors and causes it involves,
+so progress in that direction seems important. If learned representations
+do a good job of disentangling the underlying factors of variation,
+earning (on top of these representations, e.g., towards
+specific tasks of interest) becomes substantially easier because disentangling
+counters the effects of the curse of dimensionality. With good disentangling,
+there is no need for further learning, only good inference.
+Several observations suggest that some deep learning
+algorithms indeed help to disentangle the underlying factors of 
+variation~\citep{Goodfellow2009,Glorot+al-ICML-2011}.
+However, it is not clear why, and to what extent in general (if any),
+different deep learning algorithms may sometimes help this disentangling.
+
+Many deep learning algorithms are based on some form of unsupervised
+learning, hence capturing salient structure in the data
+distribution. Whereas deep learning algorithms have mostly been used to
+learn features and exploit them for classification or regression tasks,
+their unsupervised nature also means that in several cases they can be used
+to generate samples. In general the associated sampling algorithms involve
+a Markov Chain and MCMC techniques, and these can notoriously suffer from a
+fundamental problem of {\em mixing between modes}: it is difficult for the Markov chain
+to jump from one mode of the distribution to another, when these are
+separated by large low-density regions, a common situation in real-world
+data, and under the {\em manifold hypothesis}~\citep{Cayton-2005,Narayanan+Mitter-NIPS2010}. 
+This hypothesis states that
+natural classes present in the data are associated with low-dimensional
+regions in input space (manifolds) near which the distribution
+concentrates, and that different class manifolds are well-separated by
+regions of very low density. Slow mixing between modes means that consecutive samples
+tend to be correlated (belong to the same mode) and that it takes many
+consecutive sampling steps to go from one mode to another and even more to
+cover all of them, i.e., to obtain a large enough representative set of samples
+(e.g. to compute an expected value under the target distribution).
+ This happens because these jumps through the empty low-density void
+between modes are unlikely and rare events. When a learner has a poor model
+of the data, e.g., in the initial stages of learning, the model tends to
+correspond to a smoother and higher-entropy (closer to uniform) distribution, putting
+mass in larger volumes of input space, and in particular, between the modes
+(or manifolds). This can be visualized in generated samples of images, that
+look more blurred and noisy. Keep in mind that MCMCs tend to make moves to 
+{\em nearby probable configurations}.
+Mixing between modes is therefore initially easy for such poor models.
+However, as the model improves and its corresponding distribution sharpens
+near where the data concentrate, mixing between modes becomes considerably slower. 
+Making one unlikely move (i.e., to a low-probability configuration) may be possible, 
+but making $N$ such moves becomes exponentially unlikely in $N$, as illustrated
+in Figure~\ref{fig:mixing-issue}.
+Since
+sampling is an integral part of many learning algorithms (e.g., to estimate
+the log-likelihood gradient), slower mixing between modes then means slower or poorer
+learning, and one may even suspect that learning stalls at some point
+because of the limitations of the sampling algorithm.  
+To improve mixing between modes, a powerful idea that
+has been explored recently for deep learning 
+algorithms~\citep{Desjardins+al-2010,Cho10IJCNN,Salakhutdinov-2010,Salakhutdinov-ICML2010} 
+is {\em tempering}~\citep{Neal94b}.
+The idea is to use smoother densities (associated with {\em higher temperature}
+in a Boltzmann Machine or 
+Markov Random Field formulation) to make quick but approximate jumps 
+between modes, but
+use the sharp ``correct'' model to actually generate the samples of interest
+around these modes, and allow samples to be exchanged between the different
+levels of temperature.
+
+Here we want to discuss another possibly related idea, and claim that
+{\em mixing between modes is easier when sampling at the higher levels of
+  representation}.  The objective is not to propose a new sampling
+algorithm or a new learning algorithm, but rather to investigate this
+hypothesis through experiments using existing deep learning algorithms. The
+objective is to further our understanding of this hypothesis through more
+specific hypotheses aiming to explain why this would happen, using further
+experimental validation to test these more specific hypotheses. The idea
+that deeper generative models produce not only better features for
+classification but also better quality samples (in the sense of better
+corresponding to the target distribution being learned) is not novel and
+several observations support this hypothesis
+already, some quantitatively~\citep{Salakhutdinov+Hinton-2009}, 
+some more qualitative~\citep{Hinton06}. The specific contributions
+of this paper is to focus on why the samples may be better, and in
+particular, why the chains may converge faster, based on the previously
+introduced idea that deeper representations can do a better job
+of disentangling the underlying factors of representation.
+
+\section{Hypotheses}
+
+We first clarify the first hypothesis to be tested here.
+\begin{center}
+\framebox{
+\begin{minipage}{0.8\linewidth}
+{\bf Hypothesis H1: Depth vs Better Mixing Between Modes.} A successfully trained deeper architecture
+has the potential to yield representation spaces in which Markov chains mix faster between modes.
+\end{minipage}
+}
+\end{center}
+
+If experiments validate that hypothesis, the most important next question is: why?
+The main explanation we conjecture is formalized in the following hypothesis.
+
+\begin{center}
+\framebox{
+\begin{minipage}{0.8\linewidth}
+{\bf Hypothesis H2: Depth vs Disentangling.} Part of the explanation of {\bf H1} is that
+deeper representations can better disentangle the underlying factors of variation.
+\end{minipage}
+}
+\end{center}
+
+Why would that help to explain {\bf H1}? Imagine an abstract (high-level)
+representation for object image data in which one of the factors is the
+``reverse video bit'', which inverts black and white, e.g., flipping that
+bit replaces intensity $x \in [0,1]$ by $1-x$. With the default value of 0,
+the foreground object is dark and the background is light.  Clearly, flipping
+that bit does not change most of the other semantic characteristics of the
+image, which could be represented in other high-level features. However,
+for every image-level mode, there would be a reverse-video counterpart mode
+in which that bit is flipped: these two modes would be separated by
+vast ``empty'' (low density) regions in input space, making it very
+unlikely for any Markov chain in input space (e.g. Gibbs sampling in an
+RBM) to jump from one of these two modes to another, because that would require
+most of the input pixels or hidden units of the RBM to simultaneously
+flip their value. Instead, if we consider the high-level representation 
+which has a ``reverse video''
+bit, flipping only that bit would be a very likely event 
+under most Markov chain transition probabilities,
+since that flip would be a small change preserving high probability.
+As another example, imagine that some of the bits of the high-level
+representation identify the category of the object in the image, independently of pose,
+illumination, background, etc. Then simply flipping one of these
+object-class bits would also drastically change the raw pixel-space image,
+while keeping likelihood high. Jumping from an object-class mode to another
+would therefore be easy with a Markov chain in representation-space, 
+whereas it would be much less likely in raw pixel-space.
+
+\begin{figure}[!hbpt]
+\centerline{\includegraphics[width=0.75\linewidth]{article3/images/mixing-problem.pdf}}
+\caption{\small Top: early during training, MCMC mixes easily between modes because the estimated
+distribution has high entropy and puts enough mass everywhere for small-steps
+movements (MCMC) to go from mode to mode. Bottom: later on, training relying
+on good mixing can stall because estimated modes are separated by vast
+low-density deserts.} \label{fig:mixing-issue}
+\end{figure}
+
+
+Another point worth discussing (and which should be considered in future
+work) in {\bf H2} is the notion of {\em degree} of disentangling.  Although
+it is somewhat clear what a completely disentangled representation would
+look like, deep learning algorithms are unlikely to do a perfect job of
+disentangling, and current algorithms do it in stages, with more abstract
+features being extracted at higher levels. 
+%In this paper, we consider cases
+%where we know true underlying factors we seek to measure the strength of
+%the statistical dependency (e.g., through mutual information) between
+%latent variables of the representation and some of these known
+%factors. 
+Better disentangling would mean that {\em some} of the learned features
+have a higher mutual information with {\em some} of the known factors. One would
+expect at the same time that the features that are highly predictive of one
+factor be less so of other factors, i.e., that they specialize to one or a
+few of the factors, becoming {\em invariant} to others. Please note here
+the difference between the objective of learning disentangled
+representations and the objective of learning invariant features (i.e.,
+invariant to some specific factors of variation which are considered to be
+like nuisance parameters). In the latter case, one has to know ahead of
+time what the nuisance factors are (what is noise and what is signal?).
+In the former, it is not needed: we only seek to separate out the factors
+from each other. Some features should be sensitive to one factor and
+invariant to the others. 
+
+Let us now consider additional hypotheses that specialize {\bf H2}.
+\begin{center}
+\framebox{
+\begin{minipage}{0.8\linewidth}
+{\bf Hypothesis H3: Disentangling Unfolds and Expands.} Part of the explanation of {\bf H2} is that
+more disentangled representations tend to {\bf (a)} 
+unfold the manifolds near which raw data concentrates, as well as
+{\bf (b)} expand the relative volume occupied by high-probability points near
+these manifolds.
+\end{minipage}
+}\\
+\end{center} {\bf H3(a)} says is that disentangling has the effect that
+the projection of high-density manifolds in the high-level representation space have a smoother
+density and are easier to model than the corresponding high-density manifolds in raw
+input space. Let us again use an object recognition analogy. If we have
+perfectly disentangled object identity, pose and illumination, the
+high-density manifold associated with the
+distribution of features in high-level representation-space is flat: we can
+interpolate between some training examples (i.e. likely configurations) and
+yet stay in a high-probability region. For example, we can imagine that
+interpolating between two images of the same object at different poses
+(lighting, position, etc.) in a high-level representation-space would
+yield images of the object at intermediate poses (i.e., corresponding to
+likely natural images), whereas interpolating
+in pixel space would give a superposition of the two original
+images (i.e., unlike any natural image). If interpolating between high-probability
+examples (i.e. within their convex set) gives high-probability examples, then
+it means that the distribution is more uniform (fills the space) within
+that convex set, which is what {\bf H3(b)} is saying. In addition, a good high-level
+representation does not need to allocate as much real estate (sets of
+values) for unlikely configurations. This is already what most unsupervised
+learning algorithms tend to do. For example, dimensionality reduction
+methods such as the PCA tend to define representations where most
+configurations are likely (but these only occupy a subspace of the possible
+raw-space configurations).  Also, in clustering algorithms such as k-means,
+the training criterion is best minimized when clusters are approximately
+equally-weighted, i.e., the average posterior distribution over cluster
+identity is approximately uniform. Something similar is observed in the
+brain where different areas of somatosensory cortex correspond to different
+body parts, and the size of these areas adaptively depends~\citep{Flor-2003} 
+on usage of these (i.e.,
+more frequent events are represented more finely and less frequent ones are
+represented more coarsely).  Again, keep in mind that the actual
+representations learned by deep learning algorithms are not perfect, but
+what we will be looking for here is whether deeper representations
+correspond to more unfolded manifolds and to more locally uniform
+distributions, with high-probability points occupying an overall greater
+volume (compared to the available volume).
+
+\vspace*{-1.5mm}
+\section{Representation-Learning Algorithms}
+\vspace*{-1mm}
+
+The learning algorithms used in this paper to explore the preceding hypotheses are
+the Deep Belief Network or DBN~\citep{Hinton06}, trained by stacking
+Restricted Boltzmann Machines or RBMs, and the Contractive Auto-Encoder or
+CAE~\citep{Rifai+al-2011}, for which a sampling algorithm was
+recently proposed~\citep{Rifai-icml2012}.
+In the experiments, the distribution under consideration is the asymptotic distribution
+associated with the stochastic process used to generate samples. In the
+case of DBNs it clearly corresponds to the analytically defined
+distribution associated with the formula for the DBN probability.  The
+Markov transition operator for DBNs is the one associated with Gibbs
+sampling (in the top RBM)~\citep{Hinton06}. The Markov transition operator for stacked CAEs
+has been spelled out in~\citet{Rifai-icml2012} and linked to
+Langevin MCMC in~\citet{Alain+al-arxiv-2012}. 
+
+Each layer of the DBN is trained as an RBM, and a 1-layer DBN is just an RBM. An RBM
+defines a joint distribution between a hidden layer $h$ and a visible layer $v$. 
+Gibbs sampling at the top level of the DBN is used to obtain samples from the
+model: the sampled top-level representations are stochastically projected
+down to lower levels through the conditional distributions $P(v|h)$
+defined in each RBM. To avoid unnecessary additional noise, and like
+previous authors have done, at the last stage of this process (i.e.
+to obtain the raw-input level samples), only the mean-field values
+of the visible units are used, i.e., $E[v|h]$. In the experiments on face
+data (where grey levels matter a lot), a Gaussian RBM is used at the
+lowest level. 
+
+An auto-encoder~\citep{Lecun-these87,hinton1994amd} is parametrized
+through an encoder function $f$ mapping input-space vector $x$ to
+representation-space vector $h$, and a decoder function $g$ mapping
+representation-space vector $h$ to input-space reconstruction $r$. The
+experiments with the CAE are with $h=f(x)=\sigm(W x + b)$ and
+$r=g(h)=\sigm(W^T h + c)$.  The CAE is a regularized auto-encoder with
+tied weights (input to hidden weights are the transpose of hidden to
+reconstruction weights). Let  $J=\frac{\partial f(x)}{\partial x}$ 
+the Jacobian matrix of the encoder function. 
+The CAE is trained to minimize a cross-entropy reconstruction
+loss plus a contractive regularization penalty
+$\alpha ||J||^2_F$ (the sum of the
+squared elements of the Jacobian matrix). Like RBMs, CAE layers can be stacked to
+form deeper models, and one can either view them as deep auto-encoders (by
+composing the encoders together and the decoders together) or like in a
+DBN, as a top-level generative model (from which one can sample) coupled with encoding
+and decoding functions into and from the top level (by composing the lower-level
+encoders and decoders).  A sampling algorithm was recently proposed for
+CAEs~\citep{Rifai-icml2012},  alternating between projecting
+through the auto-encoder (i.e. performing a reconstruction) and adding
+Gaussian noise $J J^T \epsilon$ in the directions of variation captured by the auto-encoder.
+%Some of the experiments reported
+%here also make use of a variant of the CAE called the Manifold Tangent
+%Classifier~\citep{Dauphin-et-al-NIPS2011} and that has achieved the
+%best reported results on the MNIST dataset without using any explicit prior
+%knowledge (no input deformations or convolutions).
+
+\vspace*{-1.5mm}
+\section{Experiments}
+\vspace*{-1mm}
+
+The experiments have been performed on the MNIST digits
+dataset~\citep{LeCun98} and the Toronto Face
+Database~\citep{Susskind2010}, TFD. The former has been heavily used to evaluate
+many deep learning algorithms, while the latter is interesting because of
+the manifold structure it displays, and for which the main control factors (such as
+emotion and person identity) are known.
+
+We have varied the number of hidden units at each layer independently for
+shallow and deep networks, and the models that gave best validation
+performance for each depth are shown. The qualitative aspects of the
+results were insensitive to layer size.  The results reported are for DBNs with
+768-1024-1024 layer sizes (28$\times$28 input) on MNIST, and 2304-512-1024 on TFD
+(48$\times$48 input). The CAEs have sizes 768-1000-1000 and 2304-1000-1000
+on MNIST and TFD respectively.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+\iffalse
+\section{TODO experiments}
+Proximité entr les points aide le Mixing
+- Yann: Histogramme de distance selon que c'est la même classe ou des
+classes differentes. A partir des couples en utilisant AIS pour
+calculer p(v_1|v_0)
+- Salah: Mahalanobis sur les representations cachés a partir de couples.
+
+Espace caché plus uniforme.
+- Guillaume: Histogramme des p(v|h_i). Les configurations des h encodes
+pour de plus grandes parties de l'espace.
+- Greg: Mesurer l'erreur de reconstruction pour des configurations
+aléatoire de h.
+
+Disentangling.
+- Yann: Mesure de mutual information, montrer que l'information se
+concentre dans une plus petite partie du code.
+
+Brainstorm:
+1. Use the exact transition distance p(v_1|v_0) to calculate
+distances. Maybe on a toy problem.
+2. Comment réconcilier le fait qu'on mix mieux avec nos meilleur resultat
+de classification?
+	- Meilleur disentangling. Utilisation d'un bit reverse video
+	- Guillaume: Certaines unités servent à la reconnaissance, certaines
+	unités sont utiles pour le mixing.
+	- la distribution du mutual information avec la classe
+	est plus pointue sur les modèles profonds. Cela assume qu'il y a peu de
+	facteur de variation utile pour la classification et qu'on les a bien
+	isolé avec notre modèle.
+	- 
+3. Mesurer que les espaces sont plus uniformes quand on va dans les couches
+profondes
+	1.
+
+\fi
+
+\vspace*{-1mm}
+\subsection{Sampling at Different Depths}
+\vspace*{-1mm}
+\subsubsection{Better Samples at Higher Levels}
+\vspace*{-1mm}
+
+To test {\bf H1}, we first plot sequences of samples at various depths. One can
+verify in Fig.~\ref{fig:seq} that samples obtained at deeper layers are
+visually more likely and mix faster between modes.
+
+In addition, we measure the quality of the obtained samples, using a
+procedure for the comparison of sample generators described in
+\citet{Breuleux+Bengio-2011}.  Note that the mixing properties
+measured here are a consequence of the underlying models
+as well as of the chosen sampling procedures. For this reason, we have chosen
+to monitor the {\em quality of the samples} with respect to the original
+data generating distribution that was used to train the model.
+The procedure of \citet{Breuleux+Bengio-2011} measures the log-likelihood of a test set
+under the density computed from a Parzen window density estimator built on
+generated samples ($10,000$ samples here). Log-likelihoods for different models are presented
+in Table~\ref{tab:res-knn-svm} (rightmost columns).  Those results also suggest that the
+quality of the samples is higher if the Markov chain process used for sampling
+takes place in the upper layers.
+
+This observation agrees with {\bf H3(b)} that moving in higher-level representation
+spaces where the manifold has been expanded provides higher quality samples than
+moving in the raw input space where it may be hard to stay in high density
+regions.
+
+\if0
+\begin{table*}[ht]
+  \begin{center}
+\begin{tabular}{c|c|c|}
+& MNIST & TFD \\ \hline
+CAE-1 & $ 67.69\pm2.87$ & $591.90\pm12.27$\\
+CAE-2 & $121.17\pm1.59$ & $2110.09\pm49.15$ \\\hline
+DBN-1 & $-243.91\pm54.11$ & $604\pm14.67$ \\
+DBN-2 & $137.89\pm2.11$ & $1908.80\pm65.94$ \\ \hline
+\end{tabular}
+
+\caption{Log-likelihoods from Parzen-Windows density estimators based on
+$10,000$ samples generated by each model. This quantitatively confirms
+that the samples generated from deeper levels are of higher quality, in
+the sense of better covering the zones where test examples are found. } 
+\label{tab:ll}
+
+\end{center}
+
+\end{table*}
+\fi
+
+\iffalse
+
+\begin{figure*}
+\begin{center}
+\subfigure[DBN Layer 1]
+{\hspace*{-2mm}\includegraphics[width=0.24\textwidth]{article3/images/samplesTFDlayer1.png}}
+\subfigure[DBN Layer 2]
+{\includegraphics[width=0.24\textwidth]{article3/images/samplesTFDlayer2.png}}
+\subfigure[CAE Layer 1]
+{\includegraphics[width=0.24\textwidth]{article3/images/batch3cae1tfddata_image_noncen.png}}
+\subfigure[CAE Layer 2]
+{\includegraphics[width=0.24\textwidth]{article3/images/cae2tfd_folder15data_image_noncen.png}} \\
+\subfigure[DBN Layer 1]
+{\hspace*{-2mm}\includegraphics[width=0.24\textwidth]{article3/images/newrbm1mnistdata_image_noncen.png}}
+\subfigure[DBN Layer 2]
+{\includegraphics[width=0.24\textwidth]{article3/images/newrbm2mnistdata_image_noncen.png}}
+\subfigure[CAE Layer 1]
+{\includegraphics[width=0.24\textwidth]{article3/images/cae2mnistdata.png}}
+\subfigure[CAE Layer 2]
+{\includegraphics[width=0.24\textwidth]{article3/images/cae2mnistdata_image_noncen.png}}
+\end{center}
+
+\caption{Samples from DBNs and CAEs with 1 or 2 layers on TFD (top) and MNIST (bottom).
+We see that samples from the second level are generally of better quality than samples
+of the first level.}
+
+\label{fig:samples}
+\end{figure*}
+\fi
+
+%\subsubsection{Visualizing Trajectories of Samples in Representation-Space}
+%
+%
+%Instead of viewing isolated samples, let us consider the temporal aspect of the
+%Markov chain sampling process to get some insight about the structure of
+%the learned representation-space. 
+%{\bf H1} assumes that mixing is easier if you
+%sample from the upper layers rather than using the lower layers. In
+%Fig.~\ref{fig:seq}, the sequences of $25$ samples presented suggest that mixing
+%is indeed easier on deeper layers and generates more likely samples.
+%The last
+%statement is also going in the same direction as the {\bf H3(b)} (avoid repetition
+%with last section).
+%
+%\fix{More quantitative measures are explored in Sec.~\ref{sec:mix-time} such as jumping time
+%among classes.}
+
+\begin{figure*}
+\vspace*{-3mm}
+\begin{center}
+%\subfigure[CAE Layer 1 on TFD]
+%{
+    \includegraphics[width=0.95\textwidth]{article3/images/cae1tfd_seq4_data_image_noncen.png}
+%    }
+%\subfigure[CAE Layer 2 on TFD]
+%{
+    \includegraphics[width=0.95\textwidth]{article3/images/cae2tfd_seq6_data_image_noncen.png}
+    \includegraphics[width=0.95\textwidth]{article3/images/rbm1mnist_seq3_data_image_noncen.png}
+    \includegraphics[width=0.95\textwidth]{article3/images/rbm2mnist_seq17_data_image_noncen.png}
+%    }
+\end{center}
+\vspace*{-3mm}
+\caption{Sequences of $25$ samples generated with a CAE
+on TFD (rows 1 and 2, respectively for 1 or 2 hidden layers) 
+and with an RBM on MNIST (rows 3 and 4, respectively for 1 or
+2 hidden layers). 
+{\small On TFD, the second layer clearly allows to get
+quickly from woman samples (left) to man samples (right) passing by various facial
+expressions whereas the single hidden layer model shows poor samples.
+Bottom rows: On MNIST, the single-layer model gets stuck
+near the same mode while the second layer allows to mix among classes.}  }
+
+\label{fig:seq}
+\vspace*{-3mm}
+\end{figure*}
+
+
+\vspace*{-1mm}
+\subsubsection{Visualizing Representation-Space by Interpolating Between Neighbors}
+\vspace*{-1mm}
+
+According to {\bf H3(a)}, deeper layers tend to locally unfold the manifold
+near high-densities regions of the input space, while according to {\bf H3(b)}
+there should be more relative volume taken by plausible configurations in representation-space.
+Both of these would imply that convex combinations of neighboring examples in representation-space
+correspond to more likely input configurations. Indeed, interpolating between
+points on a flat manifold should stay on the manifold. Furthermore, when interpolating
+between examples of different classes (i.e., different modes), {\bf H3(b)} would
+suggest that most of the points in between (on the linear interpolation line)
+should correspond to plausible samples, which would not be the case in input space.
+In Fig.~\ref{fig:interpol}, we interpolate linearly between neighbors in
+representation space and visualize in the input space the interpolated points obtained at
+various depths. One can see that interpolating at deeper levels gives visually
+more plausible samples.
+
+\begin{figure}
+\centering
+\begin{subfigure}{1.\textwidth}
+\caption{Interpolating between an example and its $200$-th nearest neighbor (see caption below).}
+    \includegraphics[width=0.24\textwidth]{article3/images/100interpolationtfdfold1_cae2_samples812data_image_noncen.png}
+    \includegraphics[width=0.24\textwidth]{article3/images/100interpolationtfdfold1_rbm2_samples1data_image_noncen.png}
+    \includegraphics[width=0.24\textwidth]{article3/images/200interpolationmnist28_cae2_samples1data_image_noncen.png}
+    \includegraphics[width=0.24\textwidth]{article3/images/200interpolationmnist28_rbm2_samples51data_image_noncen.png}
+\end{subfigure}
+\begin{subfigure}{1.\textwidth}
+\caption{Interpolating between an example and its nearest neighbor.}
+    \includegraphics[width=0.24\textwidth]{article3/images/1interpolationtfdfold1_cae2_samples6data_image_noncen.png}
+    \includegraphics[width=0.24\textwidth]{article3/images/1interpolationtfdfold1_rbm2_samples2data_image_noncen.png}
+    \includegraphics[width=0.24\textwidth]{article3/images/1interpolationmnist28_cae2_samples28data_image_noncen.png}
+    \includegraphics[width=0.24\textwidth]{article3/images/1interpolationmnist28_rbm2_samples16data_image_noncen.png}
+\end{subfigure}
+
+\begin{subfigure}{1.\textwidth}
+\caption{Sequences of points interpolated at different depths}
+    \includegraphics[width=0.96\textwidth]{article3/images/sequenceinterpolation46_data_image_noncen.png}
+    \label{fig:seqinterpol}
+\end{subfigure}
+
+\caption{ Linear interpolation between a data sample and the 200-th (a)
+and 1st (b) nearest neighbor, using representations 
+at various depths (top row=input space, middle row=1st layer,
+bottom row=2nd layer).  In each $3\times3$ block the left and right columns are
+test examples while the middle column is the image obtained by interpolation, based on
+different levels of representation.
+Interpolating at higher levels clearly gives more plausible samples. Especially in
+the raw input space (e.g., (a), 2nd block), one can see two mouths overlapping while only one mouth appears
+for the interpolated point at the 2nd layer. Interpolating with the 1-nearest neighbor
+does not show any difference between the levels because the nearest neighbors are close enough
+for a linear interpolation to be meaningful, while interpolaing with the 200-th nearest
+neighbors shows the failure of interpolation in raw input space but successful
+interpolation in deeper levels. In (c), we interpolate between samples
+of {\em different classes}, at different depths (top=raw input, middle=1st layer, bottom=2nd layer).
+Note how in lower levels one has to go through unplausible patterns, whereas in the deeper
+layers one almost jumps from a high-density region of one class to another (of the other class).}
+\label{fig:interpol}
+\end{figure}
+
+
+
+
+\vspace*{-1mm}
+\subsection{Measuring Mixing Between Modes by Counting Number of Classes Visited}
+\label{sec:mix-time}
+\vspace*{-1mm}
+
+We evaluate here the ability of mixing among various classes. We consider sequences
+of length 10, 20 or 100 and compute histograms of number of different classes visited
+in a sequence, for the two different depths and learners, on TFD. Since classes
+typically are in different modes (manifolds), counting how many different classes
+are visited in an MCMC run tells us how quickly the chain mixes between modes.
+We have chosen this particular method to monitor mixing modes because it focuses more
+directly on visits to modes, instead of the traditional autocorrelation of the
+samples (which measures how fast the samples change).
+Fig.~\ref{fig:entropy}(c,f) show that the deeper architectures visit more classes
+and the CAE mixes faster than the DBN. 
+
+\vspace*{-1mm}
+\subsection{Occupying More Volume Around Data Points}
+\vspace*{-1mm}
+
+In these experiments (Fig.~\ref{fig:entropy} (a,b,d,e)) we estimate the quality of samples whose representation is in
+the neighborhood of training examples, at different levels of representation.
+In the first setting (Fig.~\ref{fig:entropy} (a,b)), the samples are interpolated at the midpoint
+between an example and its $k$-th nearest neighbor, with $k$ on the x-axis. 
+In the second case (Fig.~\ref{fig:entropy} (d,e)),
+isotropic noise is added around an example, with noise standard deviation on the x-axis. 
+In both cases, 500 samples are generated
+for each data point plotted on the figures, with the y-axis being the log-likelihood
+introduced earlier, i.e., estimating the quality of the samples.
+We find that on higher-level representations of both the CAE and DBN, a much
+larger proportion of the local volume is occupied by likely configurations,
+i.e., closer to the input-space manifold near which the actual data-generating
+distribution concentrates. Whereas the first experiment shows that this is true
+in the convex set between neighbors at different distances (i.e., in the directions
+of the manifold), the second shows that this is also true in random directions locally
+(but of course likelihoods are also worse there). The first result therefore
+agrees with {\bf H3(a)} (unfolding) and {\bf H3(b)} (volume expansion), while
+the second result mostly confirms {\bf H3(b)}.
+\begin{figure}
+\centering
+
+\begin{subfigure}{.45\textwidth}
+\includegraphics[width=1.\textwidth]{article3/images/tfdfold1_degree2_new2.png}
+\caption{TFD}
+\end{subfigure}
+\begin{subfigure}{.45\textwidth}
+\includegraphics[width=1.\textwidth]{article3/images/mnist28_degree4dbnlegend.png}
+\caption{MNIST}
+\end{subfigure}
+
+\begin{subfigure}{.45\textwidth}
+\includegraphics[width=1.\textwidth]{article3/images/tfdfold1_degree6.png}
+\caption{TFD}
+\end{subfigure}
+\begin{subfigure}{.45\textwidth}
+\includegraphics[width=1.\textwidth]{article3/images/convexball_mnist28_degree6.png}
+\caption{MNIST}
+\end{subfigure}
+
+\begin{subfigure}{.45\textwidth}
+\includegraphics[width=1.\textwidth]{article3/images/tfd_sub0.png}
+\caption{Mixing - 10 samples}
+\end{subfigure}
+\begin{subfigure}{.45\textwidth}
+\includegraphics[width=1.\textwidth]{article3/images/tfd_sub1.png}
+\caption{Mixing - 20/100 samples}
+\end{subfigure}
+
+\caption{ (a) (b) Local Convex Hull - Log-density computed w.r.t. linearly
+interpolated samples between an example and its k-NNs, for k (x-axis)
+between 1 and 500. The manifold thus seem generally more unfolded (flatter)
+in deeper levels, especially against raw input space,
+as interpolating between far points yields higher density
+under deeper representations.
+(c) (d) Local Convex Ball -
+Log-density of samples generated by adding Gaussian noise to representation
+at different levels ($\sigma\in[0.01,5]$, the x-axis): More volume is
+occupied by good samples on
+deeper layers. (e) (f) Mode Mixing Histograms - distribution (y-axis)
+of number of classes visited (x-axis) for different
+models. (e) with 10 samples. (f) with 20 samples for CAE, 100 samples with DBN. Deeper
+models mix much better.}
+\label{fig:entropy}
+\end{figure}
+
+
+%\resizebox{0.8\linewidth}{!}{
+%\scalebox{0.8}{
+\begin{table*}[!htbp]
+\begin{small}
+ \begin{center}
+\begin{tabular}{c|c|c||c|c||c|c|}
+& \multicolumn{4}{|c||}{\bf Classification} & \multicolumn{2}{|c|}{\bf Log-likelihood}  \\ \hline
+& \multicolumn{2}{|c||}{\bf MNIST} & \multicolumn{2}{c||}{\bf TFD} & \multicolumn{1}{|c|}{\bf MNIST} & \multicolumn{1}{c|}{\bf $\,\,\,$TFD $\,\,\,\,$}\\
+& SVM &  MLP+ & SVM  & MLP+ & & \\ \hline
+raw   & 8.34\%  & -      & $33.48$ {\scriptsize $\pm 2.14$ }\% & - & - & - \\ \hline
+CAE-1 & 1.97\%  & 1.14\% & $25.44$ {\scriptsize $ \pm2.45$}\% & $24.12$ {\scriptsize $\pm1.87$} \% & $ 67.69$ {\scriptsize $\pm2.87$} & $591.90$ {\scriptsize $\pm12.27$}\\
+CAE-2 & 1.73\%  & 0.81\% & $24.76$ {\scriptsize $\pm2.46$}\% & $23.73$ {\scriptsize $\pm1.62$}\% & $121.17$ {\scriptsize $\pm1.59$} & $2110.09$ {\scriptsize $\pm49.15$}\\ \hline
+DBN-1 & 1.62\%  & 1.21\% & $26.85$ {\scriptsize $\pm1.62$}\% & $28.14${\scriptsize $\pm1.40 $}  & $-243.91$ {\scriptsize $\pm54.11$} &  $604$ {\scriptsize $\pm14.67$} \\
+DBN-2 & 1.33\%  & 0.99\% & $26.54$ {\scriptsize $\pm1.91$}\% & $27.79$ {\scriptsize $\pm2.34$}& $137.89$ {\scriptsize $\pm2.11$} & $1908.80$ {\scriptsize $\pm65.94$}\\\hline
+\end{tabular}
+
+\caption{Left: Classification rates of various classifiers (SVM, MLP+)
+  using representations at various depth (with CAE or DBN)
+  learned on the MNIST and TFD datasets.  The DBN 0.99\% error on
+  MNIST has been obtained with a 3-layer DBN and the 0.81\% error
+  with the Manifold tangent
+  Classifier~\citep{Dauphin-et-al-NIPS2011} that is based on a
+  CAE-2 and discriminant fine-tuning. MLP+ uses discriminant
+  fine-tuning. Right: Log-likelihoods from Parzen-Windows density
+  estimators based on $10,000$ samples generated by each model. This
+  quantitatively confirms that the samples generated from deeper
+  levels are of higher quality, in the sense of better covering the
+  zones where test examples are found.}
+\label{tab:res-knn-svm}
+
+\end{center}
+\end{small}
+\end{table*}
+
+\vspace*{-1mm}
+\subsection{Discriminative Ability vs Volume Expansion}
+\vspace*{-1mm}
+
+Hypothesis {\bf H3} could arguably correspond to worse discriminative 
+power\footnote{\scriptsize as pointed out by Aaron Courville, personal communication}:
+if on the higher-level representations the different classes are ``closer''
+to each other (making it easier to mix between them), would it not mean that they
+are more confusable? We first confirm with the tested models (as a sanity check)
+that the deeper level features are conducive to better classification performance,
+in spite of their better generative abilities and better mixing between modes.
+
+\if0
+\begin{table*}[ht]
+  \begin{center}
+\begin{tabular}{c|c|c|c||c|c|c|}
+& \multicolumn{3}{|c||}{\bf MNIST} & \multicolumn{3}{c|}{\bf TFD}\\
+& SVM & k-NN & NN & SVM & k-NN & NN \\ \hline
+raw   & 8.34\%         & 3.42\% & -      & $33.48\pm 2.14$\% & $45.37\pm2.27$\% & -\\ \hline
+CAE-1 & 1.89\%+1.97\%  & 2.91\% & 1.14\% & $28.44\pm2.70$\%+$25.44\pm2.45$\% & ???+$45.83\pm1.97$\% & $24.12\pm1.87$ \%\\
+CAE-2 & 1.88\%+1.73\%  & 2.91\% & ???\%  & $28.58\pm2.16$\%+$24.76\pm2.46$\% & ???+$46.71\pm2.22$\% & $23.73\pm1.62$\% \\ \hline
+DBN-1 & 1.40\%+1.62\%  & 2.49\% & 1.21\% & ???             +$26.85\pm1.62$\% & ???+$37.55\pm1.46$\%  & ???\\
+DBN-2 & 1.23\%+1.33\%  & 2.61\% & ???    & ???             +$26.54\pm1.91$\% & ???+$37.39\pm1.49$\%  & ??? \\\hline
+\end{tabular}
+
+\caption{ {\bf Left: Classification rates using various classifiers on
+representations learned on the MNIST and TFD datasets} left is on the
+top of the repressentation and right on the concatentation of raw
+input and upper layers (we'll have to choose one). Right:
+Log-likelihoods from Parzen-Windows density estimators based on
+$10,000$ samples generated by each model. This quantitatively confirms
+that the samples generated from deeper levels are of higher quality,
+in the sense of better covering the zones where test examples are
+found. } \label{tab:res-knn-svm}
+
+\end{center}
+
+\end{table*}
+\fi
+
+We train a linear SVM on the concatenation of the raw input with the upper
+layers representations (which worked better than using only the top layer,
+a setup already used successfully when there is no supervised fine-tuning~\citep{HonglakLNIPS2009-small}).  
+Results presented in Table~\ref{tab:res-knn-svm} show
+that the representation is more linearly separable if one increases the depth of
+the architecture and the information added by each layer is helpful for
+classification. Also, fine-tuning a MLP initialized with those weights is still
+the best way to reach state-of-the-art performances.  
+
+To explain the good discriminant abilities of the deeper layers (either
+when concatenated with lower layers or when fine-tuned discriminatively)
+in spite of the better mixing observed, we conjecture the help of a
+better disentangling of the underlying factors of variation, and in 
+particular of the class factors. This would mean that the manifolds associated 
+with different classes are more unfolded (as assumed by {\bf H3(a)}) and possibly
+that different hidden units specialize more to specific classes than they
+would on lower layers. Hence the unfolding ({\bf H3(a)})
+and disentangling ({\bf H1}) hypotheses reconcile better discriminative ability
+with expanded volume of good samples ({\bf H3(b)}).
+
+%Also, exemples from the same class tend to be more clusterized in the
+%representation-space compared to the input space since the error of the k-NN
+%classifier decrease with the depth.
+
+\iffalse
+\subsubsection{Measuring Disentangling}
+
+\begin{figure*}
+\begin{center}
+\subfigure[TFD]
+{\includegraphics[width=0.49\textwidth]{images/tfd_MI.png}}
+\subfigure[MNIST]
+{\includegraphics[width=0.49\textwidth]{images/mtc_MI.png}}
+\end{center}
+
+\caption{ {\bf Mutual Information between Classes and hidden units at various
+depth}}
+\label{fig:MI}
+\end{figure*}
+
+In Fig.~\ref{fig:MI}, we measured the mutual information between each hidden
+unit and classes at different depths.  The curve is sharper for lower layers
+suggesting that hidden units at deeper layers encode more discriminative
+factors of variation than lower layer's units. 
+\fi
+
+
+
+\vspace*{-2mm}
+\section{Conclusion}
+\vspace*{-2mm}
+
+The following hypotheses were tested: (1) deeper representations can yield better samples
+and better mixing between modes; (2) this is due to better disentangling; (3) this is associated with
+unfolding of the manifold where data concentrate along with expansion of the volume
+good samples take in representation-space. The experimental results were in agreement
+with these hypotheses. They showed better samples and better mixing on higher levels,
+better samples obtained when interpolating between examples at higher levels, and
+better samples obtained when adding isotropic noise at higher levels. We also considered
+the potential conflict between the third hypothesis and better discrimination
+(confirmed on the models tested) and explained it away as a consequence of the second
+hypothesis.
+
+This could be immediate good news for applications requiring to generate MCMC samples:
+by transporting the problem to deeper representations, better and faster results could
+be obtained. Future work should also investigate the link between better mixing
+and the process of training deep learners themselves, when they depend on an MCMC to estimate the log-likelihood
+gradient.  One interesting direction is to investigate the link between tempering and
+the better mixing chains obtained from deeper layers.\\
+%One option is that higher levels of the hierarchy could be used in a way
+%similar to higher-temperature chains in parallel tempering MCMC, i.e., by providing
+%good starting points for lower level chains and doing the hard work of jumping
+%between the modes associated with the lower levels.
+
+\section{Acknowledgements}
+
+The authors thank A. Courville and P. Vincent for fruitful discussions, as
+well as NSERC, Canada Research Chairs, CIFAR, Compute Canada and by the French 
+ANR Project ASAP ANR-09-EMER-001. Codes for the experiments have been implemented using the
+Theano \citep{bergstra+al:2010-scipy} Machine Learning libraries.
+
+%\vspace*{-3mm}
+%{\small
+%\bibliography{strings,strings-shorter,ml,myrefs,aigaion-shorter}
+%\bibliography{strings,strings-shorter,ml,aigaion-shorter}
+%\bibliographystyle{plain}
+%\bibliographystyle{natbib}
+%}
+
+
+%\end{document}
