@@ -297,10 +297,10 @@ connections take their input from the output posterior probabilities:
 TODO EQ NUM 8
 
 where $U^{'}\in\mathcal{M}_{d_h\times N} (\mathbb{R})$ and
-$Ρ(y(0))\in\mathbb{R}^N$ are additional parameters to tune. As pointed out in
+TODO %$Ρ(y(0))\in\mathbb{R}^N$ are additional parameters to tune. As pointed out in
 [15], three different options can be considered for the feedback connections:
-(a) $Ρ(y(t-1))$, (b) a one-hot vector with an active bit for $\textrm{arg} \max_i⁡P_i
-(y(t-1))$ or even (c) the ground truth label for training.  Empirically [15],
+TODO %(a) $Ρ(y(t-1))$, (b) a one-hot vector with an active bit for $\textrm{arg} \max_i⁡P_i
+%(y(t-1))$ or even (c) the ground truth label for training.  Empirically [15],
 none of these options significantly outperformed all others.  
 
 In this work, we focused on the Elman-type, Jordan-type and hybrid versions of
