@@ -95,6 +95,14 @@
 \newcommand{\vq}{q}  % variational distribution
 \newcommand{\R}{\mathbb{R}}
 
+\def\shrinkage{2.1mu}
+\def\vecsign{\mathchar"017E}
+\def\dvecsign{\smash{\stackon[-1.95pt]{\mkern-\shrinkage\vecsign}{\rotatebox{180}{$\mkern-\shrinkage\vecsign$}}}}
+\def\dvec#1{\def\useanchorwidth{T}\stackon[-4.2pt]{#1}{\,\dvecsign}}
+\usepackage{stackengine}
+\stackMath
+
+
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 
