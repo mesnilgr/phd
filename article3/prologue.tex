@@ -2,9 +2,35 @@
 
 \section{D\'{e}tails de l'article}
 
+{\bf Better Mixing via Deep Representations} Yoshua Bengio*, Grégoire Mesnil*, Yann Dauphin and Salah Rifai. {\it International Conference on Machine Learning} $2013$\\
+
+{\it Contribution Personnelle} Le point de départ de cette idée a été présenté
+à Snowbird à un workshop. Cela consistait à montrer sur support vidéo comment
+il était possible de naviguer (ou surfer) d'un exemple à un autre dans l'espace
+des représentations. Cela a renforcé les intuitions de Yoshua concernant un
+problème de mixing entre différents modes et pourquoi cela était plus aisé de
+mixer dans l'espace abstrait des représentations. À partir de modèles de RBM et
+de CAE entraînées par Salah Rifai et Yann Dauphin, j'ai réalisé et conçu
+l'intégralité des exprériences visant à vérifier les hypothèses de Yoshua, qui
+lui a rédigé l'article. Il a été décidé ensemble que nous avions une
+contribution égale pour cet article.
+
 \section{Contexte}
+
+On a toujours peu d'insigths sur ce que les représentations apprises par les
+réseaux de neurones contiennent exactement ou la structure particulière de
+l'espace des représentations. Ce travail s'inscrit dans la même veine que Matt
+Zeller pour savoir ce que les réseaux convolutionnels ont appris mais pour des
+méthodes d'apprentissage non supervisé. TODO reciter les 3 hypothèses.
 
 \section{Contributions}
 
+Les conclusions apportées par ce travail ont inspiré plusieurs publications
+TODO cite utilisant cette hypothèse de remplissage de l'espace de représentation et de
+structure de la variété des exemples d'apprentissage.
+
 \section{R\'{e}cents d\'{e}veloppements}
 
+Ces idées sont toujours d'actualité et restent dans l'esprit des chercheurs
+pour guider leurs intuitions. Le concept de naviguer dans l'espace des
+représentations a notamment été repris par le papier Adversarial Sampling TODO.
