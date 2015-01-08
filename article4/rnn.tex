@@ -1,10 +1,9 @@
-\chapter{Using Recurrent Neural Networks for Slot Filling in Spoken Language Understanding}
-\label{chap:rnn}
+\chapter{Using Recurrent Neural Networks for Slot Filling in Spoken Language Understanding \label{chap:rnn}}
 
 \section{Introduction}
 
 The term "spoken language understanding" (SLU) refers to the targeted
-understanding of human speech directed at machines [1]. The goal of such
+understanding of human speech directed at machines (\cite{rnn1}). The goal of such
 "targeted" understanding is to convert the recognition of user input, $S_i$, into
 a task-specific semantic representation of the user's intention, $U_i$ at each
 turn. The dialog manager then interprets $U_i$ and decides on the most
@@ -15,31 +14,31 @@ contextual information.
 The semantic parsing of input utterances in SLU typically consists of three
 tasks: domain detection, intent determination, and slot filling. Originating
 from call routing systems, the domain detection and intent determination tasks
-are typically treated as semantic utterance classification problems [2,3,4,30].
+are typically treated as semantic utterance classification problems (\cite{rnn2,rnn3,rnn4,rnn30}).
 Slot filling is typically treated as a sequence classification problem in which
 contiguous sequences of words are assigned semantic class labels.
-[5,7,31,32,33,34,40,55]. 
+(\cite{rnn5,rnn7,rnn31,rnn32,rnn33,rnn34,rnn40,rnn55}). 
 
 In this paper, following the success of deep learning methods for semantic
-utterance classification such as domain detection [30] and intent determination
-[13,39,50], we focus on applying deep learning methods for slot filling.
+utterance classification such as domain detection (\cite{rnn30}) and intent determination
+(\cite{rnn13,rnn39,rnn50}), we focus on applying deep learning methods for slot filling.
 Standard approaches to solving the slot filling problem include generative
-models, such as HMM/CFG composite models [31,5,53], hidden vector state (HVS)
-model [33], and discriminative or conditional models such as conditional random
-fields (CRFs) [6,7,32,34,40,51,54] and support vector machines (SVMs) [52].
+models, such as HMM/CFG composite models (\cite{rnn31,rnn5,rnn53}), hidden vector state (HVS)
+model (\cite{rnn33}), and discriminative or conditional models such as conditional random
+fields (CRFs) (\cite{rnn6, rnn7, rnn32, rnn34, rnn40, rnn51, rnn54}) and support vector machines (SVMs) (\cite{rnn52}).
 Despite many years of research, the slot filling task in SLU is still a
 challenging problem, and this has motivated the recent application of a number
 of very successful continuous-space, neural net, and deep learning approaches,
-e.g. [13,15,24,30,56]. 
+e.g. cite{rnn13,rnn15,rnn24,rnn30,rnn56}. 
 
 In light of the recent success of these methods, especially the success of RNNs
-in language modeling [22,23] and in some preliminary SLU experiments
-[15,24,30,56], in this paper we carry out an in-depth investigation of RNNs for
+in language modeling (\cite{rnn22, rnn23}) and in some preliminary SLU experiments
+(\cite{rnn15,rnn24,rnn30,rnn56}), in this paper we carry out an in-depth investigation of RNNs for
 the slot filling task of SLU. In this work, we implemented and compared several
-important RNN architectures, including the Elman-type networks [16],
-Jordan-type networks [17] and their variations. To make the results easy to
+important RNN architectures, including the Elman-type networks (\cite{rnn16}),
+Jordan-type networks (\cite{rnn17}) and their variations. To make the results easy to
 reproduce and rigorously comparable, we implemented these models using the
-common Theano neural network toolkit [25] and evaluated them on the standard
+common Theano neural network toolkit (\cite{rnn25}) and evaluated them on the standard
 ATIS (Airline Travel Information Systems) benchmark. We also compared our
 results to a baseline using conditional random fields (CRF). Our results show
 that on the ATIS task, both Elman-type networks and Jordan-type networks
@@ -96,7 +95,7 @@ these reasons, spoken language understanding researchers employed statistical
 methods. These approaches include generative models such as hidden Markov
 models, discriminative classification methods such as CRFs, knowledge-based
 methods, and probabilistic context free grammars. A detailed survey of these
-earlier approaches can be found in [7].
+earlier approaches can be found in (\cite{rnn7}).
 
 For the slot filling task, the input is the sentence consisting of a sequence
 of words, $L$, and the output is a sequence of slot/concept IDs, $S$, one for each
@@ -115,8 +114,8 @@ The objective function of a generative model is then to maximize the joint
 probability $P(L | S)P(S) = P(L, S)$ given a training sample of $L$, and its semantic
 annotation, $S$.
 
-The first generative model, used by both the AT\&T CHRONUS system [31] and the
-BBN Hidden Understanding Model (HUM) [35], assumes a deterministic one-to-one
+The first generative model, used by both the AT\&T CHRONUS system (\cite{rnn31}) and the
+BBN Hidden Understanding Model (HUM) (\cite{rnn35}), assumes a deterministic one-to-one
 correspondence between model states and the segments, i.e., there is only one
 segment per state, and the order of the segments follows that of the states.  
 
@@ -125,11 +124,11 @@ Markov chain representation encode all the structure information about the
 tree using stacks, so the semantic tree structure (excluding words) can be
 reconstructed from the hidden vector state sequence. The model imposes a hard
 limit on the maximum depth of the stack, so the number of the states becomes
-finite, and the prior model becomes the Markov chain in an HMM [33].
+finite, and the prior model becomes the Markov chain in an HMM (\cite{rnn33}).
 
 Recently, discriminative methods have become more popular. One of the most
 successful approaches for slot filling is the conditional random field (CRF)
-[6] and its variants. Given the input word sequence $L_1^N=l_1,\dots,l_N$, the
+(\cite{rnn6}) and its variants. Given the input word sequence $L_1^N=l_1,\dots,l_N$, the
 linear-chain CRF models the conditional probability of a concept/slot sequence
 $S_1^N=s_1,\dots,s_N$ as follows:
 
@@ -149,11 +148,11 @@ and $h_m (s_{t-1},s_t,l_{t-d}^{t+d})$ are features extracted from the current an
 previous states $s_t$ and $s_{t-1}$, plus a window of words around the current word
 $l_t$, with a window size of $2d+1$.
 
-CRFs have first been used for slot filling by Raymond and Riccardi [33]. CRF
+CRFs have first been used for slot filling by \cite{rnn33}. CRF
 models have been shown to outperform conventional generative models. Other
-discriminative methods such as the semantic tuple classifier based on SVMs [36]
+discriminative methods such as the semantic tuple classifier based on SVMs (\cite{rnn36})
 has the same main idea of semantic classification trees as used by the Chanel
-system [37], where local probability functions are used, i.e., each phrase is
+system (\cite{rnn37}), where local probability functions are used, i.e., each phrase is
 separately considered to be a slot given features. More formally,
 
 \begin{equation}
@@ -162,7 +161,7 @@ P(S_{1}^{N}\vert L_{1}^{N}) = \prod_{t=1}^{N} P(s_{t} \vert s_{1}^{t-1}, L_{1}^{
 
 These methods treat the classification algorithm as a black box implementation
 of linear or log-linear approaches but require good feature engineering. As
-discussed in [57,13], one promising direction with deep learning architectures
+discussed in \cite{rnn57,rnn13}, one promising direction with deep learning architectures
 is integrating both feature design and classification into the learning
 procedure.
 
@@ -170,16 +169,16 @@ procedure.
 \label{sec:deepreview}
 
 In comparison to the above described techniques, deep learning uses many layers
-of neural networks [57]. It has made strong impacts on applications ranging
-from automatic speech recognition [8] to image recognition [10]. 
+of neural networks (\cite{rnn57}). It has made strong impacts on applications ranging
+from automatic speech recognition (\cite{rnn8}) to image recognition (\cite{rnn10}). 
 
 A distinguishing feature of NLP applications of deep learning is that inputs
 are symbols from a large vocabulary, which led the initial work on neural
-language modeling [26] to suggest map words to a learned distributed
+language modeling (\cite{rnn26}) to suggest map words to a learned distributed
 representation either in the input or output layers (or both), with those
 embeddings learned jointly with the task. Following this principle, a variety
 of neural net architectures and training approaches have been successfully
-applied [11,13,20,22,23,39,49,58,59,60,61]. Particularly, RNNs [22,23,49] are
+applied (\cite{rnn11,rnn13,rnn20,rnn22,rnn23,rnn39,rnn49,rnn58,rnn59,rnn60,rnn61}). Particularly, RNNs (\cite{rnn22,rnn23,rnn49}) are
 also widely used in NLP. One can represent an input symbol as a one-hot vector,
 i.e., containing zeros except for one component equal to one, and this weight
 vector is considered as a low-dimensional continuous valued vector
@@ -191,13 +190,13 @@ parameters to increase the objective function for a training example which
 involves a particular word tends to improve performances for similar words in
 similar context, thereby greatly improving generalization and addressing the
 curse-of-dimensionality obstacle faced with traditional n-gram non-parametric
-models [26].
+models (\cite{rnn26}).
 
 One way of building a deep model for slot filling is to stack several neural
-network layers on top of each other. This approach was taken in [27], which
+network layers on top of each other. This approach was taken in \cite{rnn27}, which
 used deep belief networks (DBNs), and showed superior results to a CRF baseline
 on ATIS. The DBNs were built with a stack of Restricted Boltzmann Machines
-(RBMs) [12]. The RBM layers were pre-trained to initialize the weights. Then
+(RBMs) \cite{rnn12}. The RBM layers were pre-trained to initialize the weights. Then
 the well-known back-propagation algorithm was used to fine-tune the weights of
 the deep network in a discriminative fashion. Once the individual local models
 are trained, Viterbi decoding is carried out to find the best slot sequence
@@ -220,10 +219,10 @@ The main input to a RNN is a one-hot representation of the next input word. The
 first-layer weight matrix defines a vector of weights for each word, whose
 dimensionality is equal to the size of the hidden layer (Fig.~\ref{fig:rnn}) - typically a
 few hundred. This provides a continuous-space representation for each word.
-These neural word embeddings [26] may be trained a-priori on external data such
+These neural word embeddings (\cite{rnn26}) may be trained a-priori on external data such
 as the Wikipedia, with a variety of models ranging from shallow neural networks
-[21] to convolutional neural networks [20] and RNNs [22]. Such word embeddings
-actually present interesting properties [23] and tend to cluster [20] when
+(\cite{rnn21}) to convolutional neural networks (\cite{rnn20}) and RNNs (\cite{rnn22}). Such word embeddings
+actually present interesting properties (\cite{rnn23}) and tend to cluster \cite{rnn20}) when
 their semantics are similar.
 
 \begin{figure}[t]
@@ -237,7 +236,7 @@ their semantics are similar.
 \end{figure}
 
 
-While [15][24] suggest initializing the embedding vectors with unsupervised
+While (\cite{rnn15, rnn24}) suggest initializing the embedding vectors with unsupervised
 learned features and then fine-tune it on the task of interest, we found that
 directly learning the embedding vectors initialized from random values led to
 the same performance on the ATIS dataset, when using the SENNA
@@ -304,8 +303,8 @@ sequence of words in $l(t)$.
 
 \subsection{Elman, Jordan and Hybrid architectures}
 
-As in [15], we describe here the two most common RNN architectures in the
-literature: the Elman [16] and Jordan [17] models. The architectures of these
+As in (\cite{rnn15}), we describe here the two most common RNN architectures in the
+literature: the Elman (\cite{rnn16}) and Jordan \citep{rnn17} models. The architectures of these
 models are illustrated in Fig.~\ref{fig:rnn}.
 
 In contrast with classic feed-forward neural networks, the Elman neural network
@@ -363,10 +362,10 @@ h(t) = f(UC_{d}(l^{t+d}_{t-d})+ U^{'}P(y(t-1)))
 
 where $U^{'}\in\mathcal{M}_{d_h\times N} (\mathbb{R})$ and
 $P(y(0))\in\mathbb{R}^{N}$ are additional parameters to tune. As pointed out in
-[15], three different options can be considered for the feedback connections:
+\citep{rnn15}, three different options can be considered for the feedback connections:
 (a) $P(y(t-1))$, (b) a one-hot vector with an active bit for $\textrm{arg}
 \max_i P_i(y(t-1))$ or even (c) the ground truth label for training.
-Empirically [15], none of these options significantly outperformed all others.  
+Empirically \citep{rnn15}, none of these options significantly outperformed all others.  
 
 In this work, we focused on the Elman-type, Jordan-type and hybrid versions of
 RNNs. The hybrid version corresponds to a combination of the recurrences from
@@ -383,7 +382,7 @@ not necessarily have to process the sequence online in a single forward pass.
 It is also possible to take into account future information with a single
 backward pass but still, this approach uses only partial information available.
 A more appealing model would consider both past and future information at the
-same time: it corresponds to the bi-directional Elman [18][19] or Jordan [15]
+same time: it corresponds to the bi-directional Elman \citep{rnn18, rnn19} or Jordan \citep{rnn15}
 RNN.
 
 
@@ -418,9 +417,9 @@ backward hidden layer of the next time step (future).
 
 The previous architectures are optimized based on a tag-by-tag likelihood as
 opposed to a sequence-level objective function. In common with Maximum Entropy
-Markov Model (MEMM) [28] models, the RNNs produce a sequence of
+Markov Model (MEMM) \citep{rnn28} models, the RNNs produce a sequence of
 locally-normalized output distributions, one for each word position. Thus, it
-can suffer from the same label bias [6] problem. To ameliorate these problems,
+can suffer from the same label bias \citep{rnn6} problem. To ameliorate these problems,
 we propose two methods: Viterbi decoding with slot language models and
 recurrent CRF.
 
@@ -429,7 +428,7 @@ recurrent CRF.
 As just mentioned, one advantage of CRF models over RNN models is that it is
 performing global sequence optimization using tag level features. In order to
 approximate this behavior, and optimize the sentence level tag sequence, we
-explicitly applied the Viterbi [40] algorithm. To this end, a second order
+explicitly applied the Viterbi \citep{rnn40} algorithm. To this end, a second order
 Markov model has been formed, using the slot tags, $s_{i}\in S$ as states, where the
 state transition probabilities, $P_{(LM)}  (s_{i}\vert s_{j} )$ are obtained using a trigram
 tag language model $(LM)$. The tag level posterior probabilities obtained from
@@ -457,12 +456,12 @@ of model parameters, including transition probabilities and RNN parameters, are
 jointly trained, taking advantage of the sequence-level discrimination ability
 of the CRF and the feature learning ability of the RNN. Because the second
 scheme is a CRF with features generated from an RNN, we call it a recurrent
-conditional random field (R-CRF) [41,42].  The R-CRF differs from previous
-works that use CRFs with feed-forward neural networks [43,44] and convolutional
-neural networks [45], in that the R-CRF uses RNNs for feature extraction –
+conditional random field (R-CRF) \citep{rnn41,rnn42}.  The R-CRF differs from previous
+works that use CRFs with feed-forward neural networks \citep{rnn43,rnn44} and convolutional
+neural networks \citep{rnn45}, in that the R-CRF uses RNNs for feature extraction –
 using RNNs is motivated by its strong performances on natural language
 processing tasks. The R-CRF also differs from works in sequence training of
-DNN/HMM hybrid systems [46-48] for speech recognition, which use DNNs and HMMs,
+DNN/HMM hybrid systems \citep{rnn46, rnn47, rnn48} for speech recognition, which use DNNs and HMMs,
 in that R-CRF uses the CRF objective and RNNs. 
 
 The R-CRF objective function is the same as Eq.~\ref{eq:crf1} defined for the
@@ -482,7 +481,7 @@ In a CRF, $h_{m}(s_{t-1},s_{t},l_{t-d}^{t+d} )$ is fixed and is usually a
 binary value of one or zero, so the only parameters to learn are the weights
 $\lambda_{m}$.  In contrast, the R-CRF uses RNNs to output
 $h_{m}(s_{t},l_{0}^{t+d})$, which itself can be tuned by exploiting error
-back-propagation to obtain gradients. To avoid the label-bias problem [6] that
+back-propagation to obtain gradients. To avoid the label-bias problem \citep{rnn6} that
 motivated CRFs, the R-CRF uses un-normalized scores from the activations before
 the softmax layer as features $h_{m}(s_{t},l_{0}^{t+d})$. In the future, we would like
 to investigate using activations from other layers of RNNs.  
@@ -503,31 +502,31 @@ using the proposed approaches.
 \subsection{Datasets}
 
 We used the ATIS corpus as used extensively by the SLU community, e.g.
-[1,7,29,38]. The original training data include $4,978$ utterances selected from
+\citep{rnn1,rnn7,rnn29,rnn38}. The original training data include $4,978$ utterances selected from
 Class A (context independent) training data in the ATIS-2 and ATIS-3 corpora.
 In this work, we randomly sampled $20\%$ of the original training data as the
 held-out validation set, and used the left $80\%$ data as the model training set.
 The test set contains $893$ utterances from the ATIS-3 Nov93 and Dec94 datasets.
-This dataset has $128$ unique tags, as created by [34] from the original
+This dataset has $128$ unique tags, as created by \citep{rnn34} from the original
 annotations. In our first set of experiments on several training methods and
 different directional architectures, we only used lexical features in the
 experiments. Then, in order to compare with other results, we incorporated
 additional features in the RNN architecture.
 
-In our experiments, we preprocessed the data as in [24]. Note that authors in
-[13, 15, 27, 29, 38] used a different preprocessing technique, and hence their
+In our experiments, we preprocessed the data as in \citep{rnn24}. Note that authors in
+\citep{rnn13, rnn15, rnn27, rnn29, rnn38} used a different preprocessing technique, and hence their
 results are not directly comparable. However, the best numbers reported on ATIS
-by [27] are $95.3\%$ F1-score on manual transcriptions with DBNs, using word and
+by \citep{rnn27} are $95.3\%$ F1-score on manual transcriptions with DBNs, using word and
 named entity features (in comparison to their CRF baseline of $94.4\%$).
 
 As additional sets of experiments, we report results on two other custom
-datasets focusing on movies [39] and entertainment. Each word has been manually
+datasets focusing on movies \citep{rnn39} and entertainment. Each word has been manually
 assigned a slot using the IOB schema as described earlier.  
 
 \subsection{Baseline and Models}
 
 On these datasets, Conditional Random Fields (CRF) are commonly used as a
-baseline [7]. The input of the CRF corresponds to a binary encoding of N-grams
+baseline \citep{rnn7}. The input of the CRF corresponds to a binary encoding of N-grams
 inside a context window. For all datasets, we carefully tuned the
 regularization parameters of the CRF and the size of the context window using
 5-fold cross-validation. Meanwhile, we also trained a feed-forward network
@@ -545,7 +544,7 @@ process many examples in a shorter amount of time and exploit inherent
 parallelism and cache mechanisms of modern computers relies on updating
 parameters after examining a whole mini-batch of sentences.
 
-First, we ran $200$ experiments with random sampling [14] of the
+First, we ran $200$ experiments with random sampling \citep{rnn14} of the
 hyper-parameters. The sampling choices for each hyper-parameter were for the
 depth, $H\in\{1,2\}$, the context size, $d\in\{3,5,\dots,17\}$, the embedding
 dimension, $d_{e}\in\{50,100\}$ and $3$ different random seed values. The
@@ -587,7 +586,7 @@ how we shuffled the samples at each epoch. Note that for the Hybrid RNN and
 stochastic updates, the score obtained during hyper-parameters search
 corresponds to the max of the validation set score over different random seeds.
 The results are presented in Table~\ref{tab:seed}. The observed variances from the mean are
-in the range of $0.3\%$, which is consistent with the $0.6\%$ reported in [24] with
+in the range of $0.3\%$, which is consistent with the $0.6\%$ reported in \citep{rnn24} with
 the $95\%$ significance level based on the binomial test. We also observe that
 stochastic (STO) performs better than sentence mini-batches (MB) on average. In
 a large-scale setting, it is always more beneficial to perform sentence
@@ -672,7 +671,7 @@ of words into categories is available. At some point, in order to obtain the
 best performance, we want to integrate this information in the RNN
 architecture. At the model level, we concatenated the Named Entity (NE)
 information feature as a one-hot vector feeding both to the context window
-input and the softmax layer [49]. 
+input and the softmax layer \citep{rnn49}. 
 
 For the ATIS dataset, we used the gazetteers of flight related entities, such
 as airline or airport names as named entities. In Table~\ref{tab:ne}, we can observe that
@@ -698,7 +697,7 @@ In order to show the robustness of the RNN approaches, we have also performed
 experiments using the automatic speech recognition (ASR) outputs of the test
 set. The input for SLU is the recognition hypothesis from a generic dictation
 ASR system and has a word error rate (WER) of $13.8\%$. While this is
-significantly higher than the best reported performances of about $5\%$ WER [4],
+significantly higher than the best reported performances of about $5\%$ WER \citep{rnn4},
 this provides a more challenging and realistic framework. Note that the model
 trained with manual transcriptions is kept the same.
 
@@ -785,7 +784,7 @@ slot dependencies explicitly and demonstrates the power of dynamic programing.
 \subsection{Dropout regularization}
 
 While deep networks have more capacity to represent functions than CRFs, they
-might suffer from overfitting. Dropout [10] is a powerful way to regularize
+might suffer from overfitting. Dropout \citep{rnn10} is a powerful way to regularize
 deep neural networks. It is implemented by randomly setting some of the hidden
 units to zero with probability $p$ during training, then dividing the parameters
 by $1 / p$ during testing. In fact, this is an efficient and approximate way of
@@ -799,11 +798,11 @@ $0.5\%$ as seen in Table~\ref{tab:viterbi} (i.e., $91.14\%$ vs. $90.64\%$).
 We now compare the RNN and R-CRF models on the ATIS, Movies and Entertainment
 datasets. For this comparison, we have implemented the models with C code
 rather than Theano. On the ATIS data, the training features include word and
-named-entity information as described in [29], which aligns to the “Word+NE”
+named-entity information as described in \citep{rnn29}, which aligns to the “Word+NE”
 line in Table~\ref{tab:ne}. Note that performances between RNNs in Theano and C
 implementations are slightly different on ATIS. The C implementation of RNNs
 obtained $96.29\%$ F1 score and Theano obtained $96.24\%$ F1 score. We used a
-context window of $3$ for bag-of-word feature [24]. In this experiment, the RNN
+context window of $3$ for bag-of-word feature \citep{rnn24}. In this experiment, the RNN
 and R-CRF both are of the Elman type and use a $100$-dimension hidden layer. On
 the Movies data, there are four types of features. The n-gram features are
 unigrams and bi-grams appeared in the training data. The regular expression

@@ -1,0 +1,39 @@
+\chapter{Espaces Sémantiques Multi-Domaines}
+
+
+
+\section{Espace Semantique pour le Langage}
+
+Entrée à Haute Dimensionnalité
+Multi-Domaines
+problème des N-grams avec contexte ordonné
+solution embeddings
+
+\section{Prediction de similarite}
+
+Parfois le nombre de classes en sortie est trop eleve et il est necessaire d
+utiliser certraines astuces afin de controler l'explosion du nombre de ckasses
+considerees comme negatives. Ce nombre de classes negatives, toutes les classes
+excepte la classe cible, augmente de facon exponentielle en particulier si l<on
+desire classifier des couples ou des triplets. Par exemple classifier des
+couples x y avec 1000 valeurs possibles pour y et 1000 valeurs possibles pour y
+donne 1M de couples possibles.
+
+L'idee est donc ici de sampler des negatifs afin d<obtenir une approximation de
+la vraie valeur de la softmax.  On peut aussi faire du sampling de negatif
+intelligent, c<Est a dire selectionner uniquement les couples negatifs qui
+violent une certaine contrainte et ignorer les autres.
+
+ranking ou classification en haute dimension
+solution méthodes à base de sampling
+méthodes d'énergie ranking
+search MSR
+wsabie
+
+\section{Espaces Multi-Domaines}
+
+lala
+
+\section{Transfert de Domaine}
+
+proxy

@@ -11,9 +11,59 @@ C'est l'immense quantité de données (ou leur dimensionnalité trop élevée)  
 rend cette tâche difficile, parfois impossible, à accomplir pour un être
 humain.
 
+\section{Applications de cette thèse}
 
-\subsection{Formalisation du Problème}
+Les chercheurs en apprentissage machine résolvent une grande variété de
+problèmes sitôt qu'un ensemble suffisant de données est disponible. Dans ce
+travail, on considère les tâches suivantes:
+\\
 
+\begin{itemize}
+
+\item {\bf Apprentissage de représentation non supervisé.} L'ensemble de
+données ne contient pas de labels, seulement des entrées $x\in\mathbb{R}^{d}$.
+L'objectif est d'apprendre une représentation des données $h(x)$ de meilleure
+qualité que la représentation brute $x$.  Ces qualités vont de la réduction de
+dimensionnalité (Chapitres~\ref{chap:utlc}, \ref{chap:ob}), une meilleure
+séparabilité linéaire (Chapitres~\ref{chap:utlc}, \ref{chap:ob}), de meilleures
+propriétés de mixage (Chapitre~\ref{chap:mixing}) ou une meilleure
+initialisation des paramètes pour un apprentissage supervisé
+(Chapitre~\ref{chap:ob}). 
+\\
+
+\item {\bf Transfert de domaine.} Le résultat de l'algorithme est utilisé sur
+un ensemble de données cible $\tilde{\mathcal{D}}$ autre que l'ensemble
+d'entraînement $\mathcal{D}$. Cela permet d'avoir une représentation plus
+spécifique à l'ensemble cible tout en obtenant un gain de performances dû par
+exemple, à l'utilisation d'un plus grand ensemble de données d'entraînement.
+Dans ce travail, nous présenterons l'utilisation d'un proxy d'apprentissage
+(Chapitre~\ref{chap:mlj}), d'une PCA transductive (Chapitre~\ref{chap:utlc}) et
+d'un fine-tuning sur l'ensemble cible (Chapitre~\ref{chap:ob}).
+\\
+
+\item {\bf Apprentissage d'espaces sémantiques multi-domaines.} L'idée ici est
+d'avoir une représentation vectorielle dans un espace euclidien pour chaque entité. Un
+$mot$ est associé à un vecteur $x_{mot}\in\mathbb{R}^{d}$ qui est ajusté lors de l'apprentissage.
+Ces espaces possèdent une sémantique propre dans le sens où des vecteurs proches
+dans cet espace ont un sens similaire. Par exemple des mots voisins vont avoir
+la même syntaxe (ex: adjectif, nom) ou une sémantique proche (ex: pays, mesure).
+Nous montrerons qu'il est possible d'avoir un espace commun à plusieurs domaines
+comme des mots et des images (Chapitre~\ref{chap:mlj}).
+\\
+
+\item {\bf Classification de séquences.} Il s'agit ici de classifier des
+données $x_{t}$ qui en plus d'avoir un label $y_{t}$, possèdent une composante
+temporelle. Ceci est un aspect du problème intéressant à exploiter du fait des
+dépendances possibles entre les prédictions à $t-1$, $t$ et $t+1$ par exemple.
+Des architectures spécifiques de type RNN pour l'apprentissage d'un espace
+sémantique modélisant le contexte seront présentées ici
+(Chapitre~\ref{chap:rnn}).
+
+\end{itemize}
+
+\section{Risque Empirique et Espéré}
+
+Commençons d'abord par une formalisation du problème d'apprentissage.
 L'objectif est de trouver une fonction $f\in\mathcal{F}$ qui va exécuter une
 tâche particulière. Il faut donc définir l'espace des fonctions $\mathcal{F}$
 parmi lequel nous allons chercher la solution optimale à notre problème.  Il
@@ -49,7 +99,7 @@ Pour une quantité de données limitée, il est possible de trouver une fonction
 $f\in\mathcal{F}$ qui donne un risque empirique proche de $0$ pourvu que
 $\mathcal{F}$ définisse un espace de fonctions à la complexité assez élevée (il
 est parfois possible de mesurer cette complexité avec la dimension de
-Vapnik-Chervonenkis~\cite{Vapnik71}). Mais ceci ne résulte pas nécessairement en une solution
+Vapnik-Chervonenkis~\citep{Vapnik71}). Mais ceci ne résulte pas nécessairement en une solution
 qui généralise bien sur de nouvelles données qui n'ont pas été utilisées au
 cours de l'entraînement. Ceci est un phénoméne appelé \emph{sur-apprentissage}:
 on a un risque empirique faible sur l'ensemble d'entraînement et un risque
@@ -81,12 +131,78 @@ approximé du risque espéré.
 
 \end{itemize}
 
+\section{Log-vraisemblance}
 
-\subsection{Réseaux de Neurones Artificiels}
+Notre objectif est donc d'avoir le risque espéré le plus faible possible.
+L'algorithme doit pouvoir généraliser au mieux à de nouveaux exemples.
+L'hypothèse de base est que les données sont tirées de la même loi pour tous
+nos ensembles $\mathcal{D}_\textrm{train}$, $\mathcal{D_{\mathrm{valid}}}$ et
+$\mathcal{D_{\mathrm{test}}}$. En un sens, que les données partagent la même
+distribution.  Ensuite, on suppose généralement que les données sont
+indépendantes, c'est à dire que chaque exemple a été généré par cette
+distribution indépendamment des autres exemples.  Ces deux dernières hypothèses
+se résument dans l'acronyme i.i.d., indépendantes et identiquement distribuées.
+L'indépendance se traduit par l'équation suivante:
+
+\begin{equation}
+\mathbb{P}(x_{1}, \dots, x_{n}) = \prod_{i=1}^{n}\mathbb{P}(x_{i})
+\end{equation}
+
+avec $\mathbb{P}$ la distribution derrière notre ensemble de données.
+
+Une approche populaire d'apprentissage machine consiste à maximiser la
+log-vraisemblance sur l'ensemble d'entraînement. 
+Si $f_{\theta}$ est notre
+modèle pour approximer $\mathbb{P}$, on ajuste les paramètres $\theta$ pour
+maximiser l'équation suivante:
+
+\begin{equation}
+\label{eq:loglike}
+\theta^{*}=\textrm{arg}\max_{\theta} \log f_{\theta}(x_{1}, \dots, x_{n}) = \log \prod_{i=1}^{n}f_{\theta}(x_{i}) = \sum_{i=1}^{n}\log f_{\theta}(x_{i})
+\end{equation}
+
+Un produit de probabilités $f_{\theta}(x)\in [0,1]$ est une source
+d'instabilité numérique. La précision numérique des ordinateurs étant limitée,
+il est indispensable de rester dans la plage d'encodage définie par nos
+ordinateurs modernes. Cette décomposition en somme puis projection dans
+l'espace logarithmique permet de passer outre ces problèmes d'instabilité.
+Maximiser l'équation \ref{eq:loglike} se fait au travers d'un processus
+d'optimisation. 
+ 
+\section{Optimisation}
+
+L'optimisation qui nous intéresse vise à trouver les paramètres $\theta$ qui
+minimisent (ou maximisent à une inversion de signe près) une fonction donnée
+$\mathcal{L}(\theta)$.  On s'intéresse donc ici à des modèles paramétriques
+(dépendant de $\theta$). Dans la plupart des cas, la fonction à minimiser est
+différentiable par rapport aux paramètres $\theta$.  Cela nous permet de
+calculer un gradient $\partial \mathcal{L}/\partial\theta$ qui nous donnera une
+direction à suivre pour minimiser la fonction. Si la forme de la solution n'est
+pas disponible de manière analytique, on procède par étapes en ajustant les
+paramètres d'un pas $\alpha$ à chaque étape. Cette méthode s'appelle la
+descente de gradient:
+
+\begin{equation}
+\theta_{t+1} = \theta_{t} - \alpha \partial \mathcal{L}/\partial\theta
+\end{equation}
+
+Le gradient dépend des exemples d'apprentissage et il peut être calculé de
+difféntes manières. Sur l'ensemble d'apprentissage $\mathcal{D}_{train}$ au
+complet par exemple, on parle dans ce cas de descente de gradient de type
+{\bf batch}. En général, on préfère calculer les gradients soit sur un seul exemple
+ou un sous-ensemble de taille fixe extrait de $\mathcal{D}_{train}$. On parle
+en ce cas de descente de gradient {\bf stochastique} ou {\bf mini-batch}.
+
+\section{Apprentissage Supervisé}
+
+\subsection{Machines à Vecteurs de Support}
+
+
+\subsection{Réseaux de Neurones Profonds}
 
 On restreint ici l'espace des fonctions $\mathcal{F}$ à celui des réseaux de
 neurones à plusieurs couches plus communément appelés Perceptron Multi-Couches,
-en anglais \textit{Multi-Layer Perceptron} (MLP)\cite{Rosenblatt-1958}. Soit
+en anglais \textit{Multi-Layer Perceptron} (MLP)\citep{Rosenblatt-1958}. Soit
 $x\in\mathbb{R}^d$ l'entrée fournie au réseau. On fixe $x=h^{(0)}$. La sortie
 $h^{(i)}(x)$ d'une couche $i$ est définie comme la projection affine
 $W^{(i)}h^{(i-1)}(x) + b^{(i)}$ des données de la couche inférieure $h^{(i-1)}(x)$
@@ -107,12 +223,16 @@ où $W_{k.}^{(m+1)}$ désigne la $k^\textrm{ième}$ ligne de la matrice $W^{(m+1
 et $b_k^{(m+1)}$ la $k^\textrm{ième}$ composante du vecteur $b^{(m+1)}$.
 \\
 
-Les MLPs s'entraînent par rétropropagation du gradient \cite{Rumelhart86b}: c'est une application
+TODO ecrire la fonction de perte avec minimisation de la log-likelihood.
+
+Les MLPs s'entraînent par rétropropagation du gradient \citep{Rumelhart86b}: c'est une application
 astucieuse de la régle de dérivée en chaîne et de la programmation dynamique
 pour que cela soit effectué de manière efficiente.
 \\
 
-Depuis \cite{Hinton06,Bengio-nips-2006}, il a été démontré qu'il peut être
+\section{Apprentissage Non Supervisé}
+
+Depuis \citep{Hinton06,Bengio-nips-2006}, il a été démontré qu'il peut être
 avantageux de pré-entraîner un réseau de neurones en utilisant des algorithmes
 d'extraction de caractéristiques en apprentissage non supervisé. Plutôt que
 d'initialiser les paramètres de chaque couche $\lbrace W,b \rbrace$ de façon
@@ -123,442 +243,6 @@ et d'entraîner des réseaux à plusieurs couches de manière efficace.
 Dans ce qui suit, nous présenterons les techniques d'apprentissage non
 supervisé les plus couramment utilisées pour l'extraction de caractéristiques
 et le pré-entraînement de réseaux de neurones.
-
-
-\section{Historique et Méthodologie}
-
-Dans cette partie, nous chercherons à décrire les avancées historiques qui ont
-permis d'aboutir au modèle du perceptron multi-couches. C'est cette
-architecture qui nous servira de base pour la suite de ce mémoire. Commençons
-avec un bref descriptif d'un réseau de neurones naturel que nous possédons
-tous: le cerveau.
-
-\subsection{Réseaux de Neurones Naturels}
-
-\subsubsection{Le cerveau humain}
-
-Le cerveau humain est composé de milliers de neurones ($\simeq 10^{11}$)
-connectés entre eux en un immense réseau. Nous sommes encore très loin de tout
-savoir sur son fonctionnement... À première vue, on peut le considérer comme
-une "boîte noire" qui traite en continu une large variété d'entrées et retourne
-des "instructions" aux muscles, le tout avec un haut degré de parallélisme.
-C'est ce qui nous permet par exemple de respirer et réfléchir au même moment.
-
-On peut supposer que le cerveau fonctionne ainsi: à chaque stimulus présenté en
-entrée, l'ensemble des neurones s'adapte par une suite d'activations et
-d'inhibitions dans un laps de temps très court pour former un patron
-d'activation. Ce patron d'activation est composé de: \\
-
-\begin{itemize}
-\item neurones actifs, soit environ $1\%$ de tous les neurones:
-\begin{enumerate}
-\item les neurones \underline{excitateurs} qui vont libérer une charge électrique qui excite les neurones de leur voisinage.
-\item les neurones \underline{inhibiteurs} qui vont libérer une charge électrique qui inhibe les neurones de leur voisinage.
-\end{enumerate}
-\item et de neurones passifs ne réagissant pas à ce type d'entrée \textit{id est} leur activation est nulle.
-\\
-\end{itemize}
-
-Formellement, pour un système contenant $d$ unités cachées (neurones), un
-patron d'activation est un vecteur à $d$ dimensions représentant les valeurs
-d'activation de chaque unité. 
-
-La supposition précédente, déjà bien ancrée dans la communauté scientifique,
-est le principe de base du \textbf{connectionnisme}. On suppose que le
-fonctionnement d'un système "intelligent" et complexe comme notre cerveau peut
-être décrit à l'aide de réseaux d'unités simples (neurones connectés entre eux
-par des synapses).
-
-En ce qui nous concerne, on espère qu'un tel système soit capable
-d'apprentissage, c'est à dire qu'il soit à terme capable d'associer tel patron
-d'activation à tel stimulus présenté en entrée. Le processus d'apprentissage
-passe par l'ajustement des connections (poids) entre les différentes unités. En
-effet, une fois la configuration d'un réseau fixée, les poids sont les seuls
-paramètres qu'il nous est possible de modifier. La \textbf{connaissance} d'un
-tel réseau réside donc dans la valeur des connections entre ses unités.
-
-\subsubsection{Neurone biologique}
-
-Chacun des noeuds de ce réseau naturel qu'est le cerveau correspond à un
-neurone. Sans entrer dans les détails, le neurone est grossièrement composé de
-trois éléments: les dendrites, le corps cellulaire et l'axone. Les
-\textbf{dendrites} forment un ensemble de récepteurs nerveux répartis au
-voisinage du corps celllulaire. Ces récepteurs captent le potentiel électrique
-en provenance d'autres neurones. Si les dendrites accumulent une charge
-dépassant un certain seuil, le \textbf{corps cellulaire} émet un potentiel
-électrique (via son \textbf{axone}) susceptible d'exciter ou d'inhiber les
-neurones aux alentours, plus précisément ceux dont les dendrites sont
-connectées à l'axone par des synapses (d'où le nom de \textbf{connections
-synaptiques}). On dénombre environ $10^{4}$ connections par neurone. Une vue
-schématique d'un neurone est présentée en figure  \ref{fig:neurobio}.
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=8cm]{predoc/images/neurone-bio.eps}
-\end{center}
-\caption{\label{fig:neurobio} Schéma de deux neurones, l'un connecté à l'autre}
-\end{figure}
-
-\subsubsection{Copier le cerveau?}
-
-L'idée de copier le cerveau à l'aide de réseaux de neurones artificiels est
-assez présomptueuse et cela ne nous concerne pas. On s'inspire seulement de
-l'hypothèse d'architecture "connectionniste" du cerveau pour bâtir des réseaux
-de neurones artificiels, avec notamment cette idée que le réseau de neurones
-artificiel soit composé de plusieurs couches d'un degré de complexité toujours
-plus élevé.
-
-Même s'il est aussi possible d'utiliser les dernières avancés en neurosciences
-pour affiner des algorithmes déjà existants \cite{lowe}\footnote{\textbf{Jim
-Mutch and David G. Lowe}, \textit{Object class recognition and localization
-using sparse features with limited receptive fields}, International Journal of
-Computer Vision, 80, 1 (2008), pp. 45-57.}, notre objectif premier reste celui
-de concevoir un modèle qui puisse automatiquement apprendre à exécuter avec
-succès une tâche particulière (classification, régression,...). En aucun cas
-nous ne cherchons à comprendre le fonctionnement du cerveau au travers
-d'interprétations de nos modèles!
-
-Concernant la recherche sur le fonctionnement du cerveau, on pourra citer la
-collaboration d'IBM et de l'École Polytechnique de Lausanne pour le Blue Brain
-Project\footnote{http://bluebrain.epfl.ch/} qui a réussi en 2006 à reproduire
-une colonne corticale du cerveau à partir d'un amas de données considérable.
-Aussi pour affûter notre curiosité, cette expérience réussie de simulation de
-pilotage d'un avion de chasse F-22 par $25 000$ neurones extraits du cortex
-cérébral moteur d'embryons de rats\footnote{voir site de Thomas DeMarse}.
-
-\subsection{Historique des Réseaux de Neurones Artificiels}
-
-
-Afin de décrire ce qu'est un réseau de neurones artificiel, on commence par
-l'unité de base du réseau: le neurone artificiel.
-
-\subsubsection{Neurone formel}
-
-En 1943, Warren McCulloch et Walter Pitt \cite{macculloch}\footnote{\textbf{W.
-McCulloch, W. Pitt},\textit{A logical calculus of the ideas immanent in nervous
-activity}, Bulletin of Mathematical Biology, pages 115-133, 1943} introduisent
-le premier modèle de neurone formel afin d'étudier et de tenter d'élucider le
-fonctionnement de notre système cérébral. Ce modèle mathématique de neurone
-(voir figure \ref{fig:neuroformel}) effectue une somme pondérée de ses entrées
-$X\in\mathbb{R}^{n}$ et transforme le résultat via une \textbf{fonction
-d'activation} $f$, donnant ainsi la sortie du neurone. La somme pondéree par
-les poids $w_{i}$ en entrée définit le niveau d'activation du neurone. Le biais
-$b$ définit le seuil d'activation du neurone. En effet, si le niveau
-d'activation d'un neurone dépasse son seuil d'activation, alors l'argument de
-la fonction d'activation - ici la fonction de \textit{Heaviside} - devient
-positif: le neurone est considéré comme étant actif. On a donc:
-
-\begin{equation}
-f(x)=\left\{\begin{array}{ll}
-1 & \textrm{si }  \sum_{i=1}^{n}w_{i}x_{i}>b\\
-0 & \textrm{sinon} \\
-\end{array}\right.
-\end{equation}
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=6cm]{predoc/images/neurone_artificiel.eps}
-\end{center}
-\caption{\label{fig:neuroformel} Neurone artificiel, modifié depuis \cite{parizeau}.}
-\end{figure}
-
-
-En connectant ces unités simples les unes aux autres, il devient alors possible
-de créer des réseaux de neurones artificiels. La première ébauche d'un modèle
-de réseau de neurones artificiel est celle du Perceptron simple inventé par
-Frank Rosenblatt en $1958$.
-
-\subsubsection{Perceptron simple}
-
-Le Perceptron simple est une architecture à propagation vers l'avant à une
-seule couche cachée composée de plusieurs neurones. Par propagation vers
-l'avant, on entend que tous les neurones d'une couche possèdent une connection
-orientée vers chaque neurone de la couche suivante. Les neurones d'une même
-couche ne sont pas connectés entre eux.
-
-\textbf{\underline{Définition:}} Un perceptron à $m$ neurones est une fonction
-de $\mathbb{R}^{n}$ dans $\lbrace 0,1\rbrace^{m}$. Il est caractérisé par
-$m(n+1)$ paramètres: la matrice de poids $W\in\mathbb{R}^{m\times n}$ et le
-biais $b\in\mathbb{R}^{m}$ avec $n$ la dimension de l'entrée.
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=6cm]{predoc/images/percep.eps}
-\end{center}
-\caption{\label{fig:percep} Perceptron, modifié depuis \cite{parizeau}.}
-\end{figure}
-
-L'idée géométrique du perceptron est de séparer l'ensemble des données à l'aide
-d'un hyperplan.
-
-\subsubsection{Apprentissage}
-
-La règle d'apprentissage du Perceptron simple est inspirée de la règle de
-Donald Hebb énoncée en 1949:
-
-\textit{"When an axon of cell A is near enough to excite a cell B and
-repeatedly or persistently takes part in firing it, some growth process or
-metabolic changes take place in one or both cells such that A’s efficiency as
-one of the cells firing B, is increased."}
-
-Si deux neurones sont activés pour le même vecteur d'entrée, cela renforce la
-connection qui les unie. Il devient alors possible de s'en inspirer pour
-entraîner un Perceptron simple. On considère chaque composante du vecteur
-d'entrée comme un neurone appartenant à la couche d'entrée. Puis on procède à
-l'apprentissage de notre modèle en prenant en compte les activations
-simultanées des neurones de la couche d'entrée et de la couche cachée.
-
-\begin{itemize}
-\item \textbf{Initialisation} des paramètres $\lbrace W,b\rbrace$ à des valeurs aléatoires.
-\item \textbf{Tant que} l'ensemble d'apprentissage $S=\lbrace(x^{(i)},y^{(i)})\in\mathbb{R}^{n}\times\lbrace 0,1\rbrace^{m}\rbrace_{i=1,\dots ,n}$ n'est pas entièrement classifié correctement:
-\begin{list}{}{}
-\item \textbf{Pour} chaque neurone $1\leq j\leq m$:
-\begin{enumerate}
-\item Si le perceptron prédit la bonne valeur de sortie $y_{k}$, on ne fait rien.
-\item Si le perceptron se trompe, on modifie la ligne correspondante $W_{k.}$ de la matrice de poids et la composante $b_{k}$ du biais :
-\begin{itemize}
-\item Si $y_{k}=1$ on procède à un \textbf{renforcement} des connections:
-\begin{eqnarray}
-\left\{\begin{array}{ll}
-W_{k.} &\leftarrow W_{k.} + x_{k}\\
-b_{k} &\leftarrow b_{k} + 1\\
-\end{array}\right.
-\end{eqnarray}
-\item Si $y_{k}=0$ on procède à une \textbf{inhibition} des connections:
-\begin{eqnarray}
-\left\{\begin{array}{ll}
-W_{k.} &\leftarrow W_{k.} - x_{k}\\
-b_{k} &\leftarrow b_{k} - 1\\
-\end{array}\right.
-\end{eqnarray}
-\end{itemize}
-\end{enumerate}
-\end{list}
-\end{itemize}
-
-Dans \cite{percep_converge}\footnote{\textbf{F. Rosenblatt}, \textit{Principles
-of Neurodynamics}, Spartan Books, Washington D.C., 1962, 111–116}, F.
-Rosenblatt présente un théorème qui garantit la convergence de l'algorithme
-précédent sous l'hypothèse que les données de l'ensemble d'apprentissage soient
-linéairement séparables. Malheureusement, le problème considéré ici n'est pas
-mathématiquement bien posé.
-
-En effet, un problème est dit bien posé au sens de Hadamard si:
-
-\begin{enumerate}
-\item la solution existe
-\item la solution est unique
-\item la solution est stable \textit{id est} robuste à de faibles perturbations de l'entrée.
-\end{enumerate}
-
-Certes, le théorème nous assure que la solution existe. Cependant, sauf pour
-certains cas particuliers, il existe une infinité d'hyperplans qui peuvent
-séparer l'ensemble d'apprentissage (zone verte de la figure
-\ref{fig:percep_g}). La solution n'est donc pas unique. De plus, si on ajoute
-un nouvel exemple à l'ensemble d'apprentissage, la solution est susceptible de
-changer. En effet, si l'hyperplan solution est trop proche des vecteurs
-d'apprentissage, la solution n'est pas stable.
-
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[width=6cm]{predoc/images/percep_graph2.eps}
-\end{center}
-\caption{\label{fig:percep_g} Ensemble des solutions de la règle d'apprentissage du perceptron. Un exemple a été rajouté (voir flèche) pour montrer que la solution n'est pas robuste. On préfèrerait avoir une solution semblable à la droite rouge.}
-\end{figure}
-
-Afin de palier à cette tendance à coller les données de l'ensemble
-d'apprentissage, on introduit dans la section suivante un nouveau modèle et
-ainsi que sa règle d'apprentissage basée sur la minimisation de l'erreur
-quadratique moyenne.
-
-\subsubsection{ADALINE et méthode des moindres carrés\label{adaline}}
-
-Créé en 1960 par Bernad Widrow et Ted Hoff, ADALINE
-\cite{adaline}\footnote{\textbf{B. Widrow, T. Hoff}, \textit{Adaptive switching
-circuits}, 1960 Institute of Radio Engineers, Western Electronic Show, IRE
-WESCON Convention Record} (pour \textit{ADApatative LInear NEuron}) est un
-réseau de neurone à une couche cachée composée de $m$ neurones (voir figure
-\ref{fig:adaline}).  \\
-
-La différence avec le Perceptron simple réside dans la fonction d'activation
-qui est ici purement linéaire \textit{id est} $f(x)=x$. Aussi la régle
-d'apprentissage pour ce type de réseau de neurones est différente: il s'agit de
-la méthode des moindres carrés (Least Mean Square).
-
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[width=8cm]{predoc/images/adaline.eps}
-\end{center}
-\caption{\label{fig:adaline} Réseau ADALINE, modifié depuis \cite{parizeau}}
-\end{figure} 
-
-La sortie du réseau ADALINE associé à l'entrée $X$ est donnée par:
-
-\begin{eqnarray}
-F_{W,b}(X) =  WX -b
-\end{eqnarray}
-
-La distribution des vecteurs d'entrée $X$ étant inconnue, on ne peut pas
-calculer l'espérance de l'erreur de classification ($Y$ discret) ou de
-régression ($Y$ continu). Pour un ensemble d'aprentissage
-$S=\lbrace(X^{(i)},Y^{(i)})\in\mathbb{R}^{n}\times\mathbb{R}^{m}\rbrace_{i=1,\dots
-,n}$, on estime cette espérance par l'erreur quadratique empirique moyenne
-définie par:
-
-\begin{eqnarray}
-\hat{E}(W,b)=\sum_{i=1}^{n}\Vert F_{W,b}(X^{(i)})-Y^{(i)}\Vert^{2}_{2}
-\end{eqnarray}
-
-Plutôt que de calculer l'erreur moyenne pour l'ensemble d'apprentissage dans sa
-totalité et de minimiser cete erreur par une descente de gradient, on estime
-l'erreur quadratique moyenne par l'erreur quadratique pour un exemple donné.
-Puis on procède à une minimisation par une descente de gradient stochastique
-(décrit en section \ref{gradsto}). On a les gradients suivants:
-
-\begin{eqnarray}
-\frac{\partial}{\partial W}\hat{E}_{W,b}(X^{(i)},Y^{(i)}) = 2(WX^{(i)}-b-Y^{(i)})(X^{(i)})^{T}\\
-\frac{\partial}{\partial b}\hat{E}_{W,b}(X^{(i)},Y^{(i)})  = 2(WX^{(i)}-b-Y^{(i)})
-\end{eqnarray}
-
-Dans le cadre de l'ADALINE, la surface d'erreur est quadratique. Concernant le
-pas de gradient $\eta$, on peut démontrer que la convergence de la descente de
-gradient est assurée pour un pas $0<\eta<\frac{1}{\lambda_{max}}$ où
-$\lambda_{max}$ désigne la plus grande des valeurs propres de la Hessienne.
-
-Contrairement à la solution donnée par la règle d'apprentissage du Perceptron
-simple qui n'est pas optimale, souvent trop proche des patrons d'apprentissage
-et donc sensible au bruit, la frontière se retrouve ici à égale distance des
-deux classes (droite rouge de la figure \ref{fig:percep_g}) dans le cas
-linéairement séparable. Si le problème n'est pas linéairement séparable, la
-solution reste raisonnable dans la plupart des cas.
-
-Si la régle LMS nous permet d'obtenir une frontière plus robuste au bruit que
-la règle du perceptron, il n'en reste pas moins que toutes les solutions
-trouvées par ADALINE ou le Perceptron simple sont des hyperplans. Pour le
-moment, nous restons donc limités aux problèmes séparables par une simple
-frontière linéaire pour ADALINE et aux problèmes linéairement séparables pour
-le Perceptron simple.
-
-\subsubsection{Limitations}
-
-En plus de ces restrictions, le livre \textit{Perceptrons}
-\cite{minsky}\footnote{\textbf{M. Minsky, S. Papert}, \textit{Perceptrons, An
-Introduction to Computational Geometry}, MIT Press, Cambridge, Mass., 1969} de
-Marvin Minsky et Seymour Papert sonne le glas pour les réseaux de neurones en
-1969. Ils s'attaquent au Perceptron simple en utilisant les mathématiques
-modernes comme la topologie et la théorie des groupes. Par une étude théorique
-complète, ils décrivent les limitations du Perceptron simple et mettent en
-évidence sa faible capacité.
-
-Surtout, ils énoncent dans la continuité de leurs démonstrations la conjecture qu'un Perceptron multi-couches souffrirait des mêmes limitations du Perceptron simple:
-
-\textit{"There is no reason to suppose that any of these vicues carry over the
-many layered version. Nevertheless, we consider it to be a important research
-problem to elucidate (or reject) our \underline{intuitive} judgement is
-sterile."}(p.$231$)\cite{minsky} \\
-
-Cette conjecture a été très mal interprétée et a provoqué l'arrêt des financements de la recherche sur ces modèles.
-
-Voici quelques exemples de problèmes que les méthodes évoquées précedemment ne peuvent pas résoudre: les deux lunes et le OU exclusif "XOR".
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=9cm]{predoc/images/xor2moons.eps}
-\end{center}
-\caption{\label{fig:robustpercep} Problèmes non linéairement séparables}
-\end{figure}
-
-
-Pourtant la solution pour gagner en capacité semble résider dans l'augmentation
-du nombre de couches du réseau. On notera que le fait d'assembler entre elles
-plusieurs couches de types ADALINE donnera toujours un réseau équivalent à
-l'ADALINE à une seule couche. On s'intéresse donc au Percetron multi-couches.
-
-\subsubsection{Perceptron multi-couches}
-
-L'idée du Perceptron multi-couches est de concaténer plusieurs Perceptrons
-simples où la sortie d'une couche correspondrait à l'entrée de la couche
-suivante (voir figure \ref{fig:percep_multicouche}).
-
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[width=12cm]{predoc/images/percep_multi.eps}
-\end{center}
-\caption{\label{fig:percep_multicouche} Architecture du Perceptron multi-couches, modifié depuis \cite{parizeau}}
-\end{figure}
-
-On peut constater que l'on gagne en capacité. En effet, un Perceptron à deux
-couches peut résoudre le problème du OU exclusif (voir figure
-\ref{fig:solvexor}). 
-
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[width=6cm]{predoc/images/solvexor.eps}
-\end{center}
-\caption{\label{fig:solvexor} Perceptron multicouche construit manuellement qui résoud le problème XOR, modifié depuis \cite{parizeau}}
-\end{figure}
-
-\subsubsection{Frontières de décision}
-
-Lorque l'on concatène plusieurs couches, on crée des combinaisons de frontières
-de décision. Dans le cas des unités seuil, chaque neurone correspond à un
-hyperplan. Ce qui nous donne les combinaisons de frontières de décision
-illustrées en figure \ref{fig:frontieres}.
-
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[width=8cm]{predoc/images/frontieres.eps}
-\end{center}
-\caption{\label{fig:frontieres} Frontières de décision engendrées par le réseau de la figure \ref{fig:robustpercep}, modifié depuis \cite{parizeau}. (a) et (b) correspondent aux frontières générées par les deux neurones de la première couche, (c) représente la conjontion de ces deux frontières réalisée par le neurone de la couche supérieure.}
-\end{figure}
-
-Si on utilise des fonctions d'activations non linéaires ($\tanh$ par exemple),
-il devient alors possible d'obtenir des frontières de décisions non linéaires
-pour chaque neurone: on peut modéliser des frontières de plus en plus complexes
-définissant des ensembles convexes, concaves, ouverts, fermés.
-
-\subsubsection{Théorème d'approximation universelle \label{univ}}
-
-En 1989, George Cybenko donne la preuve du théorème d'approximation universelle
-\cite{universelle}\footnote{\textbf{G Cybenko}, \textit{Approximation by
-superpositions of a sigmoidal function}, Mathematics of Control, Signals, and
-Systems (MCSS), 1989, Springer}. Ce théorème démontre qu'il est possible
-approximer n'importe quelle fonction (avec une précision arbitraire) à l'aide
-d'un réseau de neurones particulier à condition d'avoir suffisamment d'unités
-dans la première couche cachée. Ce réseau (illustré en figure \ref{fig:approx})
-est composé d'une couche de fonctions d'activation de type sigmoïde
-$f(x)=1/(1+e^{-x})$ et d'une seconde couche linéaire. Plus simplement, il est
-démontré que toute fonction peut être approximée par une combinaison linéaire
-de sigmoïdes.  \\
-
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[width=8cm]{predoc/images/approx.eps}
-\end{center}
-\caption{\label{fig:approx} Réseau de neurones pour l'approximation de fonctions, modifié depuis \cite{parizeau}}
-\end{figure}
-
-\subsubsection{Méthode d'apprentissage}
-
-Avant 1985-86, on ne disposait pas de régle d'apprentissage viable pour
-entraîner ces réseaux de neurones multi-couches. L'idée première est d'utiliser
-la règle LMS pour un Perceptron simple. Il faut donc remplacer la fonction
-d'activation \textit{Heaviside} qui n'est pas différentiable par une fonction
-de type sigmoïde. Puis on généralise cette règle pour le cas des Perceptrons
-multi-couches en rétro-propageant l'erreur dans les couches inférieures. Il
-aura fallu attendre l'arrivée de l'algorithme de rétro-propagation
-\cite{rumel}\footnote{\textbf{D. Rumelhart, R. Williams, G. Hinton},
-\textit{Learning internal representations by error propagation}, chap 8,
-Parallel distributed processing, 1986} pour que l'on soit en mesure d'entraîner
-ces réseaux de neurones.
-
-TODO RETROPROP
-
-\subsubsection{Comment entraîner un réseau de neurones?}
-
-
-
-\section{Apprentissage non supervisé de représentations}
 
 L'apprentissage non supervisé permet d'extraire des connaissances sur des
 données sans connaissance à priori. On ne connaît ni le type des données
@@ -928,24 +612,38 @@ d'auto-encodeurs que nous venons de présenter, nous considèrerons notamment
 aussi les RBMs comme point de référence dans les évaluations de performances
 quantitatives qui suivent.
 
+\subsection{Déplacement sur la Variété}
+
+Relire le papier MTC
+
+En observant les vecteurs propres d une pca calculee sur un ensemble de points
+voisins, une similitude a ete observee avec des potentielles directions de
+variations autour de ce point. L'idee est qu'il est possible d'avoir un
+ensemble de directions de variation pour chaque point de l'ensemble
+d'Apprentissage. Il est possible de se deplacer sur la variet d'un point
+d'entrainement a un  autre en suivants ces directions.
+
+Cette idee de deplacemet (cite Surfing on the manifold) plus aisee dans des
+couches de representations plus abstraites et notamment d'une classe a un autre
+classe differente est l'intuition derriere la possibilite d'avoir un meilleur
+mixing lors du processus de sampling utilise avec des CAE ou des RBM.
+
+\subsection{Transfert de Domaine}
 
 
-\section{Problèmes spécifiques}
-\subsection{Sorties Structurées}
+intro du transfert de domaine basee sur le pere grolot
+
+\subsubsection{Transductive PCA}
+\subsubsection{Finetuning}
+
+
+\section{Classification de Séquences}
 
 prédiction séquentielle
-solution réseaux de neurones récurrents, CRF
 
-\subsection{Entrées à haute dimension}
+\subsection{Conditionnal Random Fields}
 
-problème des N-grams avec contexte ordonné
-solution embeddings
 
-\subsection{Prédiction de Similarité}
+\subsection{Reseaux de Neurones Recurrents}
 
-ranking ou classification en haute dimension
-solution méthodes à base de sampling
-méthodes d'énergie ranking
-search MSR
-wsabie
 
