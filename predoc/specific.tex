@@ -9,6 +9,17 @@ Multi-Domaines
 problème des N-grams avec contexte ordonné
 solution embeddings
 
+dans notre approche x in Rd
+comment faire lorsque l'entree est discrete ce qui est le cas du traitement du langage naturel. simplement par l'association d'un vecteur a chaque entite.
+
+figure one hot
+
+de facon mathematique cela revient a un produit matriciel sparse puisqu'il n'y a autant de bit actif de que de mots dans la fenetre. De facon information on utilise simplement une table de hashage.
+
+A noter que suivant la tache d'apprentissage, la semantique de l'Espace peut changer. on voit dans la figure XX que les mots se regroupent par classe. 
+
+Il est aussi possible de factoriser encore le mot par un vecteur sparse de trigram de lettres ou dephonemes. cite MSR papier
+
 \section{Prediction de similarite}
 
 Parfois le nombre de classes en sortie est trop eleve et il est necessaire d
@@ -24,6 +35,16 @@ la vraie valeur de la softmax.  On peut aussi faire du sampling de negatif
 intelligent, c<Est a dire selectionner uniquement les couples negatifs qui
 violent une certaine contrainte et ignorer les autres.
 
+si l'on regarde l'equation de la softmax
+nous pouvons voir les lignes de la matrice (1 vecteur par classe) comme un vecteur representatif de la classe c dans l'espace semantique de la derniere couche.
+ensuite, etant donne un nouvel example, on mesure sa similarite avec chaque classe (par le biais d'un porduit scalaire) et la classe qui donne la plus grande similarite l'emporte.
+
+Il est ensuite assez simple d'avoir un probleme qui scale a plusieurs millions de classes. On selectionne de facon aleatoire un sous ensemble de classes a chaque mise a jour differentes de la classe de l'Exemple courant et on attribue ces classes comme etant les classes negatives associees a cet exemple. Ce sous ensemble de classes est renouvele a chaque mise a jour.
+
+mesure de similarite avec le cosinus
+
+update pour maximiser le log likelihhod
+
 ranking ou classification en haute dimension
 solution méthodes à base de sampling
 méthodes d'énergie ranking
@@ -34,6 +55,25 @@ wsabie
 
 lala
 
-\section{Transfert de Domaine}
+Dans le chap mlj nous verrons comment avoir un espace semantique commun a deux domaines. 
 
-proxy
+Il est aussi possible d<etendre cette idee a un nombre de domaines arbitraire
+
+antoine bordes translation modele
+
+il est possible d<avoir un espace semantique commun a des representations de differents domaines. Cela est meme parfois benefique dans le sens ou cela vient enrichir l<espace et une prediction sera moins dans le champ si on predit l<embedding voisin.
+
+\section{Transfert de Domaine: proxy d'apprentissage}
+
+Il y a plusieurs problemes qui par leur formulation, ne peuvent etre resolus; en partie parce qu<il manque cruellement de donnees. Par exemple, 
+citer bottou
+classifier la personne presente dans une photo. Nous manquons de donnes car nous disposons uniquement d<une dizaines d<images pour chaque personne. En revanche, avoir un algorithme qui etant donne deux images, nous repond si c<Est la meme personne ou non, il est possible d<avoir un tres grand nombre d<images. Les deux approches tentent de resoudre le meme probleme, sauf que la seconde approche apporte une solution beaucoup plus viable que la premiere.
+
+Dans le chapitre \ref{chap:mlj}, nous etudieronsle probleme de la
+classification d'un objet et de parties de ceet objet, par exemple une voiture
+et un pare-brises, des roues et des retroviseurs. Ce probleme manque de
+donnees labelees mais nous verrons comment generer un ensemble de donnees avec
+10 millions d'exemples et d<optimiser un proxy d<apprentissage qui permet d<obtenir des resultats sur la tache initiale.  
+
+a partir d<un probleme
+complique a resoudre du fait du manque de donnees. 
