@@ -1,26 +1,88 @@
 \chapter{Espaces Sémantiques Multi-Domaines}
 
+Cette dissertation a pour object l'apprentissage d'espace sémantiques pour
+différents domaines comme par exemple, le langage naturel ou les images. Il est
+aussi possible d'apprendre un espace sémantique à l'intersection de domaines,
+on parle en ce cas d'espace sémantique multi-domaines (Chapitre \ref{chap:mlj}). Ces
+espaces $\mathbb{E}\subset \mathbb{R}^{d}$ sont appelés sémantiques si la représentation
+$h(x)\in \mathbb{E}$ d'entités $x$, jugées similaires par un esprit humain, ont leur
+similitude préservée dans cet espace $\mathbb{E}$.
 
+Dans le chapitre \ref{chap:basic}, nous avons présenté comment apprendre des
+représentations caractérisant des espaces sémantiques au travers de
+l'apprentissage non-supervisé. Nous avons aussi observé dans la section
+\ref{sec:surfing} comment se déplacer dans cet espace. Dans ce chapitre, on
+décrit comment obtenir une représentation vectorielle dans un espace euclidien
+pour chaque entité d'un même domaine, ou de domaines différents.
+ 
+  
+\section{Espace Sémantique pour le Langage}
 
-\section{Espace Semantique pour le Langage}
+La représentation habituelle de mots ou de séquences de mots utilisée pour les
+tâches de traitement du langage naturel est un vecteur de haute dimension avec
+des bits actifs (ou des comptes) pour les mots ou N-grams présents dans
+l'entrée. Ces vecteurs contiennent une majorité de zéros et il est possible
+d'utiliser des structures de données adaptées d'un point de
+vue computationnel informatique.
 
-Entrée à Haute Dimensionnalité
-Multi-Domaines
-problème des N-grams avec contexte ordonné
-solution embeddings
+Une autre approche pour traiter ce problème consiste à associer une
+représentation vectorielle $h(\textrm{mot})\in\mathbb{E}$ à chacun des $M$ mots
+du dictionnaire. Cette représentation est contenue dans une matrice
+$E\in\mathcal{M}_{M \times d}(\mathbb{R})$ où chaque ligne représente un {\it
+embedding} de mot. Si on définit une bijection $g(\textrm{mot}) \in \lbrace
+0,1,\dots, M \rbrace$ qui associe un index $i$ à chaque mot, on a alors notre
+fonction $h(\textrm{mot})=E_{g(\textrm{mot}).}$ retourne la ligne
+correspondante de la matrice $E_{i.}$.
 
-dans notre approche x in Rd
-comment faire lorsque l'entree est discrete ce qui est le cas du traitement du langage naturel. simplement par l'association d'un vecteur a chaque entite.
+De façon purement mathématique, il s'agit d'un produit matriciel
+$\textrm{one-hot}(\textrm{"mot"})^{T}E$ entre un vecteur {\it one-hot}
+(Eq.~\ref{eq:onehot}) et la matrice des embeddings $E$. Cette opération étant
+différentiable, la mise à jour de la matrice des embeddings se fait sans
+problèmes au travers de l'algorithme de rétro-propagation du gradient, comme
+une couche additionnelle à notre réseau de neurones.
 
-figure one hot
+\begin{equation}
+\label{eq:onehot}
+\textrm{one-hot}(\textrm{"alice"}) =
+\begin{bmatrix}
+0\\
+\vdots\\
+1\\
+\vdots\\
+0\\
+\end{bmatrix} 
+\leftarrow \textrm{L'index du mot "alice" donné par $g$}
+\end{equation}
 
-de facon mathematique cela revient a un produit matriciel sparse puisqu'il n'y a autant de bit actif de que de mots dans la fenetre. De facon information on utilise simplement une table de hashage.
+%A noter que suivant la tache d'apprentissage, la semantique de l'Espace peut
+%changer. on voit dans la figure XX que les mots se regroupent par classe. 
+%TODO
 
-A noter que suivant la tache d'apprentissage, la semantique de l'Espace peut changer. on voit dans la figure XX que les mots se regroupent par classe. 
+Il est possible d'aller plus loin. Cette représentation de séquences de mots
+peut aussi être utilisée à l'intérieur des mots eux-mêmes. Les mots sont des
+séquences de lettres ou de phonèmes. Si on associe des {\it embedding} à des
+3-gram de lettres ou de phonèmes, il devient possible d'avoir une
+représentation des mots à partir de leur structure propre.  Cette approche
+\citep{rnn58} a donné de bons résultats en pratique pour la recherche
+d'information (Information Retrieval).
 
-Il est aussi possible de factoriser encore le mot par un vecteur sparse de trigram de lettres ou dephonemes. cite MSR papier
+\section{Prédiction de Similarité}
 
-\section{Prediction de similarite}
+mesure de similarite avec le cosinus
+
+update pour maximiser le log likelihhod
+
+ranking ou classification en haute dimension
+solution méthodes à base de sampling
+méthodes d'énergie ranking
+search MSR
+wsabie
+
+\section{Classification en Haute Dimension}
+
+Le nombre d<entites dans un espace est en generl tres grand et la
+classification en elle-meme devient un probleme car le nombre de couples
+d<entites pour deux domaines
 
 Parfois le nombre de classes en sortie est trop eleve et il est necessaire d
 utiliser certraines astuces afin de controler l'explosion du nombre de ckasses
@@ -41,15 +103,7 @@ ensuite, etant donne un nouvel example, on mesure sa similarite avec chaque clas
 
 Il est ensuite assez simple d'avoir un probleme qui scale a plusieurs millions de classes. On selectionne de facon aleatoire un sous ensemble de classes a chaque mise a jour differentes de la classe de l'Exemple courant et on attribue ces classes comme etant les classes negatives associees a cet exemple. Ce sous ensemble de classes est renouvele a chaque mise a jour.
 
-mesure de similarite avec le cosinus
 
-update pour maximiser le log likelihhod
-
-ranking ou classification en haute dimension
-solution méthodes à base de sampling
-méthodes d'énergie ranking
-search MSR
-wsabie
 
 \section{Espaces Multi-Domaines}
 
@@ -63,17 +117,30 @@ antoine bordes translation modele
 
 il est possible d<avoir un espace semantique commun a des representations de differents domaines. Cela est meme parfois benefique dans le sens ou cela vient enrichir l<espace et une prediction sera moins dans le champ si on predit l<embedding voisin.
 
-\section{Transfert de Domaine: proxy d'apprentissage}
+\section{Transfert de Domaine: Proxy d'apprentissage}
 
-Il y a plusieurs problemes qui par leur formulation, ne peuvent etre resolus; en partie parce qu<il manque cruellement de donnees. Par exemple, 
-citer bottou
-classifier la personne presente dans une photo. Nous manquons de donnes car nous disposons uniquement d<une dizaines d<images pour chaque personne. En revanche, avoir un algorithme qui etant donne deux images, nous repond si c<Est la meme personne ou non, il est possible d<avoir un tres grand nombre d<images. Les deux approches tentent de resoudre le meme probleme, sauf que la seconde approche apporte une solution beaucoup plus viable que la premiere.
+Il y a plusieurs problèmes qui de par leur formulation, ne peuvent pas être
+résolus du fait d'un manque de données. Par exemple, considérons le problème
+d'identifier des personnes à partir d'image de leur visage~\citep{bottou-11}.
+Il est impossible de collecter un ensemble de données suffisamment grand,
+contenant suffisamment de variations de poses et contextes, pour résoudre ce
+problème pour chaque personne. En revanche, il est possible de collecter des
+données pour un problème légèrement différent: deux visages dans deux images
+représentent-ils la même personne? Il est possible de trouver énormément de
+données pour résoudre ce problème: deux visages dans une même image
+représentent sûrement deux personnes différentes, et deux visages dans des
+images successives d'une vidéo sont probablement les mêmes. Ces deux tâches
+partagent beaucoup de points communs et le second problème permet sans doute
+d'apporter une solution au premier problème. 
+\\
 
-Dans le chapitre \ref{chap:mlj}, nous etudieronsle probleme de la
-classification d'un objet et de parties de ceet objet, par exemple une voiture
-et un pare-brises, des roues et des retroviseurs. Ce probleme manque de
-donnees labelees mais nous verrons comment generer un ensemble de donnees avec
-10 millions d'exemples et d<optimiser un proxy d<apprentissage qui permet d<obtenir des resultats sur la tache initiale.  
+Dans le chapitre \ref{chap:mlj}, nous proposerons une solution au problème de
+la classification d'un objet et de parties de cet objet; par exemple une
+voiture et son pare-brise, ses roues et ses retroviseurs. Ce problème manque de
+données labelées mais nous verrons comment utiliser des espaces sémantiques
+multi-domaines pour effecteur un transfert de l'apprentissage dans le même
+esprit que l'exemple énoncé ci-dessus. Ce proxy d'apprentissage au travers de
+l'intersection d'un espace sémantique de l'image avec l'espace sémantique du
+langage aura permis de générer un ensemble de données de 10 millions d'exemples
+et de proposer une solution au problème initial.
 
-a partir d<un probleme
-complique a resoudre du fait du manque de donnees. 

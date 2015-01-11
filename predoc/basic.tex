@@ -1,5 +1,5 @@
 \chapter{Apprentissage Machine d'Architectures Profondes}
-
+\label{chap:basic}
 
 \section{Introduction à l'Apprentissage Statistique}
 
@@ -239,6 +239,7 @@ avec autant d'unités que de classes. La sortie d'un réseau à $m$ couches pour
 $C$ classes est donnée par
 
 \begin{equation}
+\label{eq:softmax}
 f(x) = \frac{e^{W^{(m+1)} h^{(m)}(x) + b^{m+1}}}{\sum_{j=1}^C e^{W^{(m+1)}_{j.} h^{(m)}(x) + b^{(m+1)}_{j} }} \in [0,1]^{C}
 \end{equation}
 
@@ -628,6 +629,7 @@ l'initialisation de réseaux de neurones de type Perceptron Multi-Couches
 \citep{koray-nips-10-small}. 
 
 \subsection{Déplacement sur la Variété}
+\label{sec:surfing}
 
 En observant les vecteurs propres $V_{.i}(x)$ d'une PCA apprise à partir de
 l'ensemble $\mathcal{D}_{10-ppv}(x)$ des 10 plus proches voisins d'un point $x$
@@ -741,93 +743,103 @@ scènes (Chapitre \ref{chap:ob}).
 \section{Classification de Séquences}
 
 Les réseaux de neurones peuvent aussi être utilisé pour la classification de
-séquences.  Dans le cadre de l'apprentissage supervisé simple
+séquences, on utilise en général dans ce cas des réseaux de neurones récurrents.
+Dans le cadre de l'apprentissage supervisé simple
 (Section~\ref{sec:supervised}), nos ensembles $\mathcal{D}_{train}$,
 $\mathcal{D}_{valid}$ et  $\mathcal{D}_{test}$  sont composés des entrées
 $x\in\mathbb{R}^{d}$ et un label $y\in\{1,\dots ,C\}$ qui leur est associé.
-Pour la classification de séquences, les données sont séquentielles et pour une séquence de longueur $T$, on a $x=\lbrace x_{i}\in\mathbb{R}^{d} \rbrace_{i=1}^{T}$ et $y=\lbrace y_{i}\in\{1,\dots ,C\}_{i=1}^{T}$.
+Pour la classification de séquences, les données sont séquentielles et pour une
+séquence de longueur $T$, on a $x=\lbrace x_{i}\in\mathbb{R}^{d}
+\rbrace_{i=1}^{T}$ et $y=\lbrace y_{i}\in\{1,\dots ,C\}_{i=1}^{T}$.
 
 En traitement du langage naturel par exemple (Chapitre \ref{chap:rnn}), chaque
-entrée est une séquence de mots et le label $y$ est constitué d'une séquence
-de classes associée à chacun des mots (Figure \ref{fig:iob}).
-
-hypothese iid a l'interieur de la sequence
-reference a l'equation precedente iid au debut
+entrée est une séquence de mots et le label $y$ est constitué d'une séquence de
+classes associée à chacun des mots (Figure \ref{fig:iob}). À noter que la
+longueur $T$ de la séquence n'est pas uniforme dans l'ensemble de données et
+peut varier.
 
 \subsection{Conditionnal Random Fields}
 
-
-Recently, discriminative methods have become more popular. One of the most
-successful approaches for slot filling is the conditional random field (CRF)
-(\cite{rnn6}) and its variants. Given the input word sequence $L_1^N=l_1,\dots,l_N$, the
-linear-chain CRF models the conditional probability of a concept/slot sequence
-$S_1^N=s_1,\dots,s_N$ as follows:
+Une des méthodes de classification de séquences les plus utilisées sont les CRFs \citep{rnn6} et leurs variantes.
+La probabilité conditionnelle de modéliser une sortie $y$ conditionnellement à
+$x$ pour une chaîne linéaire s'écrit de la forme suivante:
 
 \begin{equation}
-P(S_{1}^{N}\vert L_{1}^{N}) = \frac{1}{Z}\prod_{t=1}^{N}\exp{H(s_{t-1}, s_{t}, l_{t-d}^{t+d}})
-\label{eq:crf1}
+f_{\theta}(y~\vert~x) = \frac{1}{Z(x)}\prod_{t=1}^{T}\exp{H(y_{t-1}, y_{t}, x_{t}})
 \end{equation}
 
-where
+avec $Z(x)$ un facteur de normalisation et les $M$ fonctions $h_{m}(y_{t-1},
+y_{t}, x_{t})$ "caractéristique" définies de la manière suivante:
 
 \begin{equation}
-H(s_{t-1}, s_{t}, l_{t-d}^{t+d}) = \sum_{m=1}^{M}\lambda_{m}h_{m}(s_{t-1}, s_{t}, l_{t-d}^{t+d})
-\label{eq:crf2}
+H(y_{t-1}, y_{t}, x_{t}) = \sum_{m=1}^{M}\lambda_{m}h_{m}(y_{t-1}, y_{t}, x_{t})
 \end{equation}
 
-and $h_m (s_{t-1},s_t,l_{t-d}^{t+d})$ are features extracted from the current and
-previous states $s_t$ and $s_{t-1}$, plus a window of words around the current word
-$l_t$, with a window size of $2d+1$.
-
-\subsection{Reseaux de Neurones Recurrents}
-
-As in (\cite{rnn15}), we describe here the two most common RNN architectures in the
-literature: the Elman (\cite{rnn16}) and Jordan \citep{rnn17} models. The architectures of these
-models are illustrated in Fig.~\ref{fig:rnn}.
-
-In contrast with classic feed-forward neural networks, the Elman neural network
-keeps track of the previous hidden layer states through its recurrent
-connections. Hence, the hidden layer at time $t$ can be viewed as a state
-summarizing past inputs along with the current input. Mathematically, Elman
-dynamics with $d_h$ hidden nodes at each of the $H$ hidden layers are depicted
-below:
+Les fonctions $h_{m}$ sont fixées au départ et l'apprentissage consiste à
+ajuster les $\lambda_{m}$. Une fonction caractéristique peut prendre la forme
+suivante par exemple:
 
 \begin{equation}
-h^{(1)}(t) = f(U^{(1)}C_{d}(l_{t-d}^{t+d})+U^{'(1)}h^{(1)}(t-1))
+h_{m}(y_{t-1}, y_{t}, x_{t}) = 
+\left\{
+\begin{split}
+1 &  \textrm{~si $x_{t}$ = "september", $y_{t-1}$ = "chiffre" et $y_{t}$ = "mois"} \\ 
+0 & \textrm{~sinon}
+\end{split}
+\right.
 \end{equation}
+
+L'apprentissage s'effectue par l'ajustement des paramètres $\theta=\lbrace \lambda_m \rbrace_{m=1}^{M}$ pour maximiser la log-vraisemblance sur l'ensemble $\mathcal{D}_train$:
 
 \begin{equation}
-h^{(n+1)}(t) = f(U^{(n+1)}h^{(n)}(t) + U^{'(n+1)}h^{(n+1)}(t-1))
+\mathcal{J}_{\textrm{CRF}} =\sum_{(x,y)\in\mathcal{D}_{train}} \sum_{t=1}^{T} \log (\dfrac{1}{Z(x_{t})}) + \sum_{m=1}^{M} \lambda_{m} h_{m}(y_{t-1}, y_{t}, x_{t})
+\label{eq:loglikecrf}
 \end{equation}
 
+L'équation \ref{eq:loglikecrf} est différentiable par rapport à $\theta=\lbrace
+\lambda_m \rbrace_{m=1}^{M}$ et concave. Il n'y a donc qu'un seul maximum et on
+peut l'approximer par des méthodes à base de gradient.
 
-where we used the non-linear sigmoid function applied element wise for the
-hidden layer $f(x)=1/(1+\exp{-x})$ and $h^{(i)} (0)\in\mathbb{R}^{d_h}$ are parameter vectors
-to be learned. The superscript denotes the depth of the hidden layers and $U^{'}$
-represents the recurrent weights connection. The posterior probabilities of the
-classifier for each class are then given by the softmax function applied to the
-hidden state:
+\subsection{Réseaux de Neurones Récurrents}
+
+Les réseaux de neurones récurrents sont des architectures profondes. Si on
+compare aux architectures profondes habituelles à $m$ couches, la rétro-propagation
+du gradient au travers des $m$ couches revient à effectuer une
+rétro-propagation dans le temps pour $m$ unités de temps dans le passé.
+
+L'architecture de réseau récurrent de base \citep{rnn16} garde une trace des
+représentations du passé au travers de ses connections récurrentes.  La
+représentation $h_{t}(x)$ peut donc être vue comme un résumé des états
+précédents $\lbrace h_{k}(x)\rbrace_{k=0}^{t-1}$.
+
+Il existe plusieurs architectures de réseaux de neurones récurrents possibles
+(Elman, Jordan, uni-directionnel, bi-directionnel) \citep{rnn15}, nous
+décrivons ici la forme la plus simple. Pour un RNN de type Elman pour une séquence
+d'entrées $\lbrace x_{i}\in\mathbb{R}^{d}\rbrace_{i=1}^{T}$ on a la
+représentation $\lbrace h_{i}(x)\in\mathbb{R}^{d_h}\rbrace_{i=1}^{T}$ à $d_h$
+unités cachées suivante:
 
 \begin{equation}
-P(y(t) = i \vert l_{0}^{t+d}) = \frac{\exp{\sum_{j=1}^{d_{h}}}V_{i,j}h_{j}^{(H)}(t)}{\sum_{i=1}^{N}\exp{\sum_{j=1}^{d_{h}}}V_{i,j}h_{j}^{(H)}(t)}
+h_t(x) = s(Ux_{t}+Vh_{t-1}(x))
 \end{equation}
 
-Where $V$ correspond to the weights of the softmax top layer. 
+paramétré par $U\in\mathcal{M}_{d_h\times d}(\mathbb{R})$,
+$V\in\mathcal{M}_{d_h\times d_h}(\mathbb{R})$ et $h_{0}\in\mathbb{R}^{d_h}$.
 
-The learning part then consists of tuning the parameters $\theta=\{ E, h^{(1)}
-(0), U^{(1)}, \\ U^{'(1)},\dots,h^{(H)} (0), U^{(H)}, U^{'(H)} ,V \}$   of the RNN with $N$
-output classes. Precisely, the matrix shapes are $U^{(1)}\in\mathcal{M}_{d_h\times d_e (2d+1)}
-(\mathbb{R})$~;~ $U^{'(1)},\dots,U^{(H)}, U^{'(H)}\in\mathcal{M}_{d_h\times d_h} (\mathbb{R})$ and $V\in\mathcal{M}_{N\times d_h}(\mathbb{R})$. For
-training, we use stochastic gradient descent, with the parameters being updated
-after computing the gradient for each one of the sentences in our training set
-$\mathcal{D}$, towards minimizing the negative log-likelihood. Note that a sentence is
-considered as a tuple of words and a tuple of slots:
+Pour effectuer la prédiction, on ajoute la couche supérieure suivante similaire à l'équation \ref{eq:softmax}:
 
 \begin{equation}
-\mathcal{L}(\theta) = \sum_{(S,W)\in\mathcal{D}} \sum_{t=1}^{T}\log P_{\theta}(s_{t}\vert l_{0}^{t+d})
+f_{t}(x) = \frac{e^{ h_{t}(x) + b}}{\sum_{j=1}^C e^{W_{j.} h_{t}(x) + b_{j} }} \in [0,1]^{C}
 \end{equation}
 
-Note that the length $T$ of each sentence can vary among the training samples and
-the context word window size $d$ is a hyper-parameter.  
+Pour entraîner le modèle, on effectue une minimisation par descente de gradient
+de la log-vraisemblance négative pour chaque séquence de $\mathcal{D}_{train}$:
 
+\begin{equation}
+\label{eq:nll-rnn}
+\mathcal{J}(\theta) = - \sum_{(x,y)\in\mathcal{D}_{train}} \sum_{t=1}^{T}\log f_{t}(x_{t})_{y_{t}}
+\end{equation}
 
+pour les paramètres $\theta=\lbrace U, V, W, b, h_{0}\rbrace$. Pour obtenir
+l'équation \ref{eq:nll-rnn} précédente, l'hypothèse d'indépendance
+conditionnelle des $y_i$ sachant $x$ a été faite.
