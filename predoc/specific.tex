@@ -34,8 +34,8 @@ embedding} de mot. Si on définit une bijection $g(\textrm{mot}) \in \lbrace
 fonction $h(\textrm{mot})=E_{g(\textrm{mot}).}$ retourne la ligne
 correspondante de la matrice $E_{i.}$.
 
-De façon purement mathématique, il s'agit d'un produit matriciel
-$\textrm{one-hot}(\textrm{"mot"})^{T}E$ entre un vecteur {\it one-hot}
+Mathématiquement, il s'agit d'un produit matriciel
+$\textrm{\it one-hot}(\textrm{"mot"})^{T}E\in\mathbb{E}$ entre un vecteur {\it one-hot}
 (Eq.~\ref{eq:onehot}) et la matrice des embeddings $E$. Cette opération étant
 différentiable, la mise à jour de la matrice des embeddings se fait sans
 problèmes au travers de l'algorithme de rétro-propagation du gradient, comme
@@ -66,19 +66,40 @@ représentation des mots à partir de leur structure propre.  Cette approche
 \citep{rnn58} a donné de bons résultats en pratique pour la recherche
 d'information (Information Retrieval).
 
-\section{Prédiction de Similarité}
+\section{Mesure de Similarité}
 
-mesure de similarite avec le cosinus
+Il est important dans cet espace $\mathbb{E}$ de pouvoir juger de la qualité des
+représentations apprises. Il n'existe pas encore de mesure pour départager une
+représentation meilleure qu'une autre. On peut en revanche examiner les entités
+voisines dans l'espace sémantique $\mathbb{E}$ et juger si elles sont
+similaires. On mesure la similarité entre deux représentations $e^{(i)}=h(x_i)$ et
+$e^{(j)}=h(x_j)$ dans $\mathbb{E}$ par un simple produit scalaire:
+
+\begin{equation}
+\label{eq:dot-simple}
+\textrm{sim}(e^{(i)}, e^{(j)})=<e^{(i)}, e^{(j)}> = \sum_{k=1}^{d}e^{(i)}_k e^{(j)}_k
+\end{equation}
+
+Une mesure de similarité qui peut aussi donner d'excellents résultats est la
+distance cosinus fréquemment utilisée en traitement du langage pour la
+comparaison de documents textuels.  
+
+\begin{equation}
+\textrm{sim}(e^{(i)}, e^{(j)})=\cos (e^{(i)}, e^{(j)}) = \dfrac{ <e^{(i)}, e^{(j)}> }{\Vert e^{(i)}\Vert \Vert e^{(j)}\Vert}
+\end{equation}
+
+À noter que pour une optimisation par descente de gradient, cette mesure de
+similarité est plus coûteuse en termes computationnels que le produit scalaire
+simple (Eq.~\ref{eq:dot-simple}).
+
+\section{Classification en Haute Dimension}
 
 update pour maximiser le log likelihhod
-
 ranking ou classification en haute dimension
 solution méthodes à base de sampling
 méthodes d'énergie ranking
 search MSR
 wsabie
-
-\section{Classification en Haute Dimension}
 
 Le nombre d<entites dans un espace est en generl tres grand et la
 classification en elle-meme devient un probleme car le nombre de couples

@@ -1,7 +1,57 @@
-\chapter*{R\'{e}sum\'{e}}
+\chapter*{R\'{e}sum\'{e}\\~~~~~~~~\\~~~~~~~~~~~}
 
-lala
+\vspace{-2.8cm}
 
+Dans cette dissertation, nous présentons plusieurs techniques d'apprentissage
+d'espaces sémantiques pour différents domaines, par exemple des mots et des
+images, mais aussi à l'intersection de différents domaines.  On utilisera
+différentes techniques d'apprentissage machine pour apprendre des
+représentations avec des propriétés intrasèques intéressantes. Ces propriétés
+peuvent aller d'un meilleur mixage (un espace où il est plus aisé de faire de
+l'échantillonage), à une meilleure séparabilité linéaire (un espace où il est
+plus facile de discrimer ave un hyperplan). L'espace sémantique est l'espace où
+la représentation évolue. Cet espace est appelé sémantique si des entités
+jugées similaires par un être humain, ont leur similarité préservée dans cet
+espace.
+\\
+
+\vspace{-0.2cm}
+La première publication présente un enchaînement de méthodes d'apprentissage
+incluant de nombreuses techniques d'apprentissage non supervisé utilisées pour
+gagner une compétition en 2011. La particularité de cette compétition était
+qu'aucun apriori sur la structure des données ne pouvait être utilisé car les
+différents ensembles de données (reconnaissance de caractères manuscrits,
+actions humaines, traitement du langage naturel, données écologiques,
+classification d'images) étaient rendus anonymes par des permutations
+aléatoires. Le deuxième article présente une manière d'extraire de l'information
+partir d'un contexte structuré ($177$ détecteurs d'objets à différentes
+positions et échelles). On montrera que l'utilisation de la structure des
+données combinée à un apprentissage non supervisé permet de réduire la
+dimensionnalité d'un facteur de $97\%$ tout en améliorant les performances de
+reconnaissance de scènes de $+5\%$ à $+11\%$ suivant l'ensemble de données.
+\\
+
+\vspace{-0.2cm}
+Dans le troisième travail, on s'intéresse à la structure apprise par les
+réseaux de neurones profonds utilisés dans les deux précédentes publications.
+Plusieurs hypothèses sont présentées et testées expérimentalement montrant que
+l'espace appris a de meilleures propriétés de mixage (explorer toutes les
+différentes classes durant le processus d'échantillonage).
+\\
+
+\vspace{-0.2cm}
+Pour la quatrième publication, on s'intéresse à résoudre un problème d'analyse
+syntaxique sémantique avec des réseaux de neurones récurrents appris sur des
+fenêtres de contexte de mots.  On observe une nette amélioration de l'état de
+l'art sur plusieurs ensembles de données et d'intéressantes propriétés de
+l'espace sémantique associé au langage.  Une recherche sur l'apprentissage d'un
+espace sémantique à l'intersection des mots et des images est présenté dans
+notre cinquième travail. On propose une façon d'effectuer de la recherche
+d'image "augmentée" en apprenant un espace sémantique où une recherche d'image
+contenant un objet retournerait aussi des images des parties de l'objet, par
+exemple une recherche retournant des images de  "voiture" retournerait aussi
+des images de "pare-brises", "coffres", "roues" en plus des images initiales.
+ 
 \chapter*{Summary}
 
 In this work, we focus on learning semantic spaces for different domains, e.g.
@@ -12,7 +62,8 @@ it's easier to perform sampling), to better linear separability (a space where
 it's easier to discriminate with an hyperplane). The semantic space is where
 the learned representation lives. This space is called semantic if "similar"
 entities from a human perspective have their similarity preserved in this
-space.\\
+space.
+\\
 
 The first article presents a pipeline including many different unsupervised
 learning techniques used to win a challenge in 2011. No prior on the structure
@@ -39,3 +90,4 @@ presented in the fifth article. We propose a way to perform "augmented search"
 by learning a semantic space where a search on an image containing an object
 would also return images of the object's parts, e.g. searching for "car" images
 would return "windshield", "trunk" or "wheel" images in addition to car images.
+
