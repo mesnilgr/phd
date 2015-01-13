@@ -93,50 +93,90 @@ similarité est plus coûteuse en termes computationnels que le produit scalaire
 simple (Eq.~\ref{eq:dot-simple}).
 
 \section{Classification en Haute Dimension}
+\label{sec:chd}
 
-update pour maximiser le log likelihhod
-ranking ou classification en haute dimension
-solution méthodes à base de sampling
-méthodes d'énergie ranking
-search MSR
-wsabie
+Considérons le cas d'une classification classique avec softmax
+(Eq.~\ref{eq:softmax}) en négligeant le biais $b^{(m+1)}$. On peut associer
+l'espace défini par la dernière couche (la couche avant d'appliquer la softmax)
+à un espace sémantique $\mathbb{E}$.  Chaque ligne $W^{(m+1)}_{j.}$ de la
+matrice $W^{(m+1)}$ du classifieur correspond au centre du cluster associé à
+la classe $j$. Pour prédire la classe dominante associé à un exemple $x$, on
+calcule la représentation $h^{(m)}(x)$ et la classe $j$ avec la plus grande
+similarité l'emporte:
 
-Le nombre d<entites dans un espace est en generl tres grand et la
-classification en elle-meme devient un probleme car le nombre de couples
-d<entites pour deux domaines
+\begin{equation}
+\textrm{arg}\max_{j\in\lbrace 1,\dots ,C\rbrace} \textrm{sim}(h^{(m)}(x), W^{(m+1)}_{j.})
+\end{equation}
 
-Parfois le nombre de classes en sortie est trop eleve et il est necessaire d
-utiliser certraines astuces afin de controler l'explosion du nombre de ckasses
-considerees comme negatives. Ce nombre de classes negatives, toutes les classes
-excepte la classe cible, augmente de facon exponentielle en particulier si l<on
-desire classifier des couples ou des triplets. Par exemple classifier des
-couples x y avec 1000 valeurs possibles pour y et 1000 valeurs possibles pour y
-donne 1M de couples possibles.
+La softmax étant appliquée ensuite pour convertir ces valeurs en probabilités.
 
-L'idee est donc ici de sampler des negatifs afin d<obtenir une approximation de
-la vraie valeur de la softmax.  On peut aussi faire du sampling de negatif
-intelligent, c<Est a dire selectionner uniquement les couples negatifs qui
-violent une certaine contrainte et ignorer les autres.
+Prenons l'exemple de la détection de paraphrase dans un espace sémantique
+\citep{msr-paraphrase}. On suppose que notre ensemble d'entraînement
+$\mathcal{D}_{train}$ est composé de $10,000$ couples de paraphrases, donc
+$20,000$ phrases au total. Au moment de l'apprentissage, on veut avoir la similarité
+$\textrm{sim}(h(x_i),h(x_j))$ entre la représentation $h(x_i)$ et $h(x_j)$ de
+deux paraphrases $x_i$ et $x_j$ supérieure à la similarité de tous les couples
+qui ne sont pas des paraphrases. Notre fonction de similarité étant symétrique,
+au total il est possible de former un ensemble $\mathcal{P}$ de $10,000$
+couples positifs et un ensemble $\mathcal{N}$ de $199,970,000$ couples négatifs
+($20,000^2/2 - 20000 - 10000$) Le nombre d'entités $C$ (dans l'exemple
+précédent $C=20,000$) est en général très grand.
 
-si l'on regarde l'equation de la softmax
-nous pouvons voir les lignes de la matrice (1 vecteur par classe) comme un vecteur representatif de la classe c dans l'espace semantique de la derniere couche.
-ensuite, etant donne un nouvel example, on mesure sa similarite avec chaque classe (par le biais d'un porduit scalaire) et la classe qui donne la plus grande similarite l'emporte.
+Au moment de l'apprentissage, calculer la similarité pour tous les couples
+négatifs devient inefficace et il nécessaire de trouver d'autres stratégies
+pour contrôler l'explosion du nombre de classes considérées comme négatives.
+L'idee est donc ici de sampler un nombre décent ($100\leq C\leq 1,000$) de couples négatifs à chaque
+mise à jour afin d'obtenir une approximation de la vraie valeur de la softmax.
+Il est aussi possible de faire du sampling de négatif intelligent, c'est à dire
+sélectionner uniquement les couples négatifs qui violent une certaine
+contrainte et ignorer les autres. Pour un couple de positif $(x_i, x_j)$, cette
+contrainte pour sélection un ensemble de couples négatifs $(x_k, x_l)$ peut
+prendre la forme d'un viol de marge $\epsilon$:
 
-Il est ensuite assez simple d'avoir un probleme qui scale a plusieurs millions de classes. On selectionne de facon aleatoire un sous ensemble de classes a chaque mise a jour differentes de la classe de l'Exemple courant et on attribue ces classes comme etant les classes negatives associees a cet exemple. Ce sous ensemble de classes est renouvele a chaque mise a jour.
+\begin{equation}
+\textrm{sim}(x_i, x_j) - \textrm{sim}(x_k, x_l) - \epsilon > 0
+\end{equation}
 
+Il est ensuite plus aisé d'avoir un problème qui scale à plusieurs millions
+d'entités. On sélectionne de façon aléatoire un sous ensemble
+$\tilde{\mathcal{N}}_{(x_i, x_j)}$ de couples négatifs associé à chaque mise à jour
+d'un couple positif $(x_i, x_j)\in\mathcal{P}$.  Ce sous-ensemble
+$\tilde{\mathcal{N}}$ est renouvelé à chaque mise à jour. La fonction à minimiser
+devient alors:  
 
+\begin{equation}
+-\sum_{(x_i, x_j)\in\mathcal{P}}\sum_{(x_k, x_l)\in\tilde{\mathcal{N}}_{(x_i, x_j)}} \textrm{sim}(h(x_i), h(x_j)) - \textrm{sim}(h(x_k), h(x_l)) - \epsilon
+\label{eq:min-sim}
+\end{equation}
+
+Nous présenterons cette technique \citep{image-wsabie} dans le chapitre
+\ref{chap:mlj}. Il est possible de s'inspirer de ces idées pour avoir d'autres
+types de fonctions à minimiser mais l'idée reste la même \citep{rnn58}.
 
 \section{Espaces Multi-Domaines}
 
-lala
+Dans la section précédente~\ref{sec:chd}, nous avons observé comment apprendre un espace
+sémantique pour un seul et unique domaine. Il est possible d'apprendre un espace
+sémantique commun à l'intersection de différents domaines.  
 
-Dans le chap mlj nous verrons comment avoir un espace semantique commun a deux domaines. 
+Pour étendre cette idée à deux domaines, il suffit de définir une
+représentation $h_L(x)$ pour le langage et une représentation $h_I(x)$ pour des images
+(Chapitre~\ref{chap:mlj}). La seule différence réside dans une
+représentation $h_I$ additionnelle à apprendre. La fonction à minimiser
+reste la même:
 
-Il est aussi possible d<etendre cette idee a un nombre de domaines arbitraire
+ \begin{equation}
+-\sum_{(x_i, x_j)\in\mathcal{P}}\sum_{(x_k, x_l)\in\tilde{\mathcal{N}}_{(x_i, x_j)}} \textrm{sim}(h_L(x_i), h_I(x_j)) - \textrm{sim}(h_L(x_k), h_I(x_l)) - \epsilon
+\end{equation}
 
-antoine bordes translation modele
+Cette approche est bénéfique dans le sens où une prédiction d'image de
+'requin' à partir d'embeddings de mots même si elle est fausse, donnera une
+prédiction proche parmi des embeddings voisins qui auront la même sémantique \citep{samy-extreme}.
 
-il est possible d<avoir un espace semantique commun a des representations de differents domaines. Cela est meme parfois benefique dans le sens ou cela vient enrichir l<espace et une prediction sera moins dans le champ si on predit l<embedding voisin.
+Nous travaillons actuellement à étendre le concept Multi-Domaines de deux
+domaines à un nombre de domaines arbitraires. Le nombre de couples positifs
+croît de façon quadratique avec le nombre de domaines. Une approche avec
+une croissance linéaire est en moment à l'étude.
 
 \section{Transfert de Domaine: Proxy d'apprentissage}
 
