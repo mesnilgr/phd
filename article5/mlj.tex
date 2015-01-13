@@ -296,7 +296,7 @@ object (say a "car"), one could also be presented images of related object parts
 (such as "wheel" or "windshield" ). This would seamlessly enhance the browsing experience.
 %
 Unfortunately, although some limited datasets with this type of
-labeling are available \cite{Yao:2007, labelme}, collecting such
+labeling are available \citep{Yao:2007, labelme}, collecting such
 deeply annotated data is costly and time consuming,
 %
 Moreover, although some image annotation tasks can benefit from
@@ -323,14 +323,14 @@ labels for which one is the part of the other.
 %
 The two components are trained jointly using combined data built from two sources (ImageNet and WordNet).
 
-This paper builds upon previous work published by \cite{image-wsabie}.
+This paper builds upon previous work published by \citep{image-wsabie}.
 %
 However, the previous work has only focused on the standard image annotation setting, whereas 
 the present version proposes jointly learning 
 object and part representations.
 % 
 Hence, many new elements are provided including the word, object and part joint model, its training scheme, the proxy 
-supervision setting, the ImageNet+WordNet dataset and all experimental results on it and on the LHI data set~\cite{Yao:2007}.
+supervision setting, the ImageNet+WordNet dataset and all experimental results on it and on the LHI data set~\citep{Yao:2007}.
 
 The paper is organized as follows. 
 Section~\ref{sec:joint-word-object} describes learning joint latent semantic models for words and objects.
@@ -350,7 +350,7 @@ Finally, Section~\ref{conclusion} concludes.
 
 Before we describe the model that learns the semantics of words,
 objects and their parts we start with a simpler model of representing
-only words and objects, previously described in \cite{image-wsabie}.
+only words and objects, previously described in \citep{image-wsabie}.
 In this case, a large amount of supervised data can be obtained, and
 we hence detail a supervised training criterion for learning the
 appropriate ranking function. We will explain below how this setup is
@@ -413,7 +413,7 @@ For the feature representation of images, we first employ a fixed
 mapping $\Phi_{\cal I}(\cdot)$ that transforms the pixel representation
  into an $N$-dimensional vector which in this paper is a high-dimensional 
 and sparse feature representation, as is also 
-commonly performed in other works. % \cite{grangier:2008:tpami,wsabie}.
+commonly performed in other works. % \citep{grangier:2008:tpami,wsabie}.
 Then, we transform this intermediate representation to the $D$-dimensional semantic space, via
 a linear map using a  $D \times N$ matrix $V$ of parameters:
 
@@ -421,7 +421,7 @@ a linear map using a  $D \times N$ matrix $V$ of parameters:
 
 In our model there is a dictionary with $K$ possible labels that can be embedded
 using $E_{\cal L}(\cdot)$.  Following other works dealing with embedding
-representations for text \cite{Bengio-scholarpedia-2007,wsabie} for each label
+representations for text \citep{Bengio-scholarpedia-2007,wsabie} for each label
 we learn a $D$ dimensional vector that will represent the label, resulting in a
 $D \times K$ dimensional matrix $W$ of parameters to learn for the $K$ labels:
 
@@ -557,7 +557,7 @@ where we decouple some of these parameters, so we instead consider:
 
 where $U$ is now a different set of parameters to $W$.
 
-% Linear Embeddings models\cite{Weston:2010}
+% Linear Embeddings models\citep{Weston:2010}
 
 % 2 models: NNimage-word and NNword-word with shared weights for the word matrix
 
@@ -589,7 +589,7 @@ where $U$ is now a different set of parameters to $W$.
 \section{Training Our Models} \label{sec:training}
 
 The two following sections (\ref{warp}, \ref{olmodel}) are taken from
-previous work~\cite{image-wsabie} and describe the original object-label
+previous work~\citep{image-wsabie} and describe the original object-label
 setting and the WARP loss method. Afterwards, the object-parts model is built
 upon that and described in detail in Section~\ref{sec:psup}. 
 
@@ -612,10 +612,10 @@ A classical loss function for learning to rank is to maximize AUC by minimizing:
 \[
  err_{AUC}(f(x), y)  = \sum_x \sum_y \sum_{\ybar \neq y} \max(0,1+ f_{\ybar}(x) - f_y(x)),
 \]
-see, e.g.  \cite{herbrich2000large}.
+see, e.g.  \citep{herbrich2000large}.
 This tries to make the positive label $y$ ranked above negative labels $\bar{y}$, because it sums
 over all negative labels it optimizes the mean rank. It also enforces a margin of 1 as in margin-based 
-methods like  SVMs \cite{svm}.
+methods like  SVMs \citep{svm}.
 To make training of such a loss function scalable to large datasets 
 with our model, one can optimize this loss using
  stochastic gradient descent (SGD):
@@ -635,7 +635,7 @@ assuming the margin is the same.
 However, function 1 gives a superior precision at 1, because at least it gets one of the two examples correct.
 
 To fix this problem, a class of ranking error functions was recently 
-defined in~\cite{usunier:icml2009} as:
+defined in~\citep{usunier:icml2009} as:
 \begin{equation} \label{err-eq-orig}
 err(f(x),y)  =  \LPhi(rank_y(f(x)))
 \end{equation}
@@ -726,7 +726,7 @@ $1/rank^1_{y}(f(x))$ of drawing $\ybar$ in step (2) (or a contribution of 0 if
 $rank^1_{y}(f(x))=0$) which accounts for
 the denominator of (\ref{err-eq}).
 
-This suggests for learning we can thus perform the following stochastic update procedure~\cite{robbins_monro:1951} over the parameters $\beta$
+This suggests for learning we can thus perform the following stochastic update procedure~\citep{robbins_monro:1951} over the parameters $\beta$
  that define a family of possible functions $f \in {\cal F}$:
 \begin{equation}
 \label{eq:sgdstep}
@@ -756,45 +756,13 @@ where $\floor{.}$ is the floor function and $N$ the number of trials
 in the sampling step.
 This method is called the Weighted Approximate Ranked Pairwise (WARP) loss.
 
-\if 0
-\begin{algorithm}[tb]
-   \caption{Online WARP Loss Optimization}
-   \label{alg:train}
-\begin{algorithmic}
-   \STATE {\bfseries Input:} labeled data $(x_i,y_i)$, $y_i \in \{1,\dots,K\}$. 
-%, loss parameters ${\bf \alpha}$, and family of functions $f(\cdot)$.
-% and choice of rank penalities $\alpha_1,\dots,\alpha_{K}$
-
-   \REPEAT
-   \STATE Pick a random labeled example $(x_i,y_i)$
-   \STATE Let $f_{y_i}(x_i) =  \Phi_{W}(y_i)^\top \Phi_{I}(x_i)$
-   \STATE Set $N = 0$.
-
-   \REPEAT
-   \STATE Pick a random annotation $\bar{y} \in \{1,\dots,K\} \setminus y_i$.
-   \STATE Let $f_{\bar{y}}(x_i) =  \Phi_{W}(\bar{y})^\top \Phi_{I}(x_i)$
-   \STATE $N=N+1$.
-   \UNTIL{$f_{\bar{y}}(x_i)> f_{y_i}(x_i) - 1$  or $N\geq K-1$}
-
-  \IF{ $f_{\bar{y}}(x_i)> f_{y_i}(x_i) - 1$}
-   \STATE Make a gradient step to minimize:\\  %(i.e. eq. (\ref{eq:sgdstep})) for:
-~~~~~~~~~ $L(\floor{\frac{K-1}{N}}) |1-f_y(x_i)+f_{\bar{y}}(x_i)|_{+} $
-   \STATE Project weights to enforce constraints (\ref{con1})-(\ref{con2}).
-   \ENDIF 
-
-   \UNTIL{ validation error does not improve.}
-
-\end{algorithmic}
-\end{algorithm}
-\fi
-
 \subsection{Training Object and Label Models}
 \label{olmodel}
 
 Solving the image annotation problem with the semantic embedding model with objects and labels
 hence consists of the
  joint word-image embedding model of Section \ref{jwie} trained with the WARP loss of Section \ref{warp}.
-This method is called {\sc Wsabie} in \cite{image-wsabie}.
+This method is called {\sc Wsabie} in \citep{image-wsabie}.
 % and the pseudo code for the method is given in Algorithm~\ref{alg:wsabie}
 The mapping matrices $V$ and $W$ are initialized at random
 with mean 0, standard deviation $\frac{1}{\sqrt{d}}$, which is a common choice. 
@@ -808,7 +776,7 @@ We regularize the weights of our models by giving them constrained norm:
 \begin{equation} \label{con22}
   ||W_i||_2 \leq C, ~~~ i=1,\dots,K.
 \end{equation}
-which acts as a regularizer in the same way as is used in lasso \cite{tibshirani1996regression}.
+which acts as a regularizer in the same way as is used in lasso \citep{tibshirani1996regression}.
 During SGD, the initial weights are rescaled if they violate the constraints (\ref{con11})-(\ref{con22}).
 %We use a fixed learning rate $\gamma$, chosen using a validation set
 % (a decaying schedule over time $t$ is also possible, but we did not implement that approach).
@@ -831,19 +799,19 @@ first propose an approach to address the data collection issue.
 
 Our method is based on two observations.
 %
-First, large datasets exist today with images labeled with their depicted objects (e.g.~\cite{imagenet}).
+First, large datasets exist today with images labeled with their depicted objects (e.g.~\citep{imagenet}).
 %
 These datasets contain millions of images annotated with thousands of
 terms.
 %
-Second, many knowledge bases (including~\cite{wordnet, freebase, yago})
+Second, many knowledge bases (including~\citep{wordnet, freebase, yago})
 provide various semantic relation between words (such as \textit{part-of}).
 %
 We propose to combine these two kinds of data sources to provide
 training data for our task.
 
-Specifically, we use here ImageNet~\cite{imagenet} and
-WordNet~\cite{wordnet}, two databases based on a common set of
+Specifically, we use here ImageNet~\citep{imagenet} and
+WordNet~\citep{wordnet}, two databases based on a common set of
 semantic categories.
 %
 WordNet is a large database encompassing a comprehensive lexical
@@ -978,7 +946,7 @@ constraint:
 In practice not all training data constraints can be satisfied so we instead optimize a {\em ranking loss}
 that tries to optimize the precision at the top of the ranked list of labels.
 %For constraints of the the first type, 
-Following the loss defined in \cite{usunier,wsabie} 
+Following the loss defined in \citep{usunier,wsabie} 
 we would like to minimize (for a single training example):
 \[
    {\cal E} \left(rank_o(f_q(x))\right)  +    {\cal E} \left(rank_p(f_q(x))\right) 
@@ -998,14 +966,14 @@ and $rank_p$ counts the number of labels that are ranked above the true part lab
 \]
 is a function that transforms the ranks into a loss. 
 If the first few indices of $\alpha$ index large values and smaller values follow this 
-gives more weight to optimizing the top of the ranked list \cite{usunier}.
+gives more weight to optimizing the top of the ranked list \citep{usunier}.
 In our experiments we set  $\alpha_1=1$ and 
 $\alpha_{j>1}=0$ to optimize the proportion of top-ranked correct labels.
 
 
 \paragraph{Object and Part Training Algorithm}
 
-Following the authors of \cite{wsabie} we optimize such a loss function via 
+Following the authors of \citep{wsabie} we optimize such a loss function via 
 stochastic gradient descent by iterating over the following scheme:
 \begin{enumerate}
 \item Select a positive training quadruplet $x$ at random.
@@ -1050,7 +1018,7 @@ $W,U$ and $\{0.1,0.01\}$ for $V$.
 For the image mapping $\Phi(\cdot)$ we use a
 standard bag-of-visual-terms type representation, which has
 a sparse vector representation. In particular, we use the bag-of-terms 
-feature setup of \cite{grangier:2008:tpami}, which
+feature setup of \citep{grangier:2008:tpami}, which
 was shown to perform well on image ranking tasks. 
 The image is first segmented into several overlapping square blocks at various scales.
 Each block is then represented by the concatenation of color and edge features.
@@ -1070,12 +1038,12 @@ objects by their own merits (like the flashlight of a camera), but
 rather capture recurring patterns in patches that cover parts of the
 images (like a bottom left side of a camera).
 %
-For example, \cite{agarwal2004learning} learned
+For example, \citep{agarwal2004learning} learned
 models of parts and their spatial relations from sets of patches in
 images, and then used them to label objects, such as cars in urban
 environments. The current work has a different aim of explicitly
 tagging the presence of parts in images. Another related work is by
-\cite{crandall2006weakly}, who used a Markov random field to learn a
+\citep{crandall2006weakly}, who used a Markov random field to learn a
 rich appearance and shape model with training data that only had class
 labels. Once again the parts learned in this work do not correspond to
 smaller objects but rather to patches that cover parts of objects.
@@ -1083,8 +1051,8 @@ smaller objects but rather to patches that cover parts of objects.
 \paragraph{Object Detection using Part or Attribute-based models}
 
 Using parts or attributes has shown promising results for object detection.
-\cite{core} build an object representation where objects are described as a
-collection of semantically meaningful attributes e.g. parts, material.  Also, \cite{fel2009}
+\citep{core} build an object representation where objects are described as a
+collection of semantically meaningful attributes e.g. parts, material.  Also, \citep{fel2009}
 shows how to train state of the art object detectors which first localize
 parts of an object in combination with a whole object detector.
 These approaches differ from ours since we are focusing
@@ -1096,11 +1064,11 @@ on classification and image retrieval and not on detection.
 
 The idea of using embedding algorithms for image labeling has been tried
 using several varying methods.
-PLSA \cite{monay2004plsa} was applied but has been shown to perform
+PLSA \citep{monay2004plsa} was applied but has been shown to perform
 worse than (non-embedding based) supervised ranking models such as the large margin classifier
- {\sc Pamir} \cite{grangier:2008:tpami}. Embedding for image retrieval (rather than annotation)
-using KCCA was also explored in \cite{zhou2007semi}.
-The most related work to ours is that of \cite{wsabie} which uses a ranking criterion
+ {\sc Pamir} \citep{grangier:2008:tpami}. Embedding for image retrieval (rather than annotation)
+using KCCA was also explored in \citep{zhou2007semi}.
+The most related work to ours is that of \citep{wsabie} which uses a ranking criterion
 optimizing the top of the ranked list like ours to label images where they obtained very good
 results compared to non-embedding approaches (such as {\sc Pamir}) on large scale tasks.
 None of these works however explored labeling parts in images.
@@ -1119,7 +1087,7 @@ We first briefly give experimental results in an image annotation setup which
 labels {\em objects only} (Section~\ref{sec:oos}).  These results justify the
 general embedding approach and choice of loss function that we use in the rest
 of our experiments on objects and parts, and are a summary of the results from
-\cite{image-wsabie}.  Then, we present new results for the object and part
+\citep{image-wsabie}.  Then, we present new results for the object and part
 model we are interested in (Sec.\ref{sec:ops}).
 
 \subsection{Objects Only}\label{sec:oos}
@@ -1134,8 +1102,8 @@ By Image Embedding).
 
 \paragraph{Dataset}
 
-ImageNet~\cite{imagenet_cvpr09}
-is a large-scale image dataset organized according to WordNet~\cite{wordnet:1998}.
+ImageNet~\citep{imagenet_cvpr09}
+is a large-scale image dataset organized according to WordNet~\citep{wordnet:1998}.
 Concepts in WordNet, described by multiple words or word phrases, are
 hierarchically organized. ImageNet is a growing image dataset that attaches
 quality-controlled human-verified images to  these concepts.
@@ -1151,17 +1119,17 @@ or validation example in feature space.
 As mentioned before, we will consider a bag-of-visual-terms type representation,
 but many other types of feature representation appear in the literature.
 We hence also explored the possibility that an ensemble of feature representations that can 
-improve performance as has been shown before \cite{makadia:2008}.
+improve performance as has been shown before \citep{makadia:2008}.
 We thus combined multiple feature representations which are the
- concatenation of various spatial \cite{pyramid} and multiscale color and
-texton histograms \cite{textons}
+ concatenation of various spatial \citep{pyramid} and multiscale color and
+texton histograms \citep{textons}
 for a total of about $5 \times 10^5$ dimensions.
 % The descriptors are
 %somewhat sparse, with about 50000 non-zero weights per
 %image. Some of the constituent histograms are normalized
 %and some are not.
-We then perform Kernel PCA \cite{kpca} on the combined feature representation using the intersection
-kernel \cite{intersection-kernel} 
+We then perform Kernel PCA \citep{kpca} on the combined feature representation using the intersection
+kernel \citep{intersection-kernel} 
 to produce a 1024 dimensional input vector for training {\sc Wsabie}. We then train {\sc Wsabie} as before.
 
 
@@ -1229,7 +1197,7 @@ For all methods, hyperparameters are chosen via the validation set.
 %trained in parallel while \Multiclass cannot.
 
 We tested approximate $k$-NN because $k$-NN is often not feasible. There are many
-flavors of approximation (see, e.g \cite{Fergus:small_codes}). We chose the following: 
+flavors of approximation (see, e.g \citep{Fergus:small_codes}). We chose the following: 
 a random projection at each node of the tree is chosen
 with a threshold to go left or right that is the median of the projected training data to make the tree 
 balanced. After traversing $p$ nodes we arrive at a leaf node containing
@@ -1366,7 +1334,7 @@ f_I^U(I_o,L_o,I_p,L_p) = f_I^U(I_o,L_o) + f_I^U(I_p,L_p) .
 \]
 
 As a baseline classifier, we also compare our models with a multiclass SVM
-trained in a one-vs-rest setting with LibLinear~\cite{liblinear}.
+trained in a one-vs-rest setting with LibLinear~\citep{liblinear}.
 
 
 
@@ -1491,8 +1459,8 @@ through their multi-task training within $f_I$ and $f_L$.
 \subsection{LHI Data}
 We further evaluated our models on a set of objects pairs that were
 manually annotated as objects and their parts. To create this data, we
-used a set of images annotated by Labelme \cite{labelme} and parsed
-by the Lotus Hill Research Institute (LHI)~\cite{yao2009image}. 
+used a set of images annotated by Labelme \citep{labelme} and parsed
+by the Lotus Hill Research Institute (LHI)~\citep{yao2009image}. 
 
 \paragraph{Data collection}
 We downloaded the LHI data from {\em yoshi.cs.ucla.edu/yao.data/}. For
@@ -1759,7 +1727,7 @@ be used in other contexts and with other databases.
 % a model to label objects in images with 
 %
 For instance, one could think of connecting Labeled Faces in the
-Wild (LFW)~\cite{LFWTech} as the image data and Freebase~\cite{freebase} as
+Wild (LFW)~\citep{LFWTech} as the image data and Freebase~\citep{freebase} as
 the semantic graph among labels.
 %
 Indeed, Freebase proposes a vast graph linking persons with various
@@ -1778,7 +1746,7 @@ be explored with our new proxy supervision for image annotation.
 This work was supported by the DARPA Deep Learning Program, NSERC, CIFAR, the
 Canada Research Chairs, Compute Canada and by the French ANR Project ASAP
 ANR-09-EMER-001. Codes for the experiments has been implemented using both
-Torch \cite{collobert:2011c} and Theano \cite{bergstra+al:2010-scipy} Machine
+Torch \citep{collobert:2011c} and Theano \citep{bergstra+al:2010-scipy} Machine
 Learning libraries.
 
 
@@ -1797,7 +1765,7 @@ Learning libraries.
 Your text comes here. Separate text sections with
 \section{Section title}
 \label{sec:1}
-Text with citations \cite{RefB} and \cite{RefJ}.
+Text with citations \citep{RefB} and \citep{RefJ}.
 \subsection{Subsection title}
 \label{sec:2}
 as required. Don't forget to give each section
