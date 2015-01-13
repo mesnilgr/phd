@@ -107,7 +107,7 @@ with variability, ambiguity, and a wide range of illumination or scale
 conditions.
   %
   Standard approaches build an intermediate representation of the global image
-  and learn classifiers on it. %~\cite{Lazebnik06,Lowe99,Csurka04}.
+  and learn classifiers on it. %~\citep{Lazebnik06,Lowe99,Csurka04}.
   %
   Recently, it has been proposed to depict an image as an aggregation of its
   contained objects:~ the representation on which classifiers are trained is
@@ -117,7 +117,7 @@ conditions.
   In this paper, we propose to study different approaches to efficiently learn
   contextual semantics out of these object detections.
   %
-  We use the features provided by Object-Bank~\cite{LiJiaLi10} (177 different
+  We use the features provided by Object-Bank~\citep{LiJiaLi10} (177 different
   object detectors producing 252 attributes each), and show on several
   benchmarks for scene categorization that careful combinations, taking into
   account the structure of the data, allows to greatly improve over original
@@ -140,7 +140,7 @@ conditions.
 
 
 Automatic scene categorization is crucial for many applications such
-as content-based image indexing \cite{Smeulders:2000} or image
+as content-based image indexing \citep{Smeulders:2000} or image
 understanding.
 %
 This is defined as the task of assigning images to predefined
@@ -152,29 +152,29 @@ ambiguities w.r.t. the corresponding scene label.
 
 Standard methods build an intermediate representation before
 classifying scenes by considering the image as a whole
-\cite{Torralba03,Vogel:2004,FeiFei:2005,Oliva06}. In particular, many
+\citep{Torralba03,Vogel:2004,FeiFei:2005,Oliva06}. In particular, many
 such approaches rely on power spectral information, such as
-magnitude of spatial frequencies \cite{Oliva06} or local texture
-descriptors \cite{FeiFei:2005}.
+magnitude of spatial frequencies \citep{Oliva06} or local texture
+descriptors \citep{FeiFei:2005}.
 %
 They have shown to perform well in cases where there are large
 numbers of scene categories.
 
 Another line of work conveys promising potential in scene categorization.
 %
-First applied to object recognition~\cite{Farhadi:2009}, attribute-based
+First applied to object recognition~\citep{Farhadi:2009}, attribute-based
 methods have now proved to be effective for dealing with complex scenes.
 %
 These models define high-level representations by combining semantic
 lower-level elements, e.g., detection of object parts.
 %
 A precursor of this tendency for scenes was an adaptation of
-pLSA~\cite{Hofmann:2001} to deal with ``visual words'' proposed by
-\cite{Bosh:2006}. 
+pLSA~\citep{Hofmann:2001} to deal with ``visual words'' proposed by
+\citep{Bosh:2006}. 
 %
 An extension of this idea consists in modeling an image based on its content
-i.e. its objects \cite{Espinace10ICRA,LiJiaLi10}. Hence, the Object-Bank (OB)
-project~\cite{LiSuLimFeiFei} aims at building high-dimensional over-complete
+i.e. its objects \citep{Espinace10ICRA,LiJiaLi10}. Hence, the Object-Bank (OB)
+project~\citep{LiSuLimFeiFei} aims at building high-dimensional over-complete
 representations of scenes (of dimension $44,604$) by combining the outputs of
 many object detectors ($177$) taken at various poses, scales and positions in
 the original image (leading to $252$ attributes per detector).
@@ -219,18 +219,18 @@ data in order for PCA to perform well.
 %
 The second one is based on {\em Deep Learning}.
 %
-Deep Learning has emerged recently (see \cite{Bengio-2009} for a review) and is
+Deep Learning has emerged recently (see \citep{Bengio-2009} for a review) and is
 based on neural network algorithms able to discover data representations in an
 unsupervised
-fashion~\cite{Hinton06,Bengio-nips-2006-short,ranzato-07-small,Koray-08,Jarrett-ICCV2009}.
+fashion~\citep{Hinton06,Bengio-nips-2006-short,ranzato-07-small,Koray-08,Jarrett-ICCV2009}.
 %
 We propose to use this ability to combine multiple detector features. Hence, we
 present 
 %several models trained in a parallel fashion 
 a model trained using Contractive Auto-Encoders
-\cite{Rifai+al-2011,Salah+al-2011}, which have already proved to be efficient
+\citep{Rifai+al-2011,Salah+al-2011}, which have already proved to be efficient
 on many image tasks and has contributed to winning a transfer learning
-challenge~\cite{UTLC+LISA-2011}.
+challenge~\citep{UTLC+LISA-2011}.
 % Plutot dans le cas general que sur des images tasks non ? on s'attaque a des
 % features sans connaissance apriori comme on pourrait l'avoir pour des images
 % Gregoire
@@ -248,7 +248,7 @@ challenge~\cite{UTLC+LISA-2011}.
 We validate the quality of our models in an extensive set of experiments in
 which several setups of the sequential feature extraction process are evaluated
 on benchmarks for scene classification
-\cite{Lazebnik06,LiJiaLi07,Quattoni09,Xiao:2010}. 
+\citep{Lazebnik06,LiJiaLi07,Quattoni09,Xiao:2010}. 
 %
  We show that our best results substantially outperform the original methods
  developed on top of OB features, while producing representations of much lower
@@ -266,7 +266,7 @@ on benchmarks for scene classification
   %PCA-based strategies tested.
   %
   %The results on different setups are either state-of-the-art (compared with
-  %methods using large combinations of features like \cite{Gao10}) or very
+  %methods using large combinations of features like \citep{Gao10}) or very
   %close to it. 
 
 
@@ -296,7 +296,7 @@ on benchmarks for scene classification
 
    \caption{{\it Left:} Cloud {\it Middle:} Man {\it Right:} Television. {\it
    Top:} False Detections {\it Bottom:} True Detections. Images from {\bf
-   SUN}~\cite{Xiao:2010} for which we compute the OB representation and display the
+   SUN}~\citep{Xiao:2010} for which we compute the OB representation and display the
    bounding box around the average position of various objects detectors. For
    instance, the \textit{television} detector can be viewed either as a
    \textit{television} detector or a \textit{rectangle} shape detector i.e.
@@ -319,14 +319,14 @@ on benchmarks for scene classification
 \section{Scene Categorization with Object-Bank} \label{sec:ob}
 
 Let us begin by introducing the approach of the OB
-project \cite{LiJiaLi10}.
+project \citep{LiJiaLi10}.
 %
 First, the $177$ most useful (or frequent) objects were selected from
-popular image datasets such as LabelMe \cite{labelme}, ImageNet
-\cite{imagenet} and Flickr.
+popular image datasets such as LabelMe \citep{labelme}, ImageNet
+\citep{imagenet} and Flickr.
 %
 For each of these $177$ objects, a specific detector, existing in the
-literature \cite{Felzen08,Hoiem05}, was trained.
+literature \citep{Felzen08,Hoiem05}, was trained.
 %
 Every detector is composed of $2$ {\em root filters} depending on the
 pose, each one coming with its own deformable pattern of parts, e.g., there
@@ -345,7 +345,7 @@ All $2\times 177$ maps are finally concatenated to produce an over-complete
 representation $x\in\mathbb{R}^{44,604}$ of the original image.
 %
 
-In the original OB paper \cite{LiJiaLi10}, classifiers for scene
+In the original OB paper \citep{LiJiaLi10}, classifiers for scene
 categorization are learned directly on these feature vectors of
 dimension $44,604$.
 %
@@ -391,13 +391,13 @@ performance. Our approach employs \textit{unsupervised feature
 methods which were not developed specifically for images. We will
 consider both standard Principal Component Analysis and
 Contractive Auto-Encoders
-\cite{Rifai+al-2011}. The latter is a recent machine
+\citep{Rifai+al-2011}. The latter is a recent machine
 learning method which has proved to be a robust feature extraction
 tool.
 
 \subsection{Principal Component Analysis}
 
-Principal Component Analysis (PCA)~\cite{Pearson-1901,Hotelling1933} 
+Principal Component Analysis (PCA)~\citep{Pearson-1901,Hotelling1933} 
 is the most prevalent technique for
 linear dimensionality reduction. A PCA with $k$ components finds the $k$
 orthonormal directions of projection in input space that retain most of the
@@ -412,19 +412,19 @@ Since we will consider an auto-encoder variant (presented next),
 we should mention here a well-known result: a linear auto-encoder with $k$
 hidden units, trained to minimize squared reconstruction error, will learn
 projection directions that span the same \textit{subspace} as a $k$ component
-PCA~\cite{Baldi89}.  However the regularized non-linear auto-encoder variant
+PCA~\citep{Baldi89}.  However the regularized non-linear auto-encoder variant
 that we consider below is capable of extracting qualitatively different, and
 usually more useful, nonlinear features.
 
 \subsection{Contractive Auto-Encoders}
 
-Contractive Auto-Encoders (CAEs) \cite{Rifai+al-2011} are among
+Contractive Auto-Encoders (CAEs) \citep{Rifai+al-2011} are among
 the latest developments in a line of machine learning research on nonlinear
 feature learning methods, that started with the success of Restricted Boltzmann
-Machines~\cite{Hinton06} for pre-training deep networks, and was followed by
+Machines~\citep{Hinton06} for pre-training deep networks, and was followed by
 other variants of auto-encoders such as
-sparse~\cite{ranzato-07-small,Koray-08,Goodfellow2009} and  denoising
-auto-encoders~\cite{VincentPLarochelleH2008}.
+sparse~\citep{ranzato-07-small,Koray-08,Goodfellow2009} and  denoising
+auto-encoders~\citep{VincentPLarochelleH2008}.
 %,Vincent-JMLR-2010}.  
 It was selected here mainly due to its practical ease of use and recent
 empirical successes.
@@ -433,7 +433,7 @@ Unlike PCA that decomposes the input space into leading {\em global} directions
 of variations, the CAE learns features that capture local directions of
 variation (in some regions of input space). This is achieved by penalizing the
 norm of the Jacobian of a latent representation $h(x)$ with respect to its
-input $x$ at training samples. Rifai et al.~\cite{Rifai+al-2011} show that the
+input $x$ at training samples. Rifai et al.~\citep{Rifai+al-2011} show that the
 resulting features provide a local coordinate system for a low dimensional
 manifold of the input space. This corresponds to an atlas of charts, each
 corresponding to a different region in input space, associated with a different
@@ -497,7 +497,7 @@ strategies are depicted in Figure~\ref{fig:architectures}.
 The idea of pooling responses at different locations
 or poses has been successfully used in
 Convolutional Neural Networks such as LeNet-$5$
-\cite{Lecun99objectrecognition} and other visual processing \cite{Serre05}
+\citep{Lecun99objectrecognition} and other visual processing \citep{Serre05}
 architectures inspired by the visual cortex.
 
 Here, we pool the $252$ responses of each object detector into one component
@@ -612,7 +612,7 @@ joint appearance of combinations of various objects. Moreover, instead
 of using an SVM on top of the learned representations, we can use a
 Multi-Layer Perceptron whose weights would be initialized by those of
 this CAE. This setting is where the CAE has shown to perform
-best in practice \cite{Salah+al-2011}.
+best in practice \citep{Salah+al-2011}.
 
 \section{Experiments} \label{sec:exp}
 
@@ -627,16 +627,16 @@ database) have also been used for unsupervised learning.
 %\vspace{-1ex}
 \begin{itemize}
   \item {\bf{MIT Indoor}} is composed of $67$ categories and, following
-\cite{LiJiaLi10,Quattoni09}, we used $80$ images from each category for
+\citep{LiJiaLi10,Quattoni09}, we used $80$ images from each category for
 training and $20$ for testing.
 
 \item {\bf{15-Scenes}} is a dataset of $15$ natural scene
-classes. According to \cite{Lazebnik06}, we used $100$ images per class for
+classes. According to \citep{Lazebnik06}, we used $100$ images per class for
 training and the rest for testing. 
 
 \item {\bf{UIUC-Sports}} contains $8$ event classes.  We
 randomly chose $70$ / $60$ images for our training / test set respectively,
-following the setting of \cite{LiJiaLi10,LiJiaLi07}.
+following the setting of \citep{LiJiaLi10,LiJiaLi07}.
 
 \item {\bf{SUN-397}} contains a full variety of $397$  well sampled
 scene categories ($100$ samples per class) composed of $108,754$ images in total.
@@ -694,11 +694,11 @@ Improvement w.r.t. Object Bank & $+6.4\%$ & $+11.5\%$ \\
 \end{center}
 
 \caption{\label{tab:res1} {\bf MIT Indoor.} Results are reported on the
-official split \cite{Quattoni09} for all combination strategies described in
+official split \citep{Quattoni09} for all combination strategies described in
 Section~\ref{sec:combi}.  Only the unsupervised feature learning strategies
 (PCA and CAE based) \textit{can} benefit from the addition of unlabeled scenes
-from SUN. Object Bank + SVM refers to the original system~\cite{LiJiaLi10} and DPM +
-Gist + SP~\cite{Pandey11} corresponds to the state-of-the-art method on MIT Indoor.  } 
+from SUN. Object Bank + SVM refers to the original system~\citep{LiJiaLi10} and DPM +
+Gist + SP~\citep{Pandey11} corresponds to the state-of-the-art method on MIT Indoor.  } 
 
 \end{table*}
 
@@ -747,7 +747,7 @@ would like to use our compact representation on a different set of images.
 \begin{center}
 \begin{tabular}{l|c|c}
           & UIUC-Sports     &  $15$-SCENES \\
-%LScSPM \cite{Gao10} & $\mathbf{85.30\%}$  & $\mathbf{89.70\%}$ \\  
+%LScSPM \citep{Gao10} & $\mathbf{85.30\%}$  & $\mathbf{89.70\%}$ \\  
 \hline
 \textit{object}-MAX  + SVM   & \mbox{~~~~}$67.23\pm1.29\%$\mbox{~~~~}  & \mbox{~~~~}$71.08\pm0.57\%$\mbox{~~~~}  \\  % hack moche pour donner un peu d'air au tableau
 \textit{object}-MEAN + SVM   & $81.88\pm1.16\%$ & $83.17\pm0.53\%$  \\  
@@ -769,7 +769,7 @@ Improvement w.r.t. OB & $+6.23\%$ & $+5.46\%$ \\
 
 \caption{\label{tab:res2} {\bf UIUC Sports and 15-Scenes} Results are reported
 for $10$ random splits (available at www.anonymous.org) and compared to the
-    original OB results~\cite{LiJiaLi10} - Object Bank + SVM - on one single
+    original OB results~\citep{LiJiaLi10} - Object Bank + SVM - on one single
     split.}
 
 \end{table*}
@@ -780,13 +780,13 @@ In order to evaluate the quality of the features generated by each
 strategy, a linear SVM is trained on the features extracted 
 by each combination method.
 %
-We used LibLinear \cite{liblinear} as SVM solver and chose the best C
+We used LibLinear \citep{liblinear} as SVM solver and chose the best C
 according to $5$-fold cross-validation scheme.
 %
 We compare accuracies obtained by features provided by all considered
-combination methods against the original OB performances~\cite{LiJiaLi10}. 
+combination methods against the original OB performances~\citep{LiJiaLi10}. 
 %state-of-the-art results
-%from~\cite{LiJiaLi10,Gao10,Pandey11}.
+%from~\citep{LiJiaLi10,Gao10,Pandey11}.
 % on several datasets described below.
 %
 Results obtained with SVM classifiers on all MIT-related tasks are
@@ -807,7 +807,7 @@ presence/absence of objects as max-pooling does.
 
 On MIT and MIT+SUN, \textit{object} or \textit{pose} PCAs reach almost the same
 range of performance slightly above the current state-of-the-art performances
-\cite{Pandey11}, except for whole-PCA which performs poorly: one must consider
+\citep{Pandey11}, except for whole-PCA which performs poorly: one must consider
 the structure of OB to combine features efficiently. In the experiments,
 keeping the $10$ (resp. $15$) first principal components gave us the best
 results for pose-PCA (resp. object-PCA).
@@ -843,7 +843,7 @@ produces a compact and powerful combination.
 
 
 \subsection{Deep Learning with Fine Tuning} Previous
-work~\cite{Larochelle-jmlr-2009} on Deep Learning generally showed that the
+work~\citep{Larochelle-jmlr-2009} on Deep Learning generally showed that the
 features learned through unsupervised learning could be improved upon by
 fine-tuning them through a supervised training stage. In this stage (which
 follows the unsupervised pre-training stage), the features and the classifier
@@ -863,7 +863,7 @@ This yields $44.0\%$ test accuracy on plain MIT and
 $49.1\%$ on MIT+SUN: this allows to obtain state-of-the-art performance,
 with or without semi-supervised training of the CAEs, even if these
 additional examples are highly beneficial.
-%, {\bf 6\% above the previous state-of-the-art}~\cite{Pandey11}.
+%, {\bf 6\% above the previous state-of-the-art}~\citep{Pandey11}.
 As a check, we also evaluate the effect of the unsupervised
 pre-training stage by completely skipping it and only training a
 regular supervised MLP of $1000$ hidden units on top of the PCA output, yielding a worse test
@@ -909,7 +909,7 @@ when those objects will be detected altogether. }
 
 \subsection{Use of External Semantic Information for Re-Ranking}
 
-WordNet's~\cite{wordnet} semantic structure provide an easy way to measure word similarities.
+WordNet's~\citep{wordnet} semantic structure provide an easy way to measure word similarities.
 We assume that closely related objects detectors (according to WordNet) should
 fire together and could be grouped in order to build semantically meaningful features.
 E.g. by grouping the output of {\it ship}, {\it sea} and {\it sun} into a
@@ -967,14 +967,14 @@ object $i$ according to the lesk metric ($R(i,i)=0$). Results
     \hline
     \end{tabular}
     \caption{\label{tab:reslesk} {\bf Re-Ranking}: Results are reported on
-    the official split \cite{Quattoni09}. Object-mean+SVM refers to the
+    the official split \citep{Quattoni09}. Object-mean+SVM refers to the
     mean-pooling strategy with and w/o the Re-Ranking transformation.} 
 \end{table}
 
 
 % the
 %first one, this leads to similar performances as the state-of-the-art,
-%LScSPM~\cite{Gao10}. Note that LScSPM do not rely on detectors but use
+%LScSPM~\citep{Gao10}. Note that LScSPM do not rely on detectors but use
 %a more standard approach for image classification based on local
 %feature descriptors.
 %
@@ -984,16 +984,16 @@ object $i$ according to the lesk metric ($R(i,i)=0$). Results
 In this work, we add one or more levels of trained representations on top of
 the layer of object and part detectors (OB features) that have constituted the
 basis of very promising trend of approach for scene
-classification~\cite{LiJiaLi10}.
+classification~\citep{LiJiaLi10}.
 %
 These higher-level representations are mostly trained in an unsupervised way,
 following the trend of so-called Deep
-Learning~\cite{Hinton06,Bengio-2009,Jarrett-ICCV2009}, but can be fine-tuned
+Learning~\citep{Hinton06,Bengio-2009,Jarrett-ICCV2009}, but can be fine-tuned
 using the supervised detection objective.
 %
 
 These learned representations capture statistical dependencies in the
-co-occurrence of detections the object detectors from~\cite{LiJiaLi10}.  In
+co-occurrence of detections the object detectors from~\citep{LiJiaLi10}.  In
 fact, one can see in Table~\ref{tab:cae} plausible contexts of joint appearance
 of several objects learned by the CAE.
 %
@@ -1013,7 +1013,7 @@ with any known predefined semantic system such as the one defined in WordNet.
 %
 
 In particular, we find that Contractive
-Auto-Encoder~\cite{Rifai+al-2011} can substantially improve
+Auto-Encoder~\citep{Rifai+al-2011} can substantially improve
 performance on top of \textit{pose} PCAs as a way to extract non-linear
 dependencies between these lower-level OB detectors (especially when
 fine-tuned). They also improve greatly upon the use of the detectors as inputs
@@ -1022,14 +1022,14 @@ the original methods used by OB).
 %
 
 This trained post-processing allows us to reach the state-of-the-art on MIT
-Indoor and UIUC ($85.13\%$ against $85.30\%$ obtained by LScSPM~\cite{Gao10})
+Indoor and UIUC ($85.13\%$ against $85.30\%$ obtained by LScSPM~\citep{Gao10})
 while being competitive on 15-scenes ($86.44\%$ also versus $89.70\%$ LScSPM). 
 %
 On these last two datasets, we reach the best performance for methods only
 relying on object/part detectors. Compared to other kinds of methods, we are
 limited by the accuracy of those detectors (only trained on HOG features),
 whereas competitive methods can make use of other descriptors such as
-SIFT~\cite{Gao10}, known to achieve excellent performance in image recognition.
+SIFT~\citep{Gao10}, known to achieve excellent performance in image recognition.
 
 
 Besides its good accuracies, it is worth noting that the feature representation
@@ -1051,7 +1051,7 @@ departures could take into account the topology (e.g. spatial
 structure) of the pattern of detections, rather than treat the
 response at each location and scale as an attribute and the set of
 attributes as unordered. This could be done in the same spirit as in
-Convolutional Networks~\cite{Lecun99objectrecognition}, aggregating
+Convolutional Networks~\citep{Lecun99objectrecognition}, aggregating
 the responses for various objects detectors/locations/scales in a way
 that takes explicitly into account the object category, location and
 scale of each response, similarly to the way filter outputs at
@@ -1061,7 +1061,7 @@ Network.
 \section{Acknowledgments} We would like to thank Gloria Zen for her helpful
 comments.  This work was supported by NSERC, CIFAR, the Canada Research Chairs,
 Compute Canada and by the French ANR Project ASAP ANR-09-EMER-001. Codes for
-the experiments have been implemented using Theano~\cite{bergstra+al:2010-scipy} Machine Learning library.
+the experiments have been implemented using Theano~\citep{bergstra+al:2010-scipy} Machine Learning library.
 
 %\bibliographystyle{plain}
 %{\small

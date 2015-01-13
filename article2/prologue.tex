@@ -5,36 +5,38 @@
 { \bf Unsupervised Learning of Semantics of Object Detections for Scene
 Categorization} Gr\'{e}goire Mesnil, Salah Rifai, Antoine Bordes, Xavier
 Glorot, Yoshua Bengio and Pascal Vincent.  { \it Advances in Intelligent
-Systems, Computing, Springer} Vol.  318, Maria De Marsico and Ana Fred (Eds):
+Systems, Computing} Springer, Vol.  318, Maria De Marsico and Ana Fred (Eds):
 Pattern Recognition Applications and Methods\\ 
 
 {\it Contribution Personnelle} Le d\'{e}but de ce travail a \'{e}t\'{e}
-effectu\'{e} en collaboration avec Antoine Bordes et Xavier Glorot. L'id\'{e}e
-initiale \'{e}tait d'utiliser le contexte dans des images (pr\'{e}sence
-d'objets) pour am\'{e}liorer la cat\'{e}gorisation de sc\`{e}nes. Je me suis
-charg\'{e} de pr\'{e}parer les repr\'{e}sentations d'Object Bank pour tous nos
-datasets et effectu\'{e} l'int\'{e}gralit\'{e} des exp\'{e}riences except\'{e}
-celles relatives aux Contractive-AutoEncoders r\'{e}alis\'{e}es par Salah
-Rifai. J'ai ensuite adapt\'{e} le pipeline de la comp\'{e}tition afin de
+effectu\'{e} en collaboration avec Antoine Bordes, Xavier Glorot et Salah
+Rifai. L'id\'{e}e initiale \'{e}tait d'utiliser le contexte dans des images
+(pr\'{e}sence d'objets) pour am\'{e}liorer la cat\'{e}gorisation de sc\`{e}nes.
+Je me suis charg\'{e} de pr\'{e}parer les repr\'{e}sentations d'Object Bank
+pour tous nos datasets et effectu\'{e} l'int\'{e}gralit\'{e} des
+exp\'{e}riences except\'{e} celles relatives aux CAEs r\'{e}alis\'{e}es par
+Salah Rifai. J'ai ensuite adapt\'{e} le pipeline de la comp\'{e}tition afin de
 r\'{e}duire la dimension d'entr\'{e}e et permettre \`{a} l'apprentissage non
 supervis\'{e} d'avoir lieu.  Apr\`{e}s plusieurs discussions fructueuses lors
-d'une pr\'{e}sentation \`{a} un workshop de NIPS en 2011, l'id\'{e}e s'est
-am\'{e}lior\'{e}e et notre publication a \'{e}t\'{e} accept\'{e}e\`{a} ICPRAM.
-Apr\`{e}s l'oral \`{a} Barcelone, le papier a \'{e}t\'{e} selectionn\'{e} pour
-publication dans un recueil contenant les meilleurs papiers pr\'{e}sent\'{e}s
-\`{a} cette conf\'{e}rence. J'ai r\'{e}dig\'{e} l'article en collaboration avec
-les co-auteurs.
+d'une pr\'{e}sentation \`{a} un workshop de NIPS en 2011
+\citep{Mesnil-workshop-nips}, l'id\'{e}e s'est am\'{e}lior\'{e}e et notre
+publication \citep{Mesnil-icpram} a \'{e}t\'{e} accept\'{e}e \`{a} ICPRAM.
+Apr\`{e}s l'oral, le papier a \'{e}t\'{e} selectionn\'{e} pour publication dans
+un recueil contenant les meilleurs papiers pr\'{e}sent\'{e}s \`{a} cette
+conf\'{e}rence \citep{Mesnil-icpram-journal}. J'ai r\'{e}dig\'{e} l'article en
+collaboration avec les co-auteurs.
 
 \section{Contexte}
 
 \`{A} cette \'{e}poque les r\'{e}seaux de neurones convolutionnels n'ont pas
-encore remport\'{e} la comp\'{e}tition ImageNet TODO cite et les d\'{e}tecteurs d'objet
-\`{a} l'\'{e}tat de l'art restent ceux de Felsenswab TODO cite. Pour la
-classification de sc\`{e}nes, Object Bank est encore la m\'{e}thode \`{a}
-l'\'{e}tat de l'art.  C'est pourquoi nous avons d\'{e}cid\'{e} d'utiliser les
-repr\'{e}sentations d'Object Bank comme support \`{a} notre travail afin
-d'explorer si une combinaison des d\'{e}tections d'objets de mani\`{e}re plus
-abstraite permettait un gain en performance.
+encore remport\'{e} la comp\'{e}tition ImageNet \citep{Krizhevsky-2012-small} et les
+d\'{e}tecteurs d'objet \`{a} l'\'{e}tat de l'art restent ceux utilisés dans par
+Object Bank \citep{lsvm-pami}. Pour la classification de sc\`{e}nes, Object
+Bank est encore la m\'{e}thode \`{a} l'\'{e}tat de l'art.  C'est pourquoi nous
+avons d\'{e}cid\'{e} d'utiliser les repr\'{e}sentations d'Object Bank comme
+support \`{a} notre travail afin d'explorer si une combinaison des
+d\'{e}tections d'objets de mani\`{e}re plus abstraite permettait un gain en
+performance.
 
 \section{Contributions}
 
@@ -42,14 +44,14 @@ Malgre ses tr\`{e}s bonnes performances \`{a} l'\'{e}poque, un des
 inconv\'{e}nients d'Object Bank reste la dimensionnalit\'{e} tr\`{e}s
 \'{e}lev\'{e}e de la repr\'{e}sentation.  Dans notre travail, nous avons
 explor\'{e} diff\'{e}rentes techniques pour combiner les d\'{e}tections
-d'objets afin de fournir aux personnes int\'{e}ress\'{e}es d'utiliser une
+d'objets afin de permettre aux chercheurs int\'{e}ress\'{e}s d'utiliser une
 repr\'{e}sentation d'Object Bank plus compacte et plus performante.
 
 
 \section{R\'{e}cents d\'{e}veloppements}
 
 Il est certain qu'utiliser des d\'{e}tecteurs d'objets \`{a} base de
-r\'{e}seaux de neurones convolutionnels am\'{e}liorerait nettement les performances
-de notre approche.  Au moment du d\'{e}veloppement de ces id\'{e}es, notre
-m\'{e}thode souffrait principalement du manque de pr\'{e}cision des
-d\'{e}tecteurs d'objets. 
+r\'{e}seaux de neurones convolutionnels am\'{e}liorerait nettement les
+performances de notre approche \citep{Scene-14}.  Au moment du
+d\'{e}veloppement de ces id\'{e}es, notre m\'{e}thode souffrait principalement
+du manque de pr\'{e}cision des d\'{e}tecteurs d'objets. 

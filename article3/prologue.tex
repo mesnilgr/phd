@@ -2,35 +2,66 @@
 
 \section{D\'{e}tails de l'article}
 
-{\bf Better Mixing via Deep Representations} Yoshua Bengio*, Grégoire Mesnil*, Yann Dauphin and Salah Rifai. {\it International Conference on Machine Learning} $2013$\\
+{\bf Better Mixing via Deep Representations} Yoshua Bengio\footnote{Indicates
+equal contribution}, Grégoire Mesnil$^{1}$, Yann Dauphin and Salah Rifai. {\it
+International Conference on Machine Learning} $2013$\\
 
 {\it Contribution Personnelle} Le point de départ de cette idée a été présenté
-à Snowbird à un workshop. Cela consistait à montrer sur support vidéo comment
-il était possible de naviguer (ou surfer) d'un exemple à un autre dans l'espace
-des représentations. Cela a renforcé les intuitions de Yoshua concernant un
-problème de mixing entre différents modes et pourquoi cela était plus aisé de
-mixer dans l'espace abstrait des représentations. À partir de modèles de RBM et
-de CAE entraînées par Salah Rifai et Yann Dauphin, j'ai réalisé et conçu
-l'intégralité des exprériences visant à vérifier les hypothèses de Yoshua, qui
-lui a rédigé l'article. Il a été décidé ensemble que nous avions une
-contribution égale pour cet article.
+à Snowbird à un workshop \citep{Mesnil-et-al-LW2012}. Cela consistait à montrer
+sur support vidéo comment il était possible de se déplacer d'un exemple à un
+autre dans l'espace des représentations tout en restant sur la variété des
+exemples d'apprentissage. Cela a renforcé les intuitions de Yoshua concernant
+un problème de mixing entre différents modes et pourquoi cela était plus aisé
+de visiter toutes les classes lors du processus d'échantillonage dans l'espace
+abstrait des représentations. À partir de modèles de RBMs et de CAEs entraînés
+par Salah Rifai et Yann Dauphin, j'ai réalisé et conçu l'intégralité des
+exprériences visant à vérifier les hypothèses de Yoshua, qui lui a rédigé
+l'article. Il a été décidé ensemble que nous avions une contribution égale pour
+cet article.
 
 \section{Contexte}
 
-On a toujours peu d'insigths sur ce que les représentations apprises par les
+On a toujours peu d'intuitions sur ce que les représentations apprises par les
 réseaux de neurones contiennent exactement ou la structure particulière de
-l'espace des représentations. Ce travail s'inscrit dans la même veine que Matt
-Zeller pour savoir ce que les réseaux convolutionnels ont appris mais pour des
-méthodes d'apprentissage non supervisé. TODO reciter les 3 hypothèses.
+l'espace des représentations. Cette publication visait à présenter et valider nos intuitions:
+
+\begin{center}
+\framebox{
+\begin{minipage}{0.8\linewidth}
+{\bf Hypothèse 1: Profondeur et Mixage durant l'échantillonage.} 
+
+Une architecture profonde apprend un espace sémantique dans lequel les chaînes
+de Markow mixent plus rapidement entre différentes classes.  
+
+ \end{minipage}}
+ \end{center}
+
+\begin{center}
+\framebox{
+\begin{minipage}{0.8\linewidth}
+{\bf Hypothèse 2: L'espace sémantique appris rend la variété localement linéaire.}
+
+ La variété des exemples d'apprentissage complexe et non-linéaire dans l'espace
+ initial est rendue localement linéaire dans l'espace sémantique défini par les
+ couches abstraites. Le volume de l'espace sémantique est occupé de façon plus
+ uniforme que l'espace d'entrée.
+
+\end{minipage}
+}\\
+\end{center} 
 
 \section{Contributions}
 
-Les conclusions apportées par ce travail ont inspiré plusieurs publications
-TODO cite utilisant cette hypothèse de remplissage de l'espace de représentation et de
-structure de la variété des exemples d'apprentissage.
+Les conclusions apportées par ce travail ont inspiré plusieurs travaux
+utilisant cette hypothèse de remplissage de l'espace de représentation et de
+structure de la variété des exemples d'apprentissage. Aussi, l'entraînement de
+RBMs qui nécessite un échantillonage pendant la phase d'apprentissage, il est
+désormais justifié d'effectuer le processus d'échantillonage à partir des
+couches supérieures plutôt que dans l'espace d'entrée.
 
 \section{R\'{e}cents d\'{e}veloppements}
 
 Ces idées sont toujours d'actualité et restent dans l'esprit des chercheurs
 pour guider leurs intuitions. Le concept de naviguer dans l'espace des
-représentations a notamment été repris par le papier Adversarial Sampling TODO.
+représentations a notamment été repris par le papier Adversarial Sampling
+\citep{Goodfellow-et-al-ARXIV2014}.
