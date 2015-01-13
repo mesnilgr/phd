@@ -2,9 +2,47 @@
 
 \section{D\'{e}tails de l'article}
 
+{\bf Learning Semantic Representations of Objects and their Parts} Grégoire
+Mesnil, Antoine Bordes, Jason Weston, Gal Chechik and Yoshua Bengio, {\it
+Machine Learning Journal: Special Issue on Learning Semantics}, 2013
+
+{\it Contribution personnelle} Le projet a débuté suite à une visite d'Antoine
+Bordes dans les bureaux de Google. Il m'a ensuite proposé de prendre part au
+projet. L'idée originale est d'Antoine, Jason Weston s'est ensuite chargé de
+nous fournir des représentations d'images utilisées en industrie par Google à
+cette époque. J'ai réalisé l'intégralité des exprériences et participé à la
+rédaction avec la collaboration des co-auteurs. La partie expérience s'est
+révélée être très intéressante car elle consistait à effectuer une tâche
+d'apprentissage avec un très grand nombre de données, plusieurs millions de
+couples.  Nous remercions les reviewers anonymes du Machine Learning Journal
+qui ont aussi contribué à la qualité de l'article au travers de leurs
+questionnements.
+
 \section{Contexte}
+
+Au début de ces recherches, l'idée de partager des espaces sémantiques entre
+plusieurs domaines est assez neuve \citep{image-wsabie}. Cependant, l'idée
+d'utiliser des embeddings pour modéliser le langage a déjà fait son chemin
+\citep{bengio:2003}, ces méthodes obtiennent même d'excellentes performances
+sur diverses tâches de traitement du langage naturel \citep{collobert:2011b}.
+L'originalité de notre travail est d'effectuer un transfert d'apprentissage au
+travers d'un espace sémantique.
 
 \section{Contributions}
 
+J'ai eu la chance de pouvoir présenter cet article à l'oral à l'UTC de
+Compiègne devant l'équipe recherche ainsi qu'au GDR Information Signal Image
+Vision à Paris devant $~70$ personnes. Nous espérons que l'idée d'utiliser des
+espaces sémantiques pour effectuer du transfert d'apprentissage viendront
+enrichir le paysage de la recherche actuelle.
+
 \section{R\'{e}cents d\'{e}veloppements}
+
+On peut observer sur Google Image dans le système de production des suggestions
+de navigation pour d'autres mots clés de recherche. Par exemple, une recherche
+initiale pour "voiture" va ensuite suggérer "voiture sport", "f1", "voiture
+jaune" qui sont des prémisses de recherche augmentée même si cela reste au
+niveau sémantique et n'atteint pas l'ensemble d'images retournées.  Autrement,
+le système Devise \citep{samy-extreme} à base d'espace sémantique est
+actuellement utilisé par Google pour son moteur de recherche d'images.
 
