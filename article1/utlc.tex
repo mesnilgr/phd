@@ -41,7 +41,7 @@
 \begin{abstract}
 
 Learning good representations from a large set of unlabeled data is a
-particularly challenging task. Recent work (see \cite{Bengio-2009} for
+particularly challenging task. Recent work (see \citep{Bengio-2009} for
 a review) shows that training deep architectures is a good way to extract such
 representations, by extracting and disentangling gradually higher-level 
 factors of variation characterizing the input
@@ -98,7 +98,7 @@ Another interesting feature of this competition is that the
 input features are anonymous, so that teams are compared based on the strength
 of their learning algorithms and not based on their ability to engineer
 hand-crafted features based on task-specific prior knowledge.
-More material on Deep Learning can be found in a companion paper~\cite{Bengio-DL-2011}.
+More material on Deep Learning can be found in a companion paper~\citep{Bengio-DL-2011}.
 
 The paper is organized as follows. The pipeline going from bottom (raw data)
 to top (final representation fed to the classifier) is described in
@@ -192,7 +192,7 @@ values).
 
 Feature extraction is the core of our pipeline and has been crucial for getting
 the first ranks during the challenge. Here we briefly introduce each method
-that has been used during the competition. See also \citet{Bengio-DL-2011}
+that has been used during the competition. See also \citep{Bengio-DL-2011}
 along with the citations below for more details.
 
 \subsubsection{$\mu$-ss-RBM}
@@ -282,7 +282,7 @@ masking a fraction of the input components at random by setting them to 0
 % Grégoire
 % copy/paste re-write it
 To encourage robustness of the representation $f(x)$ obtained for a training
-input $x$, \cite{Rifai+al-2011} propose to penalize its {\em sensitivity} to
+input $x$, \citep{Rifai+al-2011} propose to penalize its {\em sensitivity} to
 that input, measured as the Frobenius norm of the Jacobian $J_f(x)$
 of the non-linear mapping. Formally, if input $x \in \R^{d_x}$ is mapped by an encoding
 function $f$ to a hidden representation $h \in \R^{d_h}$, this sensitivity
@@ -315,11 +315,11 @@ examples.
 
 
 Recent works investigated linear rectified activation function variants.
-\citet{Nair+Hinton-2010} used Noisy Rectified Linear Units (NReLU) (i.e.
+\citep{Nair+Hinton-2010} used Noisy Rectified Linear Units (NReLU) (i.e.
 $\max(0,x+N(0,\sigma(x))$) for Restricted Boltzmann Machines.  Compared to
 binary units, they observed significant improvements in term of generalization
 performance for image classification tasks. Following this line of work,
-\citet{Glorot+al-AI-2011} used the rectifier activation function (i.e.
+\citep{Glorot+al-AI-2011} used the rectifier activation function (i.e.
 $\max(0,x)$) for deep neural networks and Stacked Denoising Auto-Encoders
 (SDAE)~\citep{VincentPLarochelleH2008,Vincent-JMLR-2010} and obtained 
 similarly good results.
@@ -332,7 +332,7 @@ allows gradient to flow well on the active set of neurons, possibly reducing the
 vanishing gradients problem.
 
 In a semi-supervised setting similar to that of the Unsupervised and
-Transfer learning Challenge setup, \citet{Glorot+al-AI-2011} obtained 
+Transfer learning Challenge setup, \citep{Glorot+al-AI-2011} obtained 
 state-of-the-art results for a sentiment analysis task (the Amazon 4-task benchmark) 
 for which the  bag-of-words input were highly sparse.
 % Already in the results section
@@ -365,7 +365,7 @@ corrected by setting the reweighting term $1/{\bf q}$ such that ${\bf
 q}_k=E[\hat{\bf p}_k|k,{\bf x},\tilde{\bf x}]$.
 
 The optimal sampling probabilities $P(\hat{\bf p}|{\bf x})$ are those that
-minimize the variance of the estimator $\hat{L}$. \cite{Dauphin+al-2011} show that
+minimize the variance of the estimator $\hat{L}$. \citep{Dauphin+al-2011} show that
 reconstructing all non-zeros and a small subset of zeros is a good heuristic.
 The intuition is that the model is more likely to be wrong on the non-zeros
 than the zeros. Let ${\cal C}({\bf x},\tilde{\bf x})=\{k: {\bf x}_k=1 \;{\rm
@@ -375,7 +375,7 @@ or}\;\tilde{\bf x}_k=1\}$. Then bit $k$ is reconstructed with probability
     |{\cal C}({\bf x},\tilde{\bf x})|/d_x & otherwise \end{array} \right.
 \end{equation}
 
-\cite{Dauphin+al-2011} show that the computational speed-up is on the order of
+\citep{Dauphin+al-2011} show that the computational speed-up is on the order of
 $^{d_{SMP}}/_{d_x}$ where $d_{SMP}$ is the average number of units that are
 reconstructed and $d_x$ is the input dimension. Furthermore, reconstruction sampling
 yields models that converge as fast as the non-sampled networks in terms of gradient steps
@@ -822,7 +822,7 @@ assumpptions of equal number of classes might have hurt test performance here.
 The $\mu$-ssRBM was initially developed as a model for natural images. As such,
 it was a natural fit for the {\bf RITA} dataset. Their ability to learn the pooling
 structure was also a clear advantage, since the max-pooling strategy typically
-used in vision tasks with convolutional networks~\cite{LeCun98-small} could no longer be employed due to the
+used in vision tasks with convolutional networks~\citep{LeCun98-small} could no longer be employed due to the
 obfuscated nature of the dataset.
 % The main factors which were considered for
 %this series of experiments were: the choice of preprocessing, the
