@@ -1,2 +1,0 @@
-- parentheses autour des citatations
-- chexk duplicate bibliio
