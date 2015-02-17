@@ -294,7 +294,7 @@ on benchmarks for scene classification
 \end{tabular}
 \end{center}
 
-   \caption{{\it Left:} Cloud {\it Middle:} Man {\it Right:} Television. {\it
+   \caption[Scene images and OB detections]{{\it Left:} Cloud {\it Middle:} Man {\it Right:} Television. {\it
    Top:} False Detections {\it Bottom:} True Detections. Images from {\bf
    SUN}~\citep{Xiao:2010} for which we compute the OB representation and display the
    bounding box around the average position of various objects detectors. For
@@ -521,7 +521,7 @@ information about the detector's positions.
 \end{tabular}
 \end{center}
 
-\caption{{\bf Different Combination Strategies} (a) and (b) \textit{pose} and
+\caption[Different Combination Strategies]{{\bf Different Combination Strategies} (a) and (b) \textit{pose} and
 \textit{object} PCAs (c) high-level CAE: \textit{pose}-PCA as dimensionality
 reduction technique in the first layer and a CAE stacked on top. We denote it
 high-level because it can learn \textit{context information} i.e. plausible
@@ -693,7 +693,7 @@ Improvement w.r.t. Object Bank & $+6.4\%$ & $+11.5\%$ \\
 \end{tabular}
 \end{center}
 
-\caption{\label{tab:res1} {\bf MIT Indoor.} Results are reported on the
+\caption[MIT Indoor Performance]{\label{tab:res1} {\bf MIT Indoor.} Results are reported on the
 official split \citep{Quattoni09} for all combination strategies described in
 Section~\ref{sec:combi}.  Only the unsupervised feature learning strategies
 (PCA and CAE based) \textit{can} benefit from the addition of unlabeled scenes
@@ -767,7 +767,7 @@ Improvement w.r.t. OB & $+6.23\%$ & $+5.46\%$ \\
 \end{tabular}
 \end{center}
 
-\caption{\label{tab:res2} {\bf UIUC Sports and 15-Scenes} Results are reported
+\caption[Transfer Performances on UIUC-Sports and 15-SCENES]{\label{tab:res2} {\bf UIUC Sports and 15-Scenes} Results are reported
 for $10$ random splits (available at www.anonymous.org) and compared to the
     original OB results~\citep{LiJiaLi10} - Object Bank + SVM - on one single
     split.}
@@ -835,7 +835,7 @@ $44,604$ & $177$ & $1,300$ & $2,655$ & $1,770$ & $1,000$ \\
 \end{tabular}
 }
 \end{center}
-\caption{\label{tab:dim} {\bf Dimensionality Reduction.}
+\caption[Dimensionality Reduction]{\label{tab:dim} {\bf Dimensionality Reduction.}
   Dimension of representations obtained on MIT Indoor. The \textit{pose}-PCA+CAE 
 produces a compact and powerful combination.
 } 
@@ -901,7 +901,7 @@ desktop computer, printer, wireless, computer screen\\%, computing device\\
 \end{tabular}
 \end{center}
 
-\caption{\label{tab:cae} {\bf Context semantics}: Names of the detectors corresponding to
+\caption[Context semantics]{\label{tab:cae} {\bf Context semantics}: Names of the detectors corresponding to
 the highest weights of $8$ hidden units of the CAE. These hidden units will fire
 when those objects will be detected altogether. }
 
@@ -951,7 +951,7 @@ object $i$ according to the lesk metric ($R(i,i)=0$). Results
     5. & train & computer & door\\
     \hline
     \end{tabular}
-    \caption{\label{tab:lesk} {\bf WordNet semantics}: Names of the detectors
+    \caption[WordNet Semantics]{\label{tab:lesk} {\bf WordNet semantics}: Names of the detectors
     and their top-ranked neighbors according to the lesk distance computed from
     WordNet.}
 \end{table}
@@ -966,7 +966,7 @@ object $i$ according to the lesk metric ($R(i,i)=0$). Results
     with Re-Ranking & $41.52\%$ \\
     \hline
     \end{tabular}
-    \caption{\label{tab:reslesk} {\bf Re-Ranking}: Results are reported on
+    \caption[Re-Ranking ]{\label{tab:reslesk} {\bf Re-Ranking}: Results are reported on
     the official split \citep{Quattoni09}. Object-mean+SVM refers to the
     mean-pooling strategy with and w/o the Re-Ranking transformation.} 
 \end{table}

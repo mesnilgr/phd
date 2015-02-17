@@ -130,7 +130,7 @@ mise à jour afin d'obtenir une approximation de la vraie valeur de la softmax.
 Il est aussi possible de faire du sampling de négatif intelligent, c'est à dire
 sélectionner uniquement les couples négatifs qui violent une certaine
 contrainte et ignorer les autres. Pour un couple de positif $(x_i, x_j)$, cette
-contrainte pour sélection un ensemble de couples négatifs $(x_k, x_l)$ peut
+contrainte pour sélectionner un ensemble de couples négatifs $(x_k, x_l)$ peut
 prendre la forme d'un viol de marge $\epsilon$:
 
 \begin{equation}
@@ -169,9 +169,10 @@ reste la même:
 -\sum_{(x_i, x_j)\in\mathcal{P}}\sum_{(x_k, x_l)\in\tilde{\mathcal{N}}_{(x_i, x_j)}} \textrm{sim}(h_L(x_i), h_I(x_j)) - \textrm{sim}(h_L(x_k), h_I(x_l)) - \epsilon
 \end{equation}
 
-Cette approche est bénéfique dans le sens où une prédiction d'image de
-'requin' à partir d'embeddings de mots même si elle est fausse, donnera une
-prédiction proche parmi des embeddings voisins qui auront la même sémantique \citep{samy-extreme}.
+Cette approche est bénéfique dans le sens où une prédiction d'image de "requin"
+à partir d'embeddings de mots même si elle est fausse, donnera une prédiction
+proche parmi des embeddings voisins qui auront la même sémantique, par exemple
+"poisson", "thon" \citep{samy-extreme}.
 
 Nous travaillons actuellement à étendre le concept Multi-Domaines de deux
 domaines à un nombre de domaines arbitraires. Le nombre de couples positifs

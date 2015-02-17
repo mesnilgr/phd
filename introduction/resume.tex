@@ -52,42 +52,93 @@ contenant un objet retournerait aussi des images des parties de l'objet, par
 exemple une recherche retournant des images de  "voiture" retournerait aussi
 des images de "pare-brises", "coffres", "roues" en plus des images initiales.
  
-\chapter*{Summary}
+\chapter*{Summary\\~~~~~~~~\\~~~~~~~~~~~\\~~~~~~~~~~}
 
-In this work, we focus on learning semantic spaces for different domains, e.g.
-words and images, but also at the intersection of different domains. We use
-different machine learning algorithms to learn representations with interesting
-intrinsic properties. These properties range from better mixing (a space where
-it's easier to perform sampling), to better linear separability (a space where
-it's easier to discriminate with an hyperplane). The semantic space is where
-the learned representation lives. This space is called semantic if "similar"
+\vspace{-3cm}
+
+In this work, we focus on learning semantic spaces for multiple domains, but
+also at the intersection of different domains. The semantic space is where the
+learned representation lives. This space is called semantic if similar
 entities from a human perspective have their similarity preserved in this
-space.
+space.  We use different machine learning algorithms to learn representations
+with interesting intrinsic properties. 
+%These properties range from better
+%mixing to better linear separability. 
 \\
 
-The first article presents a pipeline including many different unsupervised
-learning techniques used to win a challenge in 2011. No prior on the structure
-of the data could be used during this competition since the different datasets
-(arabic manuscript recognition, human actions, NLP, ecology data, CIFAR10) were
-anonymous. In the second article, we present a way to learn from structured
-context ($177$ object detections at different poses and scales) for performing
-scene categorization. We show that using the structure of the data combined
-with unsupervised learning algorithms allow us to reduce the dimensionality by
-a factor of $97\%$ while improving the scene recognition from $+5\%$ to $+11\%$
-depending on the dataset.\\
+\vspace{-0.2cm} The first article presents a pipeline including many different
+unsupervised learning techniques used to win the Unsupervised and Transfer
+Learning Challenge in 2011. No prior knowledge on the structure of the data
+could be used during this competition since the different datasets were
+anonymous. The learned representations improved the performance of a weak
+classifier compared to the raw data. It also transfered well to different
+subsets of classes for the $5$ different domain datasets in this competition.
+%arabic character recognition, CIFAR-10, Natural Language processing, human
+%action recognition and ecological data.
 
-In the third article, we focus on the space structure learned by deep
-representations. Several hypothesis are experimentally tested and show that
-abstract representation spaces have better mixing properties (exploring all the
-different classes during the sampling procedure).\\
+In the second article, we present a pipeline widely inspired from the one above
+but taking advantage of the structure of the data for a scene classification
+problem. We present a way to learn from structured context, consisting of $177$
+object detections at different poses and scales. We show that using the
+structure of the data combined with the Contractive Auto-Encoder, an
+unsupervised learning algorithm, 
+%and Principal Component Analysis for preprocessing 
+allows us to drastically reduce the dimensionality while improving
+significantly on the scene recognition accuracy. 
+%This pipeline is widely inspired
+%from the one above used to win the competition except that, in addition, we are
+%able to take advantage of the structure of the data.  
+\\
 
-In the fourth article, we tackle a semantic parsing problem with Recurrent
-Neural Network architectures and context windows of word embeddings. We show an
-improvement over the state of the art on several datasets and interesting
-semantic properties in the learned word "embedding" space.  An investigation on
-learning a single semantic space at the intersection of words and images is
-presented in the fifth article. We propose a way to perform "augmented search"
-by learning a semantic space where a search on an image containing an object
-would also return images of the object's parts, e.g. searching for "car" images
-would return "windshield", "trunk" or "wheel" images in addition to car images.
+\vspace{-0.2cm}
+The third article focuses on the space structure learned by deep
+representations. Our experiments use greedy layer-wise unsupervised training of
+Contractive Auto-Encoders and Restricted Boltzmann Machines. Several hypothesis
+are experimentally tested and show that abstract representation spaces have
+better mixing properties. We conclude that performing the sampling procedure
+from the representation space explores more of the different classes.
+\\
 
+\vspace{-0.2cm}
+In the fourth article, we tackle a semantic parsing problem with several
+Recurrent Neural Network architectures taking as input context windows of word
+embeddings. We show an improvement over the state of the art previously
+obtained with Conditional Random Fields on different datasets. Learning context
+windows of word embeddings leads to a
+word semantic space where words with the same output class are
+clustered together. Depending on the dataset, performing Viterbi decoding with
+the probabilities of the model is crucial to obtain good performance.
+
+In the fifth article, an investigation on learning a single semantic space at
+the intersection of words and images is presented. As we lack of labeled images
+of objects and their parts, we use the Word-Net part-of relationship to obtain
+a training proxy. Through the semantic space intersecting words and images
+domains, we propose a way to perform "augmented search" where a search on an
+image containing an object would also return images of the object's parts.
+%, e.g.
+%searching for "car" images would return "windshield", "trunk" or "wheel" images
+%in addition to car images.
+
+\chapter*{Articles}
+
+\begin{enumerate}
+
+\item Grégoire Mesnil, Yann Dauphin, Xavier Glorot, Salah Rifai, Yoshua Bengio,
+et al. {\bf Unsupervised and Transfer Learning Challenge: a Deep Learning
+Approach} (2012) Journal of Machine Learning Workshop and Conference Papers.
+
+\item Grégoire Mesnil, Salah Rifai, Antoine Bordes, Xavier Glorot, Yoshua Bengio and Pascal Vincent
+{\bf Unsupervised Learning of Object Detections Semantics for Scene Categorization}
+(2015) Lecture Notes in Advances in Intelligent and Soft Computing, Springer-Verlag.
+
+\item Yoshua Bengio\footnote{indicates equal contribution}, Grégoire Mesnil$^{1}$, Yann Dauphin and Salah Rifai
+{\bf Better Mixing via Deep Representations} (2013) International
+Conference on Machine Learning
+
+\item Grégoire Mesnil, Yann Dauphin, Kaisheng Yao, Yoshua Bengio, Li Deng, Dilek Hakkani-Tur, Xiaodong He, Larry Heck, Gokhan Tur, Dong Yu and Geoffrey Zweig {\bf Using Recurrent Neural Networks for Slot Filling in Spoken Language Understanding} (2015) IEEE Transactions on Audio, Signal and Language Processing
+
+\item Grégoire Mesnil, Antoine Bordes, Jason Weston,
+Gal Chechik and Yoshua Bengio, {\bf Learning Semantic Representations Of
+Objects and Their Parts} (2013) Machine Learning Journal
+
+\end{enumerate}

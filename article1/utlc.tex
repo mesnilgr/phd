@@ -78,7 +78,7 @@ supervised learning tasks, such as classification. This is particularly importan
 when the classifier receiving this representation as input is linear
 and when the number of available labeled examples is small. This is the
 case here with the Unsupervised and Transfer Learning (UTL) Challenge
-\footnote{\tt http://http://www.causality.inf.ethz.ch/unsupervised-learning.php}.
+\footnote{\tt http://www.causality.inf.ethz.ch/unsupervised-learning.php}.
 
 Another challenging characteristic of this competition is that the training (development) distribution
 is typically very different from the test (evaluation) distribution, because it involves
@@ -619,7 +619,7 @@ During the competition, we used a cluster of GPUs, Nvidia GeForce GTX 580.
 \begin{figure}[t]
   \begin{center}
     \includegraphics[width=1.\linewidth]{article1/images/5steps.pdf}
-    \caption{\label{fig:charts} For each data set, we report the Validation and Test ALC after each layer (from raw data to postprocessing). It allows us to see where overfitting arose ({\bf SYLVESTER}) and which of the layers resulted the more important to improve the overall performance.}
+    \caption[ALC after each layer on Valid and Test]{\label{fig:charts} For each data set, we report the Validation and Test ALC after each layer (from raw data to postprocessing). It allows us to see where overfitting arose ({\bf SYLVESTER}) and which of the layers resulted the more important to improve the overall performance.}
     \vspace{-0.2in}
   \end{center}
  \vspace*{-1mm}
@@ -683,7 +683,7 @@ test (evaluation) set.
 \begin{figure}[t]
   \begin{center}
     \includegraphics[width=0.75\linewidth]{article1/images/harry_cluster.pdf}
-    \caption{\label{fig:harry}  {\bf HARRY} evaluation set 
+    \caption[Clustering 3D on HARRY]{\label{fig:harry}  {\bf HARRY} evaluation set 
      after the transductive PCA, the data is nicely clustered, suggesting
      that the learned preprocessing has discovered the underlying class structure.}
     \vspace{-0.2in}
@@ -777,7 +777,7 @@ hierarchy for the {\bf SYLVESTER} dataset. ALC: Raw Data ($0.2167$), $1$st Layer
 \includegraphics[height=0.15\textheight,keepaspectratio]{article1/images/syl3.pdf}
 \caption{t-PCA}
 \end{subfigure}
-\caption{Validation performance increases with the depth of our feature
+\caption[ALC versus Depth]{Validation performance increases with the depth of our feature
 hierarchy for the {\bf SYLVESTER} dataset. ALC: Raw Data ($0.2167$), $1$st
 Layer ($0.6238$), $2$nd Layer ($0.7878$), $3$rd Layer ($0.8511$),
 t-PCA($0.9316$)}

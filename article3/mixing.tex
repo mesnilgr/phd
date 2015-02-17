@@ -292,7 +292,7 @@ whereas it would be much less likely in raw pixel-space.
 
 \begin{figure}[!hbpt]
 \centerline{\includegraphics[width=0.75\linewidth]{article3/images/mixing-problem.pdf}}
-\caption{\small Top: early during training, MCMC mixes easily between modes because the estimated
+\caption[Mixing Problem]{\small Top: early during training, MCMC mixes easily between modes because the estimated
 distribution has high entropy and puts enough mass everywhere for small-steps
 movements (MCMC) to go from mode to mode. Bottom: later on, training relying
 on good mixing can stall because estimated modes are separated by vast
@@ -562,7 +562,7 @@ the sense of better covering the zones where test examples are found. }
 {\includegraphics[width=0.24\textwidth]{article3/images/cae2mnistdata_image_noncen.png}}
 \end{center}
 
-\caption{Samples from DBNs and CAEs with 1 or 2 layers on TFD (top) and MNIST (bottom).
+\caption[Samples from DBNs and CAEs on TFD and MNIST]{Samples from DBNs and CAEs with 1 or 2 layers on TFD (top) and MNIST (bottom).
 We see that samples from the second level are generally of better quality than samples
 of the first level.}
 
@@ -602,7 +602,7 @@ of the first level.}
 %    }
 \end{center}
 \vspace*{-3mm}
-\caption{Sequences of $25$ samples generated with a CAE
+\caption[Sequences of Samples]{Sequences of $25$ samples generated with a CAE
 on TFD (rows 1 and 2, respectively for 1 or 2 hidden layers) 
 and with an RBM on MNIST (rows 3 and 4, respectively for 1 or
 2 hidden layers). 
@@ -653,12 +653,12 @@ more plausible samples.
 \end{subfigure}
 
 \begin{subfigure}{1.\textwidth}
-\caption{Sequences of points interpolated at different depths}
+\caption[Sequences of points interpolated at different depths]{Sequences of points interpolated at different depths}
     \includegraphics[width=0.96\textwidth]{article3/images/sequenceinterpolation46_data_image_noncen.png}
     \label{fig:seqinterpol}
 \end{subfigure}
 
-\caption{ Linear interpolation between a data sample and the 200-th (a)
+\caption[Linear Imterpolations at various depths]{ Linear interpolation between a data sample and the 200-th (a)
 and 1st (b) nearest neighbor, using representations 
 at various depths (top row=input space, middle row=1st layer,
 bottom row=2nd layer).  In each $3\times3$ block the left and right columns are
@@ -748,7 +748,7 @@ the second result mostly confirms {\bf H3(b)}.
 \caption{Mixing - 20/100 samples}
 \end{subfigure}
 
-\caption{ (a) (b) Local Convex Hull - Log-density computed w.r.t. linearly
+\caption[Local Convex Hull and Local Convex Ball]{ (a) (b) Local Convex Hull - Log-density computed w.r.t. linearly
 interpolated samples between an example and its k-NNs, for k (x-axis)
 between 1 and 500. The manifold thus seem generally more unfolded (flatter)
 in deeper levels, especially against raw input space,
@@ -782,7 +782,7 @@ DBN-1 & 1.62\%  & 1.21\% & $26.85$ {\scriptsize $\pm1.62$}\% & $28.14${\scriptsi
 DBN-2 & 1.33\%  & 0.99\% & $26.54$ {\scriptsize $\pm1.91$}\% & $27.79$ {\scriptsize $\pm2.34$}& $137.89$ {\scriptsize $\pm2.11$} & $1908.80$ {\scriptsize $\pm65.94$}\\\hline
 \end{tabular}
 
-\caption{Left: Classification rates of various classifiers (SVM, MLP+)
+\caption[Classification rates on MNIST and TFD]{Left: Classification rates of various classifiers (SVM, MLP+)
   using representations at various depth (with CAE or DBN)
   learned on the MNIST and TFD datasets.  The DBN 0.99\% error on
   MNIST has been obtained with a 3-layer DBN and the 0.81\% error

@@ -258,7 +258,7 @@ gradient pour $i=1,\dots,N$:
 
 avec l'ensemble des paramètres contenus dans $\theta=\lbrace W^{(i)},b^{(i)}\rbrace_{i=1}^{m+1}$.
 
-\subsection{Machines à Vecteurs de Support}
+%\subsection{Machines à Vecteurs de Support}
 
 
 
@@ -377,7 +377,7 @@ dernières composantes représentent du bruit (voir Figure~\ref{fig:mnistpca}).
 \end{tabular}
 \end{subfigure}
 
-   \caption{Sur MNIST, pour un exemple de chaque classe (chiffres de $0$ à $9$) on
+   \caption[Vecteurs propres d'une PCA sur les 10-ppv de classes de MNIST]{Sur MNIST, pour un exemple de chaque classe (chiffres de $0$ à $9$) on
    extrait les $10$ plus proches voisins (ppv) intra-classe et on entraîne une PCA sur cet
    ensemble. Les $10$ ppv sont présentés à gauche et les
    composantes des $10$ différentes PCA à droite. Les premières composantes de
@@ -543,7 +543,7 @@ erreur de reconstruction et invariance de la représentation.
 \end{subfigure}
 
 
-   \caption{ Sur MNIST et sur CIFAR (un ensemble d'predoc/images RGB), on présente les
+   \caption[Vecteur Propres du CAE+H sur MNIST et CIFAR]{ Sur MNIST et sur CIFAR (un ensemble d'predoc/images RGB), on présente les
    tangentes apprises par le CAE+H autour d'un point d'apprentissage au milieu pour CIFAR et bas pour MNIST. On peut voir que ces
    tangentes encodent de l'information sur des transformation plausibles de
    l'image originale tandis que les composantes principales de la PCA sur CIFAR présentées en haut, n'ont
@@ -789,7 +789,9 @@ h_{m}(y_{t-1}, y_{t}, x_{t}) =
 \right.
 \end{equation}
 
-L'apprentissage s'effectue par l'ajustement des paramètres $\theta=\lbrace \lambda_m \rbrace_{m=1}^{M}$ pour maximiser la log-vraisemblance sur l'ensemble $\mathcal{D}_train$:
+L'apprentissage s'effectue par l'ajustement des paramètres $\theta=\lbrace
+\lambda_m \rbrace_{m=1}^{M}$ pour maximiser la log-vraisemblance sur l'ensemble
+$\mathcal{D}_{train}$:
 
 \begin{equation}
 \mathcal{J}_{\textrm{CRF}} =\sum_{(x,y)\in\mathcal{D}_{train}} \sum_{t=1}^{T} \log (\dfrac{1}{Z(x_{t})}) + \sum_{m=1}^{M} \lambda_{m} h_{m}(y_{t-1}, y_{t}, x_{t})

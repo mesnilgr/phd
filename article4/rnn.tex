@@ -82,7 +82,7 @@ the slot values in the user's utterance, respectively.
 {\bf Domain} & \multicolumn{8}{c|}{Airline Travel} \\
 \hline
 \end{tabular}
-\caption{ATIS utterance example IOB representation}
+\caption[IOB representation]{ATIS utterance example IOB representation}
 \label{fig:iob}
 \end{table}
 
@@ -228,7 +228,7 @@ their semantics are similar.
 \begin{figure}[t]
 \begin{center}
 \includegraphics[width=.8\linewidth]{article4/images/rnn.png}
-\caption{\label{fig:rnn} Three different types of neural networks 
+\caption[Forward and Recurrent Neural Networks Architectures]{\label{fig:rnn} Three different types of neural networks 
 (a) Feed-forward NN; (b) Elman-RNN; (c) Jordan-RNN}
 \vspace{-0.2in}
 \end{center}
@@ -290,7 +290,7 @@ $l(t)=[$flights, {\bf from}, Boston $]$ \\
 "from" $\rightarrow l_{\textrm{from}}\in\mathbb{R}^{d_e}$ \\
 $l(t)\rightarrow C_{3}(t)=[l_{\textrm{flights}}, l_{\textrm{{\bf from}}}, l_{\textrm{Boston}}]$
 \end{tabular}
-\caption{
+\caption[Context Window Mapping]{
 \label{fig:cwmap}
 Context window mapping example}
 \end{table}
@@ -572,7 +572,7 @@ FFN & \multicolumn{3}{c|}{93.32} \\
 CRF & \multicolumn{3}{c|}{92.94} \\
 \hline
 \end{tabular}
-\caption{Test set F1-score of the different models after 200 runs of random
+\caption[Test set F1-score on ATIS]{Test set F1-score of the different models after 200 runs of random
 sampling of the hyper-parameters. All models are trained using the stochastic
 gradient approach.}
 \label{tab:f1}
@@ -609,7 +609,7 @@ training schemes STO and MB, but each epoch took longer with STO.
         & Avg & $93.58 \pm 0.30$ &  $93.72 \pm0.24$ &  $93.66 \pm0.30$ \\
 \hline
 \end{tabular}
-\caption{Measurement of the impact of using different ways of training the models and random seed on the performance.}
+\caption[Random Seed and Stochastic versus Mini-batch modes]{Measurement of the impact of using different ways of training the models and random seed on the performance.}
 \label{tab:seed}
 \end{table}
                 
@@ -658,7 +658,7 @@ Bidir, context &  $94.73 (5)$ &  $94.03 (9)$ &  $94.15 (7)$ & \\
 \hline   
 \end{tabular}
 
-\caption{F1-score of single and Bi-Directional models with or w/o context
+\caption[F1-score of Single and Bi-Directionnal models]{F1-score of single and Bi-Directional models with or w/o context
 windows. We report the best context window size hyper-parameter as the number
 in the round brackets.}
 \label{tab:bidir}
@@ -687,7 +687,7 @@ Word    & $94.98$ &  $94.29$ &  $95.06$ &  $92.94$ \\
 Word+NE & $96.24$ &  $95.25$ &  $95.85$ &  $95.16$ \\
 \hline
 \end{tabular}
-\caption{Performance with Named Entity features.}
+\caption[F1-score Named Entity features]{Performance with Named Entity features.}
 \label{tab:ne}
 \end{table}
 
@@ -717,7 +717,7 @@ Word    & $94.98$ &  $94.29$ &  $95.06$ &  $92.94$ \\
 ASR & $85.05$ &   $85.02$  & $84.76$ &   $81.15$ \\
 \hline
 \end{tabular}
-\caption{Comparison between manually labeled word and ASR output.}
+\caption[Comparison with ASR output]{Comparison between manually labeled word and ASR output.}
 \label{tab:asr}
 \end{table}
 
@@ -769,7 +769,7 @@ Entertainment+Viterbi+Dropout  &  -&   $91.14 (+2.44)$ & - \\
 Entertainment /CRF &\multicolumn{3}{c|}{$90.64$} \\
 \hline
 \end{tabular}
-\caption{Comparison with Viterbi decoding with different methods on several datasets}
+\caption[Viterbi decoding]{Comparison with Viterbi decoding with different methods on several datasets}
 \label{tab:viterbi}
 \end{table}
 
@@ -828,7 +828,7 @@ Movies  & $75.50$   & $78.20$  &  $82.21$ \\
 Entertainment &  $90.64$ &  $88.11$  & $88.50$ \\
 \hline
 \end{tabular}
-\caption{Comparison with R-CRF and RNN on ATIS, Movies, and Entertainment datasets.}
+\caption[R-CRF versus RNN on ATIS, Movies, and Entertainment]{Comparison with R-CRF and RNN on ATIS, Movies, and Entertainment datasets.}
 \label{tab:rcrf}
 \end{table}
 

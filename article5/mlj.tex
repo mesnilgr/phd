@@ -444,7 +444,7 @@ Section~\ref{sec:training}.
 \begin{figure*}[t!]
   \begin{center}
     \resizebox{0.7\textwidth}{!}{\includegraphics{article5/images/blah3.eps} }
-    \caption{{\bf Learning Latent Semantic Word and Object Models.}}
+    \caption[Latent Semantic Word and Object Models]{{\bf Learning Latent Semantic Word and Object Models.}}
     \label{fig:wsabie}
     \end{center}
 \end{figure*}
@@ -906,7 +906,7 @@ $38,412$ pairs.
   \begin{center}
     \resizebox{0.8\textwidth}{!}{\includegraphics{article5/images/imnet3.eps} }
 
-    \caption{{\bf Quadruplets from ImageNet+WordNet dataset} e.g ''rotor'' is
+    \caption[Quadruplets from ImageNet+WordNet dataset]{{\bf Quadruplets from ImageNet+WordNet dataset} e.g ''rotor'' is
     \textit{part-of} ''helicopter''. Note that objects and their parts are not
     coming from the same image}
 
@@ -1134,7 +1134,7 @@ to produce a 1024 dimensional input vector for training {\sc Wsabie}. We then tr
 
 
 \begin{table}[t]
-\caption{\label{table:imagenet-perf} {\bf Summary of Image Annotation (Object labeling only) Test Set Results on ImageNet.} Precision at 1 and 10 are given.}
+\caption[Test Set Results on ImageNet]{\label{table:imagenet-perf} {\bf Summary of Image Annotation (Object labeling only) Test Set Results on ImageNet.} Precision at 1 and 10 are given.}
 \centering
 \begin{small}
 \begin{tabular}{|l||c|c|c|}
@@ -1155,7 +1155,7 @@ Exact $k$-NN               & Ensemble+KPCA        & ~7.73\%  &   -   \\
 %o\vskip -0.1in
 %\end{table}
 %\begin{table}
-\caption{\label{table:imagenet-owpc} {\bf  WARP vs. AUC optimization.} 
+\caption[WARP versus AUC optimization]{\label{table:imagenet-owpc} {\bf  WARP vs. AUC optimization.} 
 We compared the two types of loss function WARP and AUC or two types of model:
 semantic embedding models and linear models.
 For both model types, WARP improves over AUC.
@@ -1243,7 +1243,7 @@ both objects and their parts.
 
 \begin{table}[t!]
 \begin{center}
-\caption{\textbf{Summary of Test Set Results on ImageNet-WordNet.}
+\caption[Results on ImageNet-WordNet]{\textbf{Summary of Test Set Results on ImageNet-WordNet.}
 Precision at 1 and 10, and Mean Average Precision (MAP) are given.
 (IW) resp. (I) refers to the (Image,Word) setup resp. (Image).\label{tab:iw}}
 \resizebox{1\linewidth}{!}{
@@ -1491,7 +1491,7 @@ ImageNet.
 \begin{figure*}[t!]
   \begin{center}
     \resizebox{0.8\textwidth}{!}{\includegraphics{article5/images/labelme.eps} }
-    \caption{{\bf Example from LHI data} depicting an image of an object and its parts.}
+    \caption[Example from LHI data]{{\bf Example from LHI data} depicting an image of an object and its parts.}
     \label{fig:labelme}
     \end{center}
 \end{figure*}
@@ -1517,7 +1517,7 @@ can nicely transfer to real-world data even though such data {\it has
 
 \begin{table}[t!]
 \begin{center}
-\caption{\textbf{Summary of Results on LHI data}\label{tab:lhi}}
+\caption[Results on LHI data]{\textbf{Summary of Results on LHI data}\label{tab:lhi}}
 \resizebox{1\linewidth}{!}{
 \begin{tabular}{|l||l|l|l||l|l|l||l|l|l|} %{|l|p{8cm}|}
 \hline
@@ -1604,7 +1604,7 @@ relationship was among the $771$ training relationships. The Image-Word models
 \begin{table}[t!]
 \begin{center}
 
-\caption{\textbf{WordNet Tree and Unseen relationships}\label{tab:generalize}
+\caption[WordNet Tree and Unseen relationships]{\textbf{WordNet Tree and Unseen relationships}\label{tab:generalize}
 Image-Word Shared models allow to generalize to unseen relationships. Using the
 WordNet tree also improves the performance. (IO) refers to the original Image
 where an offset was added to filter out relations both in the
@@ -1640,7 +1640,7 @@ results w/o using WordNet tree in Table~\ref{tab:lhi}).
 
 \begin{table}
 \begin{center}
-\caption{\label{tab:embed}\textbf{Nearest Neighbors of word embeddings learned with Shared and Unshared models.}{\small Shared embeddings
+\caption[Nearest Neighbors of Word Embeddings]{\label{tab:embed}\textbf{Nearest Neighbors of word embeddings learned with Shared and Unshared models.}{\small Shared embeddings
  exhibit visual similarities in addition to semantics {\it e.g.} strings of an instrument and laces of a shoe, a radio-phonograph is usually set up on a desk or a dresser.}}
 \resizebox{1\linewidth}{!}{
 \begin{tabular}{|c|c||c|c||c|c|} %{|l|p{8cm}|}
@@ -1672,7 +1672,7 @@ Hence, stringed instruments and shoes have strings and laces as parts, which are
 \begin{figure*}
   \begin{center}
     \resizebox{1.05\textwidth}{!}{\includegraphics{article5/images/augmented3.eps} }
-    \caption{\label{fig:sem_search}{\bf Semantically Augmented Image Search.} {\small For a given query 
+    \caption[Semantically Augmented Image Search]{\label{fig:sem_search}{\bf Semantically Augmented Image Search.} {\small For a given query 
     ("wheeled vehicule" on the left and "Sweatsuit" on the right), our model can retrieve corresponding images
     using $f_{I}$ (above the dashed line) but can also automatically extend the query to associated terms 
     (object parts in this work) using $f_{L}$ and hence retrieve semantically related images using $f_{I}$ 
