@@ -31,7 +31,7 @@ du dictionnaire. Cette représentation est contenue dans une matrice
 $E\in\mathcal{M}_{M \times d}(\mathbb{R})$ où chaque ligne représente un {\it
 embedding} de mot. Si on définit une bijection $g(\textrm{mot}) \in \lbrace
 0,1,\dots, M \rbrace$ qui associe un index $i$ à chaque mot, on a alors notre
-fonction $h(\textrm{mot})=E_{g(\textrm{mot}).}$ retourne la ligne
+fonction $h(\textrm{mot})=E_{g(\textrm{mot}).}$ qui retourne la ligne
 correspondante de la matrice $E_{i.}$.
 
 Mathématiquement, il s'agit d'un produit matriciel
@@ -100,7 +100,7 @@ Considérons le cas d'une classification classique avec softmax
 l'espace défini par la dernière couche (la couche avant d'appliquer la softmax)
 à un espace sémantique $\mathbb{E}$.  Chaque ligne $W^{(m+1)}_{j.}$ de la
 matrice $W^{(m+1)}$ du classifieur correspond au centre du cluster associé à
-la classe $j$. Pour prédire la classe dominante associé à un exemple $x$, on
+la classe $j$. Pour prédire la classe dominante associée à un exemple $x$, on
 calcule la représentation $h^{(m)}(x)$ et la classe $j$ avec la plus grande
 similarité l'emporte:
 
@@ -108,7 +108,7 @@ similarité l'emporte:
 \textrm{arg}\max_{j\in\lbrace 1,\dots ,C\rbrace} \textrm{sim}(h^{(m)}(x), W^{(m+1)}_{j.})
 \end{equation}
 
-La softmax étant appliquée ensuite pour convertir ces valeurs en probabilités.
+La softmax est appliquée ensuite pour convertir ces valeurs en probabilités.
 
 Prenons l'exemple de la détection de paraphrase dans un espace sémantique
 \citep{msr-paraphrase}. On suppose que notre ensemble d'entraînement
@@ -125,27 +125,27 @@ précédent $C=20,000$) est en général très grand.
 Au moment de l'apprentissage, calculer la similarité pour tous les couples
 négatifs devient inefficace et il nécessaire de trouver d'autres stratégies
 pour contrôler l'explosion du nombre de classes considérées comme négatives.
-L'idee est donc ici de sampler un nombre décent ($100\leq C\leq 1,000$) de couples négatifs à chaque
+L'idee est donc ici d'échantillonner un nombre acceptable ($100\leq C\leq 1,000$) de couples négatifs à chaque
 mise à jour afin d'obtenir une approximation de la vraie valeur de la softmax.
-Il est aussi possible de faire du sampling de négatif intelligent, c'est à dire
+Il est aussi possible de faire de l'échantillonnage de négatif intelligent, c'est à dire
 sélectionner uniquement les couples négatifs qui violent une certaine
 contrainte et ignorer les autres. Pour un couple de positif $(x_i, x_j)$, cette
 contrainte pour sélectionner un ensemble de couples négatifs $(x_k, x_l)$ peut
-prendre la forme d'un viol de marge $\epsilon$:
+prendre la forme d'une violation de marge $\epsilon$:
 
 \begin{equation}
 \textrm{sim}(x_i, x_j) - \textrm{sim}(x_k, x_l) - \epsilon > 0
 \end{equation}
 
-Il est ensuite plus aisé d'avoir un problème qui scale à plusieurs millions
-d'entités. On sélectionne de façon aléatoire un sous ensemble
-$\tilde{\mathcal{N}}_{(x_i, x_j)}$ de couples négatifs associé à chaque mise à jour
-d'un couple positif $(x_i, x_j)\in\mathcal{P}$.  Ce sous-ensemble
-$\tilde{\mathcal{N}}$ est renouvelé à chaque mise à jour. La fonction à minimiser
-devient alors:  
+Il est ensuite plus aisé d'avoir une solution pour un problème à grande
+échelle, c'est à dire pour plusieurs millions d'entités. On sélectionne de
+façon aléatoire un sous ensemble $\tilde{\mathcal{N}}_{(x_i, x_j)}$ de couples
+négatifs associé à chaque mise à jour d'un couple positif $(x_i,
+x_j)\in\mathcal{P}$.  Ce sous-ensemble $\tilde{\mathcal{N}}$ est renouvelé à
+chaque mise à jour. La fonction à minimiser devient alors:  
 
 \begin{equation}
--\sum_{(x_i, x_j)\in\mathcal{P}}\sum_{(x_k, x_l)\in\tilde{\mathcal{N}}_{(x_i, x_j)}} \textrm{sim}(h(x_i), h(x_j)) - \textrm{sim}(h(x_k), h(x_l)) - \epsilon
+-\sum_{(x_i, x_j)\in\mathcal{P}}\sum_{(x_k, x_l)\in\tilde{\mathcal{N}}_{(x_i, x_j)}} \max (0, \textrm{sim}(h(x_i), h(x_j)) - \textrm{sim}(h(x_k), h(x_l)) - \epsilon)
 \label{eq:min-sim}
 \end{equation}
 
@@ -166,7 +166,7 @@ représentation $h_I$ additionnelle à apprendre. La fonction à minimiser
 reste la même:
 
  \begin{equation}
--\sum_{(x_i, x_j)\in\mathcal{P}}\sum_{(x_k, x_l)\in\tilde{\mathcal{N}}_{(x_i, x_j)}} \textrm{sim}(h_L(x_i), h_I(x_j)) - \textrm{sim}(h_L(x_k), h_I(x_l)) - \epsilon
+-\sum_{(x_i, x_j)\in\mathcal{P}}\sum_{(x_k, x_l)\in\tilde{\mathcal{N}}_{(x_i, x_j)}} \max (0, \textrm{sim}(h_L(x_i), h_I(x_j)) - \textrm{sim}(h_L(x_k), h_I(x_l)) - \epsilon)
 \end{equation}
 
 Cette approche est bénéfique dans le sens où une prédiction d'image de "requin"
@@ -175,9 +175,9 @@ proche parmi des embeddings voisins qui auront la même sémantique, par exemple
 "poisson", "thon" \citep{samy-extreme}.
 
 Nous travaillons actuellement à étendre le concept Multi-Domaines de deux
-domaines à un nombre de domaines arbitraires. Le nombre de couples positifs
+domaines à un nombre de domaines arbitraire. Le nombre de couples positifs
 croît de façon quadratique avec le nombre de domaines. Une approche avec
-une croissance linéaire est en moment à l'étude.
+une croissance linéaire est en ce moment à l'étude.
 
 \section{Transfert de Domaine: Proxy d'apprentissage}
 

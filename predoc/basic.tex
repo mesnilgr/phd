@@ -137,7 +137,7 @@ Notre objectif est donc d'avoir le risque espéré le plus faible possible.
 L'algorithme doit pouvoir généraliser au mieux à de nouveaux exemples.
 L'hypothèse de base est que les données sont tirées de la même loi pour tous
 nos ensembles $\mathcal{D}_\textrm{train}$, $\mathcal{D_{\mathrm{valid}}}$ et
-$\mathcal{D_{\mathrm{test}}}$. En un sens, que les données partagent la même
+$\mathcal{D_{\mathrm{test}}}$. En un sens, les données partagent la même
 distribution.  Ensuite, on suppose généralement que les données sont
 indépendantes, c'est à dire que chaque exemple a été généré par cette
 distribution indépendamment des autres exemples.  Ces deux dernières hypothèses
@@ -148,7 +148,7 @@ L'indépendance se traduit par l'équation suivante:
 \mathbb{P}(x_{1}, \dots, x_{n}) = \prod_{i=1}^{n}\mathbb{P}(x_{i})
 \end{equation}
 
-avec $\mathbb{P}$ la distribution derrière notre ensemble de données.
+avec $\mathbb{P}$ la distribution à l'origine de notre ensemble de données.
 
 Une approche populaire d'apprentissage machine consiste à maximiser la
 log-vraisemblance sur l'ensemble d'entraînement. 
@@ -267,17 +267,18 @@ avec l'ensemble des paramètres contenus dans $\theta=\lbrace W^{(i)},b^{(i)}\rb
 Depuis \citep{Hinton06,Bengio-nips-2006}, il a été démontré qu'il peut être
 avantageux de pré-entraîner un réseau de neurones en utilisant des algorithmes
 d'extraction de caractéristiques en apprentissage non supervisé. Plutôt que
-d'initialiser les paramètres de chaque couche $\lbrace W^{(i)},b^{(i)} \rbrace_{i=1}^{m}$ de façon
-aléatoire, on les initialise avec les paramètres résultant de l'apprentissage
-non supervisé.  Cela permet d'obtenir de nettes améliorations de performances
-et d'entraîner des réseaux à plusieurs couches de manière efficace.
+d'initialiser les paramètres de chaque couche $\lbrace W^{(i)},b^{(i)}
+\rbrace_{i=1}^{m}$ de façon aléatoire, on les initialise avec les paramètres
+résultant de l'apprentissage non supervisé.  Cela permet dans certains cas
+d'obtenir de nettes améliorations de performances et d'entraîner des réseaux à
+plusieurs couches de manière efficace.
 
 Dans ce qui suit, nous présenterons les techniques d'apprentissage non
 supervisé les plus couramment utilisées pour l'extraction de caractéristiques
 et le pré-entraînement de réseaux de neurones.
 
 L'apprentissage non supervisé permet d'extraire des connaissances sur des
-données sans connaissance à priori. On ne connaît ni le type des données
+données avec peu de connaissances à priori. On ne connaît ni le type des données
 \textit{e.g.} musique, images, données séquentielles, ni leur classe
 d'appartenance \textit{e.g.} $10$ classes de $0$ à $9$ pour la classification
 de chiffres.  \\
@@ -294,9 +295,9 @@ Une manière usuelle de sélectionner les hyper-paramètres de tels algorithmes 
 par une évaluation des performances discriminatives de la
 représentation apprise.
 
-On présente ici la méthode linéaire la plus courante et la plus populaire:
-l'analyse en composantes principales ou en anglais \textit{Principal Component
-Analysis} \textbf{(PCA)}~\citep{Pearson-1901,Hotelling1933}.
+On présente ici la méthode linéaire non supervisée la plus courante et la plus
+populaire: l'analyse en composantes principales ou en anglais \textit{Principal
+Component Analysis} \textbf{(PCA)}~\citep{Pearson-1901,Hotelling1933}.
 
 \subsection{Analyse en Composantes Principales} \label{sec:pca}
 
@@ -321,7 +322,7 @@ et $V\in\mathcal{M}_{d\times d}$ les vecteurs propres associés (chaque colonne
 correspond à un vecteur propre). La sortie de la PCA est alors donnée par:
 
 \begin{equation}
-h(x)=(x-\mu)V
+h(x)=V(x-\mu)
 \end{equation}
 
 Si l'on veut avoir une PCA avec \textit{whitening}, on construit la matrice
@@ -329,7 +330,7 @@ diagonale $U^{'}$ à partir de $U$ où $U^{'}_{ii}=1/\sqrt{C_{ii}}$ et la sortie
 est alors donnée par:
 
 \begin{equation}
-h(x)=(x-\mu)VU^{'}
+h(x)=U^{'}V(x-\mu)
 \end{equation}
 
 
@@ -388,7 +389,7 @@ dernières composantes représentent du bruit (voir Figure~\ref{fig:mnistpca}).
 \end{figure}
 
 
-On s'intéresse ensuite à des méthodes non-linéaires qui peuvent être utilisées par la suite pour
+On s'intéresse ensuite à des méthodes non supervisées non-linéaires qui peuvent être utilisées par la suite pour
 l'initialisation de réseaux de neurones.
 Depuis la formalisation la plus classique de l'auto-encodeur
 \textbf{(AE)}~\citep{Gallinari87} , nous présenterons le \textit{Denoising
@@ -401,7 +402,7 @@ le \textit{Higher-Order Contractive Auto-Encoder}
 \subsection{Architectures de type Auto-Encodeur}
 
 L'auto-encodeur classique se décompose en un encodeur et un décodeur.
-L'encodeur effectue une transformation affine des données paramétrisée par une
+L'encodeur le plus commun effectue une transformation affine des données paramétrisée par une
 matrice de poids $W\in\mathcal{M}_{m\times d}(\mathbb{R})$ où $m$ désigne le
 nombre d'unités cachées du modèle et un vecteur de biais $b\in\mathbb{R}^m$.
 Cette transformation est suivie d'une non-linéarité $s:\mathbb{R}^m \rightarrow
@@ -419,7 +420,7 @@ mais a un vecteur de biais $b^{'}\in\mathbb{R}^d$ qui lui est propre. Il a
 alors la forme suivante:
 
 \begin{equation}
-r(x)=s(W^{T} h(x)+b^{'}) \label{eq:autoenc}
+r(h(x))=s(W^{T} h(x)+b^{'}) \label{eq:autoenc}
 \end{equation} 
 
 La non-linéarité $s(.)$ est ici optionnelle et dépend de la nature des données
@@ -564,7 +565,7 @@ lors de l'entraînement, on pourra constater les effets obtenus en termes de
 mesures quantitatives de performances de classification (bénéfique ou non) ou
 de directions de variations obtenues (qualitatif).
 
-Les pertes Eq.~\ref{eq:ae},~\ref{eq:dae} ou~\ref{eq:cae} sont minimisées par
+Les pertes des Eq.~\ref{eq:ae},~\ref{eq:dae} ou~\ref{eq:cae} sont minimisées par
 descente de gradient. Il est donc nécessaire de pouvoir calculer les dérivées
 partielles de la perte $\mathcal{J}$ par rapport aux paramètres $\theta$. Pour commencer, le calcul de
 la $k^{\textrm{ième}}$ dérivée de l'encodeur (avec $m$ unités cachées) par
@@ -575,11 +576,11 @@ une approximation stochastique de la Hessienne (voir \cite{Salah+al-2011} pour
 la preuve):
 
 \begin{equation}
-\|\dfrac{\partial^2 h}{\partial x^2}(x) \|_2^2 = \lim_{\sigma\rightarrow 0}\frac{1}{\sigma^2}\int_{\epsilon \rightsquigarrow \mathcal{N}(0,\sigma)} \| \dfrac{\partial h}{\partial x}(x) - \dfrac{\partial h}{\partial x}(x+\epsilon) \|^2_2 d\epsilon
+\|\dfrac{\partial^2 h}{\partial x^2}(x) \|_2^2 = \lim_{\sigma\rightarrow 0}\frac{1}{\sigma^2}\int_{\epsilon \rightsquigarrow \mathcal{N}(0,\sigma^2)} \| \dfrac{\partial h}{\partial x}(x) - \dfrac{\partial h}{\partial x}(x+\epsilon) \|^2_2 d\epsilon
 \label{eq:hessian-approx}
 \end{equation}
 
-Si la variance $\sigma$ est non nulle, des contributions aux normes des ordres
+Si la variance $\sigma^{2}$ est non nulle, des contributions aux normes des ordres
 supérieurs apparaissent \citep{Salah+al-2011}. Ces contributions disparaissent à
 la limite $\sigma\rightarrow 0$. En pratique pour approximer la norme de la
 Hessienne (Eq.~\ref{eq:hessian-approx}), on utilise un lot de plusieurs
@@ -611,7 +612,7 @@ la norme de la Hessienne.
 \subsubsection{Autres Méthodes d'Extraction de Caractéristiques}
 
 Il existe de nombreuses autres méthodes d'extraction de caractéristiques qui
-n'ont pas été détaillées ici. En méthodes d'extraction de caractéristiques
+n'ont pas été détaillées ici. Comme méthodes d'extraction de caractéristiques
 linéaires, on trouve par exemple l'analyse en composantes indépendantes, en
 anglais \textit{Independent Component Analysis}~\citep{Comon94,Hyvarinen-2001}.
 Cette méthode peut être utilisée pour la séparation aveugle de sources.  \\
@@ -619,14 +620,14 @@ Cette méthode peut être utilisée pour la séparation aveugle de sources.  \\
 Deux types de méthodes d'extraction de caractéristiques non-linéaire  ont aussi
 fait l'objet de récentes avancées: les méthodes {\bf sparses}
 \citep{ranzato-08,koray-psd-08,Koray-08} qui utilisent une pénalité sur les
-activations de l'encodeur (afin de le pousser à prendre les valeurs $1$ - actif
-- ou $0$ - inactif - dans le cas d'une sigmoide)  ou les modèles {\bf
-génératifs} basés sur des fonctions d'énergie \citep{ranzato-unsup-07} comme les
-Machines de Boltzmann Restreintes, en anglais \textit{Restricted Boltzmann
-Machine} \citep{Tieleman08}.  Ces méthodes ont été utilisées avec succès pour
-l'initialisation de réseaux de neurones de type Perceptron Multi-Couches
-\citep{HintonG2006,ranzato-08,koray-psd-08,Koray-08} ou Réseaux convolutionnels
-\citep{koray-nips-10-small}. 
+activations de l'encodeur (afin de le pousser à prendre la valeur $0$ - inactif
+- dans le cas d'une sigmoide)  ou les modèles {\bf génératifs} basés sur des
+  fonctions d'énergie \citep{ranzato-unsup-07} comme les Machines de Boltzmann
+  Restreintes, en anglais \textit{Restricted Boltzmann Machine}
+  \citep{Tieleman08}.  Ces méthodes ont été utilisées avec succès pour
+  l'initialisation de réseaux de neurones de type Perceptron Multi-Couches
+  \citep{HintonG2006,ranzato-08,koray-psd-08,Koray-08} ou Réseaux
+  convolutionnels \citep{koray-nips-10-small}. 
 
 \subsection{Déplacement sur la Variété}
 \label{sec:surfing}
@@ -637,12 +638,12 @@ l'ensemble $\mathcal{D}_{10-ppv}(x)$ des 10 plus proches voisins d'un point $x$
 directions de variations autour de ce point central $x$.  Ces directions
 forment un repère local orthonormé centré en ce point $\mathcal{B}_{x}=\lbrace
 V_{.i}(x)~|~U_{i,i} > \epsilon\rbrace$ (voir Notation \ref{sec:pca}). À partir
-de ces directions, on peut former un hyperplan tangent $\mathcal{H}_{x}=\lbrace
+de ces directions, on peut former un hyperplan tangent local $\mathcal{H}_{x}=\lbrace
 x + v~|~v\in\mathcal{B}_{x} \rbrace$ à ce point $x$~\citep{Dauphin-et-al-NIPS2011}.
 
-L'hyperplan tangent $\mathcal{H}_{x}$ est un nouvel ensemble de points sur la
-variété des exemples d'apprentissage au voisinage de du point $x$. Ces exemples
-sur la variété sont tiré de la même distribution que celle qui caractérise
+L'hyperplan tangent local $\mathcal{H}_{x}$ est un nouvel ensemble de points sur la
+variété des exemples d'apprentissage au voisinage du point $x$. Ces exemples
+sur la variété sont tirés de la même distribution que celle estimée à partir de
 $\mathcal{D}_{train}$. À partir de cette idée, on peut imaginer naviguer sur la
 variété de proche en proche (d'un point suffisamment proche d'un autre) en
 suivant ces directions de variations.
@@ -664,13 +665,13 @@ simple reconstruction du décodeur. Avec la notation de l'équation
 \ref{eq:autoenc}, on obtient:
 
 \begin{equation}
-x_{i,j,\alpha} = r(h(x_{i}) + \alpha (h(x_{i}) - h(x_{j})))
+x_{i,j,\alpha} = r(h(x_{i}) + \alpha h(x_{i}) - h(x_{j})))
 \end{equation}
 
 Dans le Chapitre~\ref{chap:mixing}, on montrera qu'il est plus aisé de se déplacer sur la
 variété à partir des représentations $h(x)$.  Il est aussi présentée
 l'intuition qu'il est plus facile de mixer (de passer d'une classe à l'autre)
-lors du processus de sampling  pour les CAEs ou RBMs si le sampling a lieu dans
+lors du processus d'échantillonnage pour les CAEs ou RBMs si l'échantillonnage a lieu dans
 l'espace des représentations apprises $h(x)$ plutôt que dans l'espace
 original des données $x$.
 
@@ -678,7 +679,7 @@ original des données $x$.
 
 Dans les sections précédentes, nous avons toujours supposé que les données dans
 $\mathcal{D}_{train}$, $\mathcal{D}_{valid}$ et $\mathcal{D}_{test}$
-provenaient la même distribution. Dans le paradigme du transfert de domaine,
+provenaient de la même distribution. Dans le paradigme du transfert de domaine,
 cette hypothèse n'est plus valable. Cependant, ce n'est pas pour autant qu'il
 faut reconstruire les ensembles de données afin de satisfaire cette
 contrainte de distribution identique. Il est plus intelligent de proposer un
@@ -754,11 +755,11 @@ séquence de longueur $T$, on a $x=\lbrace x_{i}\in\mathbb{R}^{d}
 
 En traitement du langage naturel par exemple (Chapitre \ref{chap:rnn}), chaque
 entrée est une séquence de mots et le label $y$ est constitué d'une séquence de
-classes associée à chacun des mots (Figure \ref{fig:iob}). À noter que la
+classes associées à chacun des mots (Figure \ref{fig:iob}). À noter que la
 longueur $T$ de la séquence n'est pas uniforme dans l'ensemble de données et
 peut varier.
 
-\subsection{Conditionnal Random Fields}
+\subsection{Conditional Random Fields}
 
 Une des méthodes de classification de séquences les plus utilisées sont les CRFs \citep{rnn6} et leurs variantes.
 La probabilité conditionnelle de modéliser une sortie $y$ conditionnellement à
@@ -769,7 +770,7 @@ f_{\theta}(y~\vert~x) = \frac{1}{Z(x)}\prod_{t=1}^{T}\exp{H(y_{t-1}, y_{t}, x_{t
 \end{equation}
 
 avec $Z(x)$ un facteur de normalisation et les $M$ fonctions $h_{m}(y_{t-1},
-y_{t}, x_{t})$ "caractéristique" définies de la manière suivante:
+y_{t}, x_{t})$ "caractéristique" sont définies de la manière suivante:
 
 \begin{equation}
 H(y_{t-1}, y_{t}, x_{t}) = \sum_{m=1}^{M}\lambda_{m}h_{m}(y_{t-1}, y_{t}, x_{t})
@@ -800,7 +801,7 @@ $\mathcal{D}_{train}$:
 
 L'équation \ref{eq:loglikecrf} est différentiable par rapport à $\theta=\lbrace
 \lambda_m \rbrace_{m=1}^{M}$ et concave. Il n'y a donc qu'un seul maximum et on
-peut l'approximer par des méthodes à base de gradient.
+peut l'approcher par des méthodes à base de gradient.
 
 \subsection{Réseaux de Neurones Récurrents}
 
