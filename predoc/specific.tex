@@ -1,20 +1,25 @@
 \chapter{Espaces Sémantiques Multi-Domaines}
 
-Cette dissertation a pour object l'apprentissage d'espace sémantiques pour
+Cette dissertation a pour objet l'apprentissage d'espaces sémantiques pour
 différents domaines comme par exemple, le langage naturel ou les images. Il est
 aussi possible d'apprendre un espace sémantique à l'intersection de domaines,
-on parle en ce cas d'espace sémantique multi-domaines (Chapitre \ref{chap:mlj}). Ces
-espaces $\mathbb{E}\subset \mathbb{R}^{d}$ sont appelés sémantiques si la représentation
-$h(x)\in \mathbb{E}$ d'entités $x$, jugées similaires par un esprit humain, ont leur
-similitude préservée dans cet espace $\mathbb{E}$.
+on parle en ce cas d'espace sémantique multi-domaines (Chapitre
+\ref{chap:mlj}). Ces espaces $\mathbb{E}\subset \mathbb{R}^{d}$ sont appelés
+sémantiques si la représentation $h(x)\in \mathbb{E}$ d'entités $x$, jugées
+similaires par un esprit humain, ont leur similitude préservée dans cet espace
+$\mathbb{E}$. Cette similitude peut se mesurer à l'aide d'une métrique comme la
+distance euclidienne par exemple.
 
 Dans le chapitre \ref{chap:basic}, nous avons présenté comment apprendre des
 représentations caractérisant des espaces sémantiques au travers de
 l'apprentissage non-supervisé. Nous avons aussi observé dans la section
-\ref{sec:surfing} comment se déplacer dans cet espace. Dans ce chapitre, on
-décrit comment obtenir une représentation vectorielle dans un espace euclidien
+\ref{sec:surfing} comment se déplacer dans cet espace.  Dans ce chapitre, on
+décrira comment obtenir une représentation vectorielle dans un espace euclidien
 pour chaque entité d'un même domaine, ou de domaines différents.
  
+Ce court chapitre introduit brièvement les quelques notions essentielles ainsi
+que quelques approches simples, spécifiques aux espaces sémantiques, qui
+permettront au lecteur de mieux appréhender les articles qui suivent.
   
 \section{Espace Sémantique pour le Langage}
 
@@ -69,10 +74,10 @@ d'information (Information Retrieval).
 \section{Mesure de Similarité}
 
 Il est important dans cet espace $\mathbb{E}$ de pouvoir juger de la qualité des
-représentations apprises. Il n'existe pas encore de mesure pour départager une
+représentations apprises. Il n'existe pas encore de mesure consensuelle pour départager une
 représentation meilleure qu'une autre. On peut en revanche examiner les entités
 voisines dans l'espace sémantique $\mathbb{E}$ et juger si elles sont
-similaires. On mesure la similarité entre deux représentations $e^{(i)}=h(x_i)$ et
+similaires. On peut mesurer la similarité entre la représentation de deux entités $e^{(i)}=h(x_i)$ et
 $e^{(j)}=h(x_j)$ dans $\mathbb{E}$ par un simple produit scalaire:
 
 \begin{equation}
@@ -80,7 +85,7 @@ $e^{(j)}=h(x_j)$ dans $\mathbb{E}$ par un simple produit scalaire:
 \textrm{sim}(e^{(i)}, e^{(j)})=<e^{(i)}, e^{(j)}> = \sum_{k=1}^{d}e^{(i)}_k e^{(j)}_k
 \end{equation}
 
-Une mesure de similarité qui peut aussi donner d'excellents résultats est la
+Une autre mesure de similarité qui peut aussi donner d'excellents résultats est la
 distance cosinus fréquemment utilisée en traitement du langage pour la
 comparaison de documents textuels.  
 
@@ -125,7 +130,7 @@ précédent $C=20,000$) est en général très grand.
 Au moment de l'apprentissage, calculer la similarité pour tous les couples
 négatifs devient inefficace et il nécessaire de trouver d'autres stratégies
 pour contrôler l'explosion du nombre de classes considérées comme négatives.
-L'idee est donc ici d'échantillonner un nombre acceptable ($100\leq C\leq 1,000$) de couples négatifs à chaque
+Une possibilité est d'échantillonner un nombre acceptable ($100\leq C\leq 1,000$) de couples négatifs à chaque
 mise à jour afin d'obtenir une approximation de la vraie valeur de la softmax.
 Il est aussi possible de faire de l'échantillonnage de négatif intelligent, c'est à dire
 sélectionner uniquement les couples négatifs qui violent une certaine
@@ -149,9 +154,9 @@ chaque mise à jour. La fonction à minimiser devient alors:
 \label{eq:min-sim}
 \end{equation}
 
-Nous présenterons cette technique \citep{image-wsabie} dans le chapitre
+Nous présenterons cette technique \citep{image-wsabie} plus en détails dans le chapitre
 \ref{chap:mlj}. Il est possible de s'inspirer de ces idées pour avoir d'autres
-types de fonctions à minimiser mais l'idée reste la même \citep{rnn58}.
+types de fonctions à minimiser mais le principe reste le même \citep{rnn58}.
 
 \section{Espaces Multi-Domaines}
 
@@ -159,11 +164,12 @@ Dans la section précédente~\ref{sec:chd}, nous avons observé comment apprendr
 sémantique pour un seul et unique domaine. Il est possible d'apprendre un espace
 sémantique commun à l'intersection de différents domaines.  
 
-Pour étendre cette idée à deux domaines, il suffit de définir une
-représentation $h_L(x)$ pour le langage et une représentation $h_I(x)$ pour des images
-(Chapitre~\ref{chap:mlj}). La seule différence réside dans une
-représentation $h_I$ additionnelle à apprendre. La fonction à minimiser
-reste la même:
+Pour étendre cette idée à deux domaines, par exemple les domaines du langage et
+des images, il suffit de définir une représentation $h_L(x)$ pour le langage et
+une représentation $h_I(x)$ pour des images (Chapitre~\ref{chap:mlj}). La seule
+différence par rapport à l'utilisation de couples de phrases présenté dans la
+section précédente réside dans une représentation $h_I$ additionnelle à
+apprendre. La fonction à minimiser reste la même:
 
  \begin{equation}
 -\sum_{(x_i, x_j)\in\mathcal{P}}\sum_{(x_k, x_l)\in\tilde{\mathcal{N}}_{(x_i, x_j)}} \max (0, \textrm{sim}(h_L(x_i), h_I(x_j)) - \textrm{sim}(h_L(x_k), h_I(x_l)) - \epsilon)
@@ -177,7 +183,7 @@ proche parmi des embeddings voisins qui auront la même sémantique, par exemple
 Nous travaillons actuellement à étendre le concept Multi-Domaines de deux
 domaines à un nombre de domaines arbitraire. Le nombre de couples positifs
 croît de façon quadratique avec le nombre de domaines. Une approche avec
-une croissance linéaire est en ce moment à l'étude.
+une croissance linéaire est actuellement à l'étude.
 
 \section{Transfert de Domaine: Proxy d'apprentissage}
 

@@ -6,44 +6,46 @@ Dans cette dissertation, nous présentons plusieurs techniques d'apprentissage
 d'espaces sémantiques pour différents domaines, par exemple des mots et des
 images, mais aussi à l'intersection de différents domaines.  On utilisera
 différentes techniques d'apprentissage machine pour apprendre des
-représentations avec des propriétés intrasèques intéressantes. Ces propriétés
+représentations avec des propriétés intrinsèques intéressantes. Ces propriétés
 peuvent aller d'un meilleur mixage (un espace où il est plus aisé de faire de
 l'échantillonage), à une meilleure séparabilité linéaire (un espace où il est
-plus facile de discrimer avec un hyperplan). L'espace sémantique est l'espace où
-la représentation évolue. Cet espace est appelé sémantique si des entités
-jugées similaires par un être humain, ont leur similarité préservée dans cet
-espace.
+plus facile de discrimer avec un hyperplan). L'espace sémantique est l'espace
+où la représentation évolue. Un espace de réprésentation est appelé sémantique
+si des entités jugées similaires par un être humain, ont leur similarité
+préservée dans cet espace.  Les 5 articles qui forment le corps de cette thèse
+correspondent à des avancées dans les techniques permettant d'apprendre de
+telles représentations ou d'en tirer profit.  
 \\
 
 \vspace{-0.2cm}
 La première publication présente un enchaînement de méthodes d'apprentissage
-incluant de nombreuses techniques d'apprentissage non supervisé utilisées pour
-gagner une compétition en 2011. La particularité de cette compétition était
+incluant plusieurs techniques d'apprentissage non supervisé utilisées qui nous a permis de
+remporter la compétition ``Unsupervised and Transfer Learning Challenge'' en 2011. La particularité de cette compétition était
 qu'aucun apriori sur la structure des données ne pouvait être utilisé car les
 différents ensembles de données (reconnaissance de caractères manuscrits,
 actions humaines, traitement du langage naturel, données écologiques,
 classification d'images) étaient rendus anonymes par des permutations
-aléatoires. Le deuxième article présente une manière d'extraire de l'information
+aléatoires. Le deuxième article présente une manière d'extraire de l'information à
 partir d'un contexte structuré ($177$ détecteurs d'objets à différentes
 positions et échelles). On montrera que l'utilisation de la structure des
 données combinée à un apprentissage non supervisé permet de réduire la
-dimensionnalité d'un facteur de $97\%$ tout en améliorant les performances de
-reconnaissance de scènes de $+5\%$ à $+11\%$ suivant l'ensemble de données.
+dimensionnalité de $97\%$ tout en améliorant les performances de
+reconnaissance de scènes de $+5\%$ à $+11\%$ selon l'ensemble de données.
 \\
 
 \vspace{-0.2cm}
 Dans le troisième travail, on s'intéresse à la structure apprise par les
 réseaux de neurones profonds utilisés dans les deux précédentes publications.
 Plusieurs hypothèses sont présentées et testées expérimentalement montrant que
-l'espace appris a de meilleures propriétés de mixage (explorer
+l'espace appris a de meilleures propriétés de mixage (facilitant l'exploration de
 différentes classes durant le processus d'échantillonage).
 \\
 
 \vspace{-0.2cm}
 Pour la quatrième publication, on s'intéresse à résoudre un problème d'analyse
-syntaxique sémantique avec des réseaux de neurones récurrents appris sur des
-fenêtres de contexte de mots.  On observe une nette amélioration de l'état de
-l'art sur plusieurs ensembles de données et d'intéressantes propriétés de
+syntaxique et sémantique avec des réseaux de neurones récurrents appris sur des
+fenêtres de contexte de mots. Avec l'aproche proposée, nous obtenons une nette amélioration de l'état de
+l'art sur plusieurs ensembles de données et mettons en évidence d'intéressantes propriétés de
 l'espace sémantique associé au langage.  Une recherche sur l'apprentissage d'un
 espace sémantique à l'intersection des mots et des images est présenté dans
 notre cinquième travail. On propose une façon d'effectuer de la recherche
@@ -70,13 +72,13 @@ with interesting intrinsic properties.
 unsupervised learning techniques used to win the Unsupervised and Transfer
 Learning Challenge in 2011. No prior knowledge on the structure of the data
 could be used during this competition since the different datasets were
-anonymous. The learned representations improved the performance of a weak
-classifier compared to the raw data. It also transfered well to different
+anonymous. Using the learned representations improved the performance of a weak
+classifier compared to using the raw data. It also transfered well to different
 subsets of classes for the $5$ different domain datasets in this competition.
 %arabic character recognition, CIFAR-10, Natural Language processing, human
 %action recognition and ecological data.
 
-In the second article, we present a pipeline widely inspired from the one above
+In the second article, we present a pipeline largely inspired from the one above
 but taking advantage of the structure of the data for a scene classification
 problem. We present a way to learn from structured context, consisting of $177$
 object detections at different poses and scales. We show that using the
@@ -110,7 +112,7 @@ clustered together. Depending on the dataset, performing Viterbi decoding with
 the probabilities of the model is crucial to obtain good performance.
 
 In the fifth article, an investigation on learning a single semantic space at
-the intersection of words and images is presented. As we lack of labeled images
+the intersection of words and images is presented. As we lack labeled images
 of objects and their parts, we use the Word-Net part-of relationship to obtain
 a training proxy. Through the semantic space intersecting words and images
 domains, we propose a way to perform "augmented search" where a search on an
@@ -125,20 +127,21 @@ image containing an object would also return images of the object's parts.
 
 \item Grégoire Mesnil, Yann Dauphin, Xavier Glorot, Salah Rifai, Yoshua Bengio,
 et al. {\bf Unsupervised and Transfer Learning Challenge: a Deep Learning
-Approach} (2012) Journal of Machine Learning Workshop and Conference Papers.
+Approach} (2012) Journal of Machine Learning Workshop and Conference Papers,
+Proceedings of the Unsupervised and Transfer Learning challenge and workshop, pages 97-110
 
 \item Grégoire Mesnil, Salah Rifai, Antoine Bordes, Xavier Glorot, Yoshua Bengio and Pascal Vincent
 {\bf Unsupervised Learning of Object Detections Semantics for Scene Categorization}
-(2015) Lecture Notes in Advances in Intelligent and Soft Computing, Springer-Verlag.
+(2015) Pattern Recognition Applications and Methods, Advances in Intelligent Systems and Computing, pages 209-224
 
 \item Yoshua Bengio\footnote{indique une contribution similaire}, Grégoire Mesnil$^{1}$, Yann Dauphin and Salah Rifai
-{\bf Better Mixing via Deep Representations} (2013) International
-Conference on Machine Learning
+{\bf Better Mixing via Deep Representations} (2013) 
+Proceedings of the 30th International Conference on Machine Learning 
 
-\item Grégoire Mesnil, Yann Dauphin, Kaisheng Yao, Yoshua Bengio, Li Deng, Dilek Hakkani-Tur, Xiaodong He, Larry Heck, Gokhan Tur, Dong Yu and Geoffrey Zweig {\bf Using Recurrent Neural Networks for Slot Filling in Spoken Language Understanding} (2015) IEEE Transactions on Audio, Signal and Language Processing
+\item Grégoire Mesnil, Yann Dauphin, Kaisheng Yao, Yoshua Bengio, Li Deng, Dilek Hakkani-Tur, Xiaodong He, Larry Heck, Gokhan Tur, Dong Yu and Geoffrey Zweig {\bf Using Recurrent Neural Networks for Slot Filling in Spoken Language Understanding} (2015) IEEE Transactions on Audio, Signal and Language Processing, in press
 
 \item Grégoire Mesnil, Antoine Bordes, Jason Weston,
 Gal Chechik and Yoshua Bengio, {\bf Learning Semantic Representations Of
-Objects and Their Parts} (2013) Machine Learning Journal
+Objects and Their Parts} (2013) Machine Learning Journal, volume 94, pages 281–301
 
 \end{enumerate}
