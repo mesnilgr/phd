@@ -1244,13 +1244,13 @@ both objects and their parts.
 \begin{table}[t!]
 \begin{center}
 \caption[Results on ImageNet-WordNet]{\textbf{Summary of Test Set Results on ImageNet-WordNet.}
-Precision at 1 and 10, and Mean Average Precision (MAP) are given.
+Precision at 1 and 10, and Mean Reciprocal Rank (MRR) are given.
 (IW) resp. (I) refers to the (Image,Word) setup resp. (Image).\label{tab:iw}}
 \resizebox{1\linewidth}{!}{
 \begin{tabular}{|l||l|l|l||l|l|l||l|l|l|} %{|l|p{8cm}|}
 \hline
 & \multicolumn{3}{c||}{Image Annotation} & \multicolumn{3}{c||}{Part-Object Labeling} &  \multicolumn{3}{c|}{Triplet}\\
-Models & p@1 & p@10 & MAP & p@1 & p@10 & MAP & p@1 &p@10 & MAP\\
+Models & p@1 & p@10 & MRR & p@1 & p@10 & MRR & p@1 &p@10 & MRR\\
 \hline
 Shared (IW)     & --            & --          & --          & \textbf{11.48\%} & \textbf{3.40\%} &\textbf{0.1892} & 26.31\% &\textbf{9.90\%} & 0.5545 \\
 UnShared (IW)   & --            & --          & --          & 10.01\%        & 3.02\% & 0.1669 & \textbf{33.13\%} & 9.62\% & \textbf{0.5595} \\
@@ -1344,9 +1344,9 @@ trained in a one-vs-rest setting with LibLinear~\citep{liblinear}.
 \paragraph{Metrics}
 
 As before, we compared our models using the precision at the top k of the list
-(p@k), as well as the mean average precision (MAP), which is defined as:
+(p@k), as well as the mean reciprocal rank (MRR), which is defined as:
 \[
-  \textrm{MAP} = \frac{1}{N} \sum_{i=1}^{N} \dfrac{1}{\textrm{PredictedRank}(x_i)},
+  \textrm{MRR} = \frac{1}{N} \sum_{i=1}^{N} \dfrac{1}{\textrm{PredictedRank}(x_i)},
 \]
 where $N$ is the size of the set, $x_i$ is a quadruplet, PredictedRank
 a function that returns the rank of $x_i$ according to the considered
@@ -1522,7 +1522,7 @@ can nicely transfer to real-world data even though such data {\it has
 \begin{tabular}{|l||l|l|l||l|l|l||l|l|l|} %{|l|p{8cm}|}
 \hline
 & \multicolumn{3}{c||}{Image Annotation} & \multicolumn{3}{c||}{Part-Object Labeling} &  \multicolumn{3}{c|}{Triplet}\\
-Models & p@1 & p@10 & MAP & p@1 & p@10 & MAP & p@1 &p@10 & MAP\\
+Models & p@1 & p@10 & MRR & p@1 & p@10 & MRR & p@1 &p@10 & MRR\\
 \hline
 Shared (IW)     & --  & --   & --  & \textbf{0.25\%}   &\textbf{0.13\%} &\textbf{0.0075}  & 9.10\%  & 4.43\%   &  0.2044    \\
 UnShared (IW)   & --  & --   & --  & 0.0\%  & 0.10\%  & 0.0043   &\textbf{18.20\%}  &\textbf{4.79\%}  &\textbf{0.2778}  \\
@@ -1614,7 +1614,7 @@ WordNet tree and the training set. Part-Object relationships are ranked among $7
 \begin{tabular}{|l||c|c|c|} %{|l|p{8cm}|}
 \hline
 &  \multicolumn{3}{c|}{Part-Object Labeling using WordNet}  \\
-Models & p@1 & p@10 & MAP   \\
+Models & p@1 & p@10 & MRR   \\
 \hline
 Shared (IW)     & \textbf{3.06\%}  & \textbf{2.45\%}   & \textbf{0.1005} \\ 
 UnShared (IW)   & 2.04\%  & 1.64\%  & 0.0670  \\

@@ -1,5 +1,18 @@
 \chapter{Pr\'{e}ambule au Deuxi\`{e}me Article }
 
+Ce deuxième article considère différentes techniques d'apprentissage non
+supervisé appliquées de manière séquentielle. Nous étudions plusieurs
+stratégies pour faire face à un problème d'entrée à dimensionnalité élevée. Une
+différence majeure avec le premier article réside dans l'utilisation de la
+structure des données d'entrée contrairement au cas précédent où aucune
+information a priori ne pouvait être utilisée lors du processus
+d'apprentissage. Chaque dimension de l'espace d'entrée correspondant à un
+détecteur d'objet particulier, pour une pose, une position et une échelle
+données. Notre approche obtient une amélioration des performances par rapport au
+système original et montre une capacité à apprendre une sémantique dans
+l'apparition jointe d'objets intéressante pour la classification de scènes dans
+des images.
+
 \section{D\'{e}tails de l'article}
 
 { \bf Unsupervised Learning of Semantics of Object Detections for Scene
@@ -13,7 +26,7 @@ effectu\'{e} en collaboration avec Antoine Bordes, Xavier Glorot et Salah
 Rifai. L'id\'{e}e initiale \'{e}tait d'utiliser le contexte dans des images
 (pr\'{e}sence d'objets) pour am\'{e}liorer la cat\'{e}gorisation de sc\`{e}nes.
 Je me suis charg\'{e} de pr\'{e}parer les repr\'{e}sentations d'Object Bank
-pour tous nos datasets et j'ai effectu\'{e} l'int\'{e}gralit\'{e} des
+pour tous nos ensembles de données et j'ai effectu\'{e} l'int\'{e}gralit\'{e} des
 exp\'{e}riences except\'{e} celles relatives aux CAEs r\'{e}alis\'{e}es par
 Salah Rifai. J'ai ensuite adapt\'{e} le pipeline de la comp\'{e}tition afin de
 r\'{e}duire la dimension d'entr\'{e}e et permettre un apprentissage non
@@ -21,10 +34,10 @@ supervis\'{e}.  Apr\`{e}s plusieurs discussions fructueuses lors
 d'une pr\'{e}sentation \`{a} un workshop de NIPS en 2011
 \citep{Mesnil-workshop-nips}, l'id\'{e}e s'est am\'{e}lior\'{e}e et notre
 publication \citep{Mesnil-icpram} a \'{e}t\'{e} accept\'{e}e \`{a} ICPRAM.
-Apr\`{e}s l'oral, le papier a \'{e}t\'{e} selectionn\'{e} pour publication dans
-un recueil contenant les meilleurs papiers pr\'{e}sent\'{e}s \`{a} cette
+Apr\`{e}s l'oral, l'article a \'{e}t\'{e} selectionn\'{e} pour publication dans
+un recueil contenant les meilleures publications pr\'{e}sent\'{e}es \`{a} cette
 conf\'{e}rence \citep{Mesnil-icpram-journal}. J'ai r\'{e}dig\'{e} l'article en
-collaboration avec les co-auteurs.
+collaboration avec les coauteurs.
 
 \section{Contexte}
 

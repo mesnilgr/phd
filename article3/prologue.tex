@@ -1,5 +1,14 @@
 \chapter{Pr\'{e}ambule au Troisi\`{e}me Article }
 
+Les deux premiers articles résument nos approches pour des problématiques
+différentes: des entrées où aucun a priori n'est disponible ou au contraire,
+des données dont la structure peut être utilisée à notre avantage. Alors que
+les précédents travaux focalisent sur l'aspect technique de différents
+algorithmes d'apprentissage, ce troisième article s'intéresse à nos intuitions
+concernant la structure de l'espace sémantique de représentation appris. En particulier, nous
+nous intéressons à la capacité de visiter des classes différentes lors du
+processus d'échantillonnage à partir de l'espace de représentation sémantique.
+
 \section{D\'{e}tails de l'article}
 
 {\bf Better Mixing via Deep Representations} Yoshua Bengio\footnote{indique une contribution similaire}, Grégoire Mesnil$^{1}$, Yann Dauphin and Salah Rifai. {\it
@@ -11,10 +20,10 @@ sur support vidéo comment il était possible de se déplacer d'un exemple à un
 autre dans l'espace des représentations tout en restant sur la variété des
 exemples d'apprentissage. Cela a renforcé les intuitions de Yoshua concernant
 un problème de mixing entre différents modes et pourquoi il était plus aisé
-de visiter toutes les classes lors du processus d'échantillonage dans l'espace
+de visiter toutes les classes lors du processus d'échantillonnage dans l'espace
 abstrait des représentations. À partir de modèles de RBMs et de CAEs entraînés
 par Salah Rifai et Yann Dauphin, j'ai réalisé et conçu l'intégralité des
-exprériences visant à vérifier les hypothèses de Yoshua, qui lui a rédigé
+expériences visant à vérifier les hypothèses de Yoshua, qui lui a rédigé
 l'article. Il a été décidé ensemble que nous avions une contribution égale pour
 cet article.
 
@@ -27,7 +36,7 @@ l'espace des représentations. Cette publication visait à présenter et valider
 \begin{center}
 \framebox{
 \begin{minipage}{0.8\linewidth}
-{\bf Hypothèse 1: Profondeur et Mixage durant l'échantillonage.} 
+{\bf Hypothèse 1: Profondeur et Mixage durant l'échantillonnage.} 
 
 Une architecture profonde apprend un espace sémantique dans lequel les chaînes
 de Markov mixent plus rapidement entre différentes classes.  
@@ -40,7 +49,7 @@ de Markov mixent plus rapidement entre différentes classes.
 \begin{minipage}{0.8\linewidth}
 {\bf Hypothèse 2: L'espace sémantique appris rend la variété initiale localement linéaire.}
 
- La variété des exemples d'apprentissage complexe et non-linéaire dans l'espace
+ La variété des exemples d'apprentissage complexe et non linéaire dans l'espace
  initial est rendue localement linéaire dans l'espace sémantique défini par les
  couches abstraites. Le volume de l'espace sémantique est occupé de façon plus
  uniforme que l'espace d'entrée.
@@ -51,16 +60,15 @@ de Markov mixent plus rapidement entre différentes classes.
 
 \section{Contributions}
 
-Les conclusions apportées par ce travail ont inspiré plusieurs travaux
-utilisant cette hypothèse de remplissage de l'espace de représentation et de
-structure de la variété des exemples d'apprentissage. Aussi, pour l'entraînement de
-RBMs qui nécessite un échantillonage pendant la phase d'apprentissage, il est
-désormais justifié d'effectuer le processus d'échantillonage à partir des
-couches supérieures plutôt que dans l'espace d'entrée.
+Ce travail a été cité par plusieurs articles
+inspirés par cette hypothèse de remplissage de l'espace de représentation et de
+structure de la variété des exemples d'apprentissage. 
 
 \section{R\'{e}cents d\'{e}veloppements}
 
 Ces idées sont toujours d'actualité et restent dans l'esprit des chercheurs
-pour guider leurs intuitions. Le concept de naviguer dans l'espace des
-représentations a notamment été repris par le papier Adversarial Sampling
+pour guider leurs intuitions. Le concept de naviguer sur la variété dans l'espace des
+représentations a notamment été repris par Ian
+Goodfellow\footnote{https://plus.google.com/+IanGoodfellow/posts/SJxfk4SeNi7}
+pour présenter la variété des chiffres appris par les Adversarial Networks
 \citep{Goodfellow-et-al-ARXIV2014}.

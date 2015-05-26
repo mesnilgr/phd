@@ -1,9 +1,9 @@
-\chapter{Espaces Sémantiques Multi-Domaines}
+\chapter{Espaces Sémantiques Multidomaines}
 
 Cette dissertation a pour objet l'apprentissage d'espaces sémantiques pour
 différents domaines comme par exemple, le langage naturel ou les images. Il est
 aussi possible d'apprendre un espace sémantique à l'intersection de domaines,
-on parle en ce cas d'espace sémantique multi-domaines (Chapitre
+on parle en ce cas d'espace sémantique multidomaine (Chapitre
 \ref{chap:mlj}). Ces espaces $\mathbb{E}\subset \mathbb{R}^{d}$ sont appelés
 sémantiques si la représentation $h(x)\in \mathbb{E}$ d'entités $x$, jugées
 similaires par un esprit humain, ont leur similitude préservée dans cet espace
@@ -12,7 +12,7 @@ distance euclidienne par exemple.
 
 Dans le chapitre \ref{chap:basic}, nous avons présenté comment apprendre des
 représentations caractérisant des espaces sémantiques au travers de
-l'apprentissage non-supervisé. Nous avons aussi observé dans la section
+l'apprentissage non supervisé. Nous avons aussi observé dans la section
 \ref{sec:surfing} comment se déplacer dans cet espace.  Dans ce chapitre, on
 décrira comment obtenir une représentation vectorielle dans un espace euclidien
 pour chaque entité d'un même domaine, ou de domaines différents.
@@ -43,7 +43,7 @@ Mathématiquement, il s'agit d'un produit matriciel
 $\textrm{\it one-hot}(\textrm{"mot"})^{T}E\in\mathbb{E}$ entre un vecteur {\it one-hot}
 (Eq.~\ref{eq:onehot}) et la matrice des embeddings $E$. Cette opération étant
 différentiable, la mise à jour de la matrice des embeddings se fait sans
-problèmes au travers de l'algorithme de rétro-propagation du gradient, comme
+problème au travers de l'algorithme de rétropropagation du gradient, comme
 une couche additionnelle à notre réseau de neurones.
 
 \begin{equation}
@@ -66,7 +66,7 @@ une couche additionnelle à notre réseau de neurones.
 Il est possible d'aller plus loin. Cette représentation de séquences de mots
 peut aussi être utilisée à l'intérieur des mots eux-mêmes. Les mots sont des
 séquences de lettres ou de phonèmes. Si on associe des {\it embedding} à des
-3-gram de lettres ou de phonèmes, il devient possible d'avoir une
+3-Gram de lettres ou de phonèmes, il devient possible d'avoir une
 représentation des mots à partir de leur structure propre.  Cette approche
 \citep{rnn58} a donné de bons résultats en pratique pour la recherche
 d'information (Information Retrieval).
@@ -104,7 +104,7 @@ Considérons le cas d'une classification classique avec softmax
 (Eq.~\ref{eq:softmax}) en négligeant le biais $b^{(m+1)}$. On peut associer
 l'espace défini par la dernière couche (la couche avant d'appliquer la softmax)
 à un espace sémantique $\mathbb{E}$.  Chaque ligne $W^{(m+1)}_{j.}$ de la
-matrice $W^{(m+1)}$ du classifieur correspond au centre du cluster associé à
+matrice $W^{(m+1)}$ du classifieur correspond au centre du prototype associé à
 la classe $j$. Pour prédire la classe dominante associée à un exemple $x$, on
 calcule la représentation $h^{(m)}(x)$ et la classe $j$ avec la plus grande
 similarité l'emporte:
@@ -132,7 +132,7 @@ négatifs devient inefficace et il nécessaire de trouver d'autres stratégies
 pour contrôler l'explosion du nombre de classes considérées comme négatives.
 Une possibilité est d'échantillonner un nombre acceptable ($100\leq C\leq 1,000$) de couples négatifs à chaque
 mise à jour afin d'obtenir une approximation de la vraie valeur de la softmax.
-Il est aussi possible de faire de l'échantillonnage de négatif intelligent, c'est à dire
+Il est aussi possible de faire de l'échantillonnage de négatif intelligent, c'est-à-dire
 sélectionner uniquement les couples négatifs qui violent une certaine
 contrainte et ignorer les autres. Pour un couple de positif $(x_i, x_j)$, cette
 contrainte pour sélectionner un ensemble de couples négatifs $(x_k, x_l)$ peut
@@ -143,8 +143,8 @@ prendre la forme d'une violation de marge $\epsilon$:
 \end{equation}
 
 Il est ensuite plus aisé d'avoir une solution pour un problème à grande
-échelle, c'est à dire pour plusieurs millions d'entités. On sélectionne de
-façon aléatoire un sous ensemble $\tilde{\mathcal{N}}_{(x_i, x_j)}$ de couples
+échelle, c'est-à-dire pour plusieurs millions d'entités. On sélectionne de
+façon aléatoire un sous-ensemble $\tilde{\mathcal{N}}_{(x_i, x_j)}$ de couples
 négatifs associé à chaque mise à jour d'un couple positif $(x_i,
 x_j)\in\mathcal{P}$.  Ce sous-ensemble $\tilde{\mathcal{N}}$ est renouvelé à
 chaque mise à jour. La fonction à minimiser devient alors:  
@@ -158,7 +158,7 @@ Nous présenterons cette technique \citep{image-wsabie} plus en détails dans le
 \ref{chap:mlj}. Il est possible de s'inspirer de ces idées pour avoir d'autres
 types de fonctions à minimiser mais le principe reste le même \citep{rnn58}.
 
-\section{Espaces Multi-Domaines}
+\section{Espaces Multidomaines}
 
 Dans la section précédente~\ref{sec:chd}, nous avons observé comment apprendre un espace
 sémantique pour un seul et unique domaine. Il est possible d'apprendre un espace
@@ -180,35 +180,37 @@ Cette approche est bénéfique dans le sens où une prédiction d'image de "requ
 proche parmi des embeddings voisins qui auront la même sémantique, par exemple
 "poisson", "thon" \citep{samy-extreme}.
 
-Nous travaillons actuellement à étendre le concept Multi-Domaines de deux
+Nous travaillons actuellement à étendre le concept multidomaine de deux
 domaines à un nombre de domaines arbitraire. Le nombre de couples positifs
 croît de façon quadratique avec le nombre de domaines. Une approche avec
 une croissance linéaire est actuellement à l'étude.
 
-\section{Transfert de Domaine: Proxy d'apprentissage}
+\section{Apprentissage par Procuration}
 
 Il y a plusieurs problèmes qui de par leur formulation, ne peuvent pas être
-résolus du fait d'un manque de données. Par exemple, considérons le problème
-d'identifier des personnes à partir d'image de leur visage~\citep{bottou-11}.
-Il est impossible de collecter un ensemble de données suffisamment grand,
-contenant suffisamment de variations de poses et contextes, pour résoudre ce
-problème pour chaque personne. En revanche, il est possible de collecter des
-données pour un problème légèrement différent: deux visages dans deux images
-représentent-ils la même personne? Il est possible de trouver énormément de
-données pour résoudre ce problème: deux visages dans une même image
+directement résolus du fait d'un manque de données. Par exemple, considérons le
+problème d'identifier des personnes à partir d'une image de leur
+visage~\citep{bottou-11}.  Il est impossible de récolter un ensemble de données
+suffisamment grand, contenant suffisamment de variations de poses et contextes,
+pour résoudre ce problème pour chaque personne par une approche naïve de
+classification multiclasse directe. En revanche, il est possible de récolter
+des données pour un problème légèrement différent: deux visages dans deux
+images représentent-ils la même personne? Il est possible de trouver énormément
+de données pour résoudre ce problème: deux visages dans une même image
 représentent sûrement deux personnes différentes, et deux visages dans des
 images successives d'une vidéo sont probablement les mêmes. Ces deux tâches
-partagent beaucoup de points communs et le second problème permet sans doute
-d'apporter une solution au premier problème. 
-\\
+partagent beaucoup de points communs mais la formulation sous la forme du
+second problème permet sans doute d'apporter une solution effective au premier
+problème. L'apprentissage d'une solution pour le second problème constitue un
+{\bf apprentissage par procuration} d'une solution au premier problème.\\
 
 Dans le chapitre \ref{chap:mlj}, nous proposerons une solution au problème de
 la classification d'un objet et de parties de cet objet; par exemple une
-voiture et son pare-brise, ses roues et ses retroviseurs. Ce problème manque de
-données labelées mais nous verrons comment utiliser des espaces sémantiques
-multi-domaines pour effecteur un transfert de l'apprentissage dans le même
-esprit que l'exemple énoncé ci-dessus. Ce proxy d'apprentissage au travers de
+voiture et son pare-brise, ses roues et ses rétroviseurs. Ce problème manque de
+données étiquetées mais nous verrons comment utiliser un espace sémantique
+multidomaine pour effectuer un transfert de l'apprentissage dans le même
+esprit que l'exemple énoncé ci-dessus. Cet apprentissage par procuration au travers de
 l'intersection d'un espace sémantique de l'image avec l'espace sémantique du
-langage aura permis de générer un ensemble de données de 10 millions d'exemples
-et de proposer une solution au problème initial.
+langage nous permettra de générer un ensemble de données effectif de 10 millions d'exemples
+et ainsi d'obtenir une solution au problème initial.
 

@@ -1,5 +1,13 @@
 \chapter{Pr\'{e}ambule au Cinqui\`{e}me Article }
 
+L'article précédent utilisait un espace sémantique en entrée d'un réseau de
+neurones. Dans cette dernière contribution, nous utilisons le réseau de
+neurones pour effectuer une projection dans un espace sémantique de sortie.
+C'est ensuite la similarité au sens d'un produit scalaire dans cet espace
+sémantique de sortie qui détermine la décision du classifieur. Nous présentons
+aussi comment apprendre un espace sémantique commun à plusieurs domaines, dans
+notre cas des mots et des images.
+
 \section{D\'{e}tails de l'article}
 
 {\bf Learning Semantic Representations of Objects and their Parts} Grégoire
@@ -10,8 +18,8 @@ Machine Learning Journal: Special Issue on Learning Semantics}, 2013
 Bordes dans les bureaux de Google. Il m'a ensuite proposé de prendre part au
 projet. L'idée originale est d'Antoine, Jason Weston s'est ensuite chargé de
 nous fournir des représentations d'images utilisées en industrie par Google à
-cette époque. J'ai réalisé l'intégralité des exprériences et participé à la
-rédaction avec la collaboration des co-auteurs. La partie expérience s'est
+cette époque. J'ai réalisé l'intégralité des expériences et participé à la
+rédaction avec la collaboration des coauteurs. La partie expérience s'est
 révélée être très intéressante car elle consistait à effectuer une tâche
 d'apprentissage avec un très grand nombre de données, plusieurs millions de
 couples.  Nous remercions les reviewers anonymes du Machine Learning Journal
@@ -26,7 +34,7 @@ d'utiliser des embeddings pour modéliser le langage a déjà fait son chemin
 \citep{bengio:2003}, ces méthodes obtiennent même d'excellentes performances
 sur diverses tâches de traitement du langage naturel \citep{collobert:2011b}.
 L'originalité de notre travail est d'effectuer un transfert d'apprentissage au
-travers d'un espace sémantique.
+travers d'un espace sémantique commun à plusieurs domaines.
 
 \section{Contributions}
 
@@ -38,11 +46,17 @@ enrichir le paysage de la recherche actuelle.
 
 \section{R\'{e}cents d\'{e}veloppements}
 
-On peut observer sur Google Image dans le système de production des suggestions
-de navigation pour d'autres mots clés de recherche. Par exemple, une recherche
-initiale pour "voiture" va ensuite suggérer "voiture sport", "f1", "voiture
-jaune" qui sont des prémisses de recherche augmentée même si cela reste au
-niveau sémantique et n'atteint pas l'ensemble d'images retournées.  Autrement,
-le système Devise \citep{samy-extreme} à base d'espace sémantique est
-actuellement utilisé par Google pour son moteur de recherche d'images.
+Sur Google Images, on peut observer de la recherche augmentée dans le système
+en production. Étant donné un mot-clé initial, le système va suggérer d'autres
+mots-clés de recherche sémantiquement reliés au mot-clé initial. Par exemple,
+une recherche d'image pour le mot-clé "voiture" va ensuite suggérer d'autres
+mots-clés comme "voiture sport", "f1", "voiture jaune". Ces prémisses de
+recherche augmentée restent limitées au niveau du langage et n'affectent pas
+l'ensemble des images retournées par le système. Dans notre travail, nous
+proposons d'avoir un espace sémantique commun au langage et aux images qui
+permette de suggérer des images en plus des mots-clés.  
+
+Parallèlement, le système Devise \citep{samy-extreme} à base d'espace
+sémantique est actuellement utilisé par Google pour son moteur de recherche
+d'images.
 

@@ -5,26 +5,70 @@ L'apprentissage de réseaux de neurones profonds a évolué très rapidement au
 cours de la réalisation de ce doctorat. Ces changements sont reflétés dans nos
 travaux qui ont suivi l'évolution riche de la recherche en architectures
 profondes des dernières années.
+\\
 
 Nous avons commencé par présenter de nombreuses techniques d'apprentissage non
 supervisé, puis comment les mettre en oeuvre pour gagner une compétition de
 transfert d'apprentissage ou améliorer la performance d'un système de vision
-tout en réduisant la dimensionnalité de l'espace d'entrée original.  Nos
-intuitions concernant l'espace sémantique des représentations apprises sont
-résumées dans nos recherches sur l'amélioration du mixage lors du processus
-d'échantillonage effectué dans les couches profondes, les plus abstraites.
+tout en réduisant la dimensionnalité de l'espace d'entrée original. Ces
+solutions nous ont permis d'apprendre un espace sémantique de représentation.
 
-L'utilisation d'architectures prometteuses telles que les réseaux de neurones
-récurrents a été la base d'une transition vers l'apprentissage supervisé
-d'espaces sémantiques associés au langage. À l'heure actuelle, tous les récents succès de
-l'industrie résident dans l'utilisation d'ensemble de données de très grande échelle.
-C'est la nature de nos derniers travaux qui se concentrent sur le transfert
-d'apprentissage au travers d'espace sémantiques multi-domaines avec un grand
-ensemble de données (plusieurs millions d'exemples).
+Dans le chapitre \ref{chap:utlc}, nous avons présenté des solutions
+performantes pour extraire un espace sémantique de représentation permettant
+une meilleure séparabilité linéaire. La PCA transductive a aussi permis
+d'effectuer un transfert d'apprentissage tout en limitant la présence de bruit
+préjudiciable à une classification linéaire. Ces idées ont permis d'améliorer
+notre solution finale soumise lors de la compétition et ainsi de remporter la
+première place.
+
+Dans le chapitre \ref{chap:ob}, nous avons appliqué ces idées à un espace
+d'entrée de dimension élevée mais structurée. La qualité de l'espace sémantique
+de représentation par rapport à l'espace d'entrée original a nettement
+progressé en matière de compression d'information et de performance. Nous avons
+aussi démontré la capacité des réseaux de neurones à effectuer du transfert
+d'apprentissage. 
+\\
+
+Ensuite, nos intuitions concernant l'espace sémantique des représentations
+apprises ont été résumées dans nos recherches sur l'amélioration du mixage lors
+du processus d'échantillonnage effectué dans les couches profondes les plus
+abstraites (chapitre \ref{chap:mixing}). Il a été très intéressant de sortir du
+cadre probabiliste de l'échantillonnage des RBMs pour s'intéresser à des
+intuitions plus géométriques sur la sémantique de l'espace et se déplacer ainsi
+sur la variété. 
+
+La présentation des vidéos permettant un déplacement en images sur la variété
+des exemples d'entraînement a donné lieu à d'intéressantes conversations
+scientifiques lors de plusieurs colloques. Ces vidéos contenaient des chiffres
+passant d'une classe à l'autre ou des visages changeant d'expression.
+\\
+
+Pour terminer, nous avons étudié deux cas où l'espace sémantique est appris
+soit en sortie soit en entrée du réseau de neurones. L'utilisation
+d'architectures prometteuses telles que les réseaux de neurones récurrents a
+été la base d'une transition vers l'apprentissage supervisé d'espaces
+sémantiques associés au langage (chapitre \ref{chap:rnn}).  À la fin du processus
+d'apprentissage, nous avons observé que l'espace sémantique était structuré
+sous forme de grappes de mots possédant la même classe.
+
+À l'heure actuelle, les récents succès de l'industrie résident dans
+l'utilisation d'ensemble de données de très grande échelle.  Avec un grand
+ensemble de données (plusieurs millions d'exemples), le chapitre \ref{chap:mlj}
+se concentre sur le transfert d'apprentissage au travers d'un espace sémantique
+multidomaine. Un aspect intéressant de ce travail a été de sortir du
+cadre de maximisation de la vraisemblance pour optimiser un système à base de
+maximisation de marge pour une classification en haute dimension.  \\
 
 Dans le futur, nous espérons poursuivre nos travaux de recherche pour apprendre
 des espaces sémantiques avec une structure plus riche et un nombre de domaine
-arbitraire.
+arbitraire. L'apprentissage non supervisé n'atteint pas encore le niveau des
+performances récemment obtenues en apprentissage supervisé d'architectures
+profondes pour des tâches de vision, de reconnaissance de la parole ou de
+traitement du langage. Il est possible que le problème actuel puisse être
+résolu autrement qu'avec une classique erreur de reconstruction accompagnée
+d'une régularisation sur les paramètres. Des contraintes différentes peuvent
+être envisagées. J'espère pouvoir apporter des solutions originales à ce
+problème dans les années à venir.
 
 \chapter*{Bibliographie Personnelle}
 

@@ -1,5 +1,13 @@
 \chapter{Pr\'{e}ambule au Quatri\`{e}me Article }
 
+Dans ce quatrième article, un espace sémantique est appris pour une tâche de
+langage à l'aide de réseaux de neurones récurrents. Cet espace sémantique est
+utilisé comme espace d'entrée pour le réseau récurrent et c'est le processus
+d'apprentissage lui-même qui va ajuster la structure de l'espace sémantique. Au
+terme de l'apprentissage, des mots aux sens similaires ou de même classe sont
+alors proches au sens d'une distance euclidienne dans cet espace sémantique d'entrée.
+
+
 \section{D\'{e}tails de l'article}
 
 {\bf Using Recurrent Neural Networks for Slot Filling in Spoken Language
@@ -8,7 +16,7 @@ Deng, Dilek Hakkani-Tur, Xiaodong He, Larry Heck, Gokhan Tur, Dong Yu and
 Geoffrey Zweig. {\it IEEE Transactions on Audio, Signal and Language
 Processing} 2015. \\
 
-{\it Contribution personnelle} Ce papier est issu de la recherche effectuée
+{\it Contribution personnelle} Cet article est issu de la recherche effectuée
 lors de deux stages à Microsoft Research à Redmond aux États-Unis en 2012 et
 2013. Cette recherche a donné lieu à une première publication
 \citep{mesnil-et-al-Interspeech2013} que j'ai présentée à Lyon. Après avoir
@@ -21,21 +29,21 @@ Ensuite, un travail de fond visant à rassembler tout le travail à l'état de
 l'art concernant les Réseaux de Neurones Récurrents sur cette tâche a été
 coordonné en collaboration avec Xiaodong He, chercheur à Microsoft. J'ai rédigé
 la première version de cette publication et réalisé l'intégralité des
-expériences excepté un résulat utilisant les drop-out fourni par Yann Dauphin
+expériences excepté un résulat utilisant les dropout fourni par Yann Dauphin
 et les expériences de CRFs récurrents effectuées par Kaisheng Yao. 
 
 \section{Contexte}
 
 Au commencement de ce travail de recherche, les CRFs sont toujours considérés
 comme l'état de l'art dans le domaine de la compréhension du langage parlé.
-Nous avons pu démontrer que les Réseaux de Neurones Récurrents combinés à
-plusieurs techniques comme les embedding de mots et les fenêtres de contexte
+Nous avons pu démontrer que les réseaux de neurones récurrents combinés à
+plusieurs techniques comme les embeddings de mots et les fenêtres de contexte
 permettaient d'améliorer les performances instaurant ainsi un nouvel état de
 l'art.
 
 \section{Contributions}
 
-Ces architectures sont actuellent utilisées en tant que produit chez Microsoft.
+Ces architectures sont actuellement utilisées en tant que produit chez Microsoft.
 Un brevet a découlé de ces travaux. Tous les détails concernant cette
 publication permettent de reproduire les résultats de nos travaux avec l'aide
 du tutoriel et du code mis à disposition. 
@@ -43,7 +51,7 @@ du tutoriel et du code mis à disposition.
 \section{R\'{e}cents d\'{e}veloppements}
 
 Des architectures similaires à celles présentées dans cette publication ont
-récemment fait l'object d'améliorations de performances significatives dans la
+récemment fait l'objet d'améliorations de performances significatives dans la
 Traduction Machine~\citep{Seq-14}. Aussi, le tutoriel réalisé pour les Deep
 Learning Tutorial sera présenté lors d'un atelier sur Theano à San Francisco en
 janvier 2015.

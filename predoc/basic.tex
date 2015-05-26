@@ -24,13 +24,13 @@ travail, on considère les tâches suivantes:
 \begin{itemize}
 
 \item {\bf Apprentissage de représentation non supervisé.} L'ensemble de
-données ne contient pas de labels, seulement des entrées $x\in\mathbb{R}^{d}$.
+données ne contient pas d'étiquettes, seulement des entrées $x\in\mathbb{R}^{d}$.
 L'objectif est d'apprendre une représentation des données $h(x)$ de meilleure
 qualité que la représentation brute $x$.  Ces qualités vont de la réduction de
 dimensionnalité (Chapitres~\ref{chap:utlc}, \ref{chap:ob}), une meilleure
 séparabilité linéaire de leurs classes naturelles (Chapitres~\ref{chap:utlc}, \ref{chap:ob}), de meilleures
 propriétés de mixage (Chapitre~\ref{chap:mixing}) ou une meilleure
-initialisation des paramètes pour un apprentissage supervisé
+initialisation des paramètres pour un apprentissage supervisé
 (Chapitre~\ref{chap:ob}). 
 \\
 
@@ -39,9 +39,9 @@ un ensemble de données cible $\tilde{\mathcal{D}}$ dans un autre domaine que l'
 d'entraînement $\mathcal{D}$. Cela permet d'avoir une représentation plus
 spécifique à l'ensemble cible tout en obtenant un gain de performances dû par
 exemple, à l'utilisation d'un plus grand ensemble de données d'entraînement.
-Dans ce travail, nous présenterons l'utilisation d'un proxy d'apprentissage
-(Chapitre~\ref{chap:mlj}), d'une PCA transductive (Chapitre~\ref{chap:utlc}) et
-d'un fine-tuning sur l'ensemble cible (Chapitre~\ref{chap:ob}).
+Dans ce travail, nous présenterons l'utilisation d'un apprentissage par procuration
+(Chapitre~\ref{chap:mlj}), d'une analyse en composantes principales transductive (Chapitre~\ref{chap:utlc}) et
+d'un finetuning sur l'ensemble cible (Chapitre~\ref{chap:ob}).
 \\
 
 \item {\bf Apprentissage d'espaces sémantiques multi-domaines.} L'idée ici est
@@ -55,12 +55,12 @@ comme des mots et des images (Chapitre~\ref{chap:mlj}).
 \\
 
 \item {\bf Classification de séquences.} Il s'agit ici de classifier des
-données $x_{t}$ qui en plus d'avoir un label $y_{t}$, possèdent une composante
+données $x_{t}$ qui en plus d'avoir une étiquette $y_{t}$, possèdent une composante
 temporelle. Ceci est un aspect du problème intéressant à exploiter du fait des
 dépendances possibles entre les prédictions à $t-1$, $t$ et $t+1$ par exemple.
-Des architectures spécifiques de type RNN pour l'apprentissage d'un espace
-sémantique modélisant le contexte seront présentées ici
-(Chapitre~\ref{chap:rnn}).
+Des architectures spécifiques de type réseaux de neurones récurrents pour
+l'apprentissage d'un espace sémantique modélisant le contexte seront présentées
+ici (Chapitre~\ref{chap:rnn}).
 
 \end{itemize}
 
@@ -114,7 +114,11 @@ l'Eq.~\ref{eq:graal} dénotée $f^*$, une des alternatives consiste à réduire
 l'espace $\mathcal{F}$ des fonctions à des fonctions d'une complexité moins
 élevée. On peut aussi ajouter une pénalité de régularisation sur la complexité
 de la fonction $f$ contrôlée par un coefficient $\lambda$. Une régularisation
-trop forte peut parfois aboutir à du \emph{sous-apprentissage}.  \\
+trop forte peut parfois aboutir à du \emph{sous-apprentissage}. Un exemple
+typique de sous-apprentissage est ``l'apprentissage'' d'une fonction constante
+qui ne s'ajuste pas pour minimiser le risque empirique ou un processus de
+minimisation par descente de gradient qui diverge suite à l'utilisation d'un
+pas de gradient trop fort. \\
 
 En général, un ensemble de données est découpé en $3$ ensembles disjoints.
 
@@ -142,7 +146,7 @@ L'hypothèse de base est que les données sont tirées de la même loi pour tous
 nos ensembles $\mathcal{D}_\textrm{train}$, $\mathcal{D_{\mathrm{valid}}}$ et
 $\mathcal{D_{\mathrm{test}}}$. En ce sens, les données partagent la même
 distribution.  Ensuite, on suppose généralement que les données sont
-indépendantes, c'est à dire que chaque exemple a été généré par cette
+indépendantes, c'est-à-dire que chaque exemple a été généré par cette
 distribution indépendamment des autres exemples.  Ces deux hypothèses
 se résument dans l'acronyme i.i.d., indépendantes et identiquement distribuées.
 L'indépendance se traduit par l'équation suivante:
@@ -218,10 +222,10 @@ couramment utilisée pour l'optimisation de réseaux de neurones que nous prése
 \section{Apprentissage Supervisé \label{sec:supervised}}
 
 Dans le cadre de l'apprentissage supervisé et plus spécifiquement des tâches de classification, nous disposons des entrées
-$x\in\mathbb{R}^{d}$ et d'un label $y\in\{1,\dots ,C\}$ qui leur est associé.
-Le label peut correspondre à la classe d'un chiffre $y\in\{0,\dots ,9\}$ ou une
+$x\in\mathbb{R}^{d}$ et d'une étiquette $y\in\{1,\dots ,C\}$ qui leur est associé.
+L'étiquette peut correspondre à la classe d'un chiffre $y\in\{0,\dots ,9\}$ ou une
 catégorie d'objet par exemple.  Lorsque $C$ est extrêmement grand (de l'ordre
-du million), nous verrons dans le Chapitre~\ref{chap:mlj} qu'il est possible de
+du million), nous verrons dans le chapitre~\ref{chap:mlj} qu'il est possible de
 contourner ce problème.
  
 \subsection{Réseaux de Neurones Profonds}
@@ -234,7 +238,7 @@ $h^{(i)}(x)$ d'une couche $i$ est définie comme la projection affine
 $W^{(i)}h^{(i-1)}(x) + b^{(i)}$ des données de la couche inférieure $h^{(i-1)}(x)$
 suivie d'une non-linéarité $h^{(i)}(x)= s(W^{(i)}h^{(i-1)}(x) + b^{(i)})$, en
 général la fonction sigmoïde logistique $s(x)=1/(1+e^{-x})$. La fonction sigmoïde logistique est différentiable et
-permet l'application de l'algorithme de rétro-propagation du gradient. 
+permet l'application de l'algorithme de rétropropagation du gradient. 
 
 La dernière couche d'un réseau de neurones pour résoudre un problème de
 classification a dans ce cas la forme d'une régression logistique multinomiale
@@ -250,7 +254,7 @@ où $W_{j.}^{(m+1)}$ désigne la $j^\textrm{ième}$ ligne de la matrice $W^{(m+1
 et $b_{j}^{(m+1)}$ la $j^\textrm{ième}$ composante du vecteur $b^{(m+1)}$.
 
 Les MLPs s'entraînent par rétropropagation du gradient \citep{Rumelhart86b}:
-c'est une application astucieuse de la régle de dérivée en chaîne et de la
+c'est une application astucieuse de la règle de dérivée en chaîne et de la
 programmation dynamique pour que cela soit effectué de manière efficiente. On
 procède à la minimisation de la log-vraisemblance négative par descente de
 gradient pour $i=1,\dots,N$:
@@ -279,20 +283,20 @@ plusieurs couches de manière efficace.
 Dans ce qui suit, nous présenterons les techniques d'apprentissage non
 supervisé les plus couramment utilisées pour l'extraction de caractéristiques.
 
-Les algorithmes non-supervisés abordés dans cette thèse n'utilisent aucune connaissane à priori du type des données
+Les algorithmes non supervisés abordés dans cette thèse n'utilisent aucune connaissane a priori du type des données
 \textit{e.g.} musique, images, données séquentielles, ni leur classe
 d'appartenance \textit{e.g.} $10$ classes de $0$ à $9$ pour la classification
 de chiffres.  \\
 
 Il est très difficile de savoir pourquoi un algorithme d'apprentissage non
-supervisé fonctionne (bien ou mal) sur un certain type de données.  De manière
+supervisé fonctionne (bien ou mal) sur un certain type de donnée.  De manière
 non exhaustive, voici énumérés quelques-uns des facteurs qui rendent difficile
 une analyse complète du fonctionnement de ces algorithmes: haute
 dimensionnalité des données, mauvais conditionnement du problème
 d'optimisation, processus d'optimisation non convexe, nombreuses
 paramétrisations possibles des modèles. \\
 
-Une manière usuelle de sélectionner les hyper-paramètres de tels algorithmes passe 
+Une manière usuelle de sélectionner les hyperparamètres de tels algorithmes passe 
 par une évaluation des performances discriminatives de la
 représentation apprise.
 
@@ -327,7 +331,7 @@ correspond à un vecteur propre). La sortie de la PCA correspond à la nouvelle 
 h(x)=V(x-\mu)
 \end{equation}
 
-Si l'on veut avoir une PCA avec \textit{whitening}, on construit la matrice
+Si l'on veut avoir une PCA avec décorrélation, en anglais \textit{whitening}, on construit la matrice
 diagonale $U^{'}$ à partir de $U$ où $U^{'}_{ii}=1/\sqrt{C_{ii}}$ et la sortie
 est alors donnée par:
 
@@ -341,13 +345,13 @@ existe deux algorithmes différents qui permettent d'extraire en
 $O(\min(n,d)^3)$~\citep{bishop-book2006}.  Le cube est dû à l'inversion de
 matrice.
 
-\paragraph{Hyper-paramètres} Les hyper-paramètres de la PCA comprennent le
+\paragraph{Hyperparamètres} Les hyperparamètres de la PCA comprennent le
 nombre $k$ de composantes à garder pour la transformation (le nombre de
-colonnes de $V$ à conserver) et le fait d'effectuer ou non du
-\textit{whitening}. Souvent, les premières composantes contiennent une
-information utile tandis que les dernières composantes représentent du bruit.
-Notez qu'on peut également appliquer une PCA locale, c'est à dire localement
-sur un sous-ensemble de voisins d'un point (voir Figure~\ref{fig:mnistpca}).
+colonnes de $V$ à conserver) et le fait d'effectuer ou non de la décorrélation. Souvent, les premières composantes contiennent une
+information utile tandis que les dernières composantes représentent du bruit
+que le processus de décorrélation risque d'amplifier.  Notez qu'on peut également
+appliquer une PCA locale, c'est-à-dire localement sur un sous-ensemble de
+voisins d'un point (voir Figure~\ref{fig:mnistpca}).
 
 
 \begin{figure}
@@ -394,7 +398,7 @@ sur un sous-ensemble de voisins d'un point (voir Figure~\ref{fig:mnistpca}).
 
 \subsection{Architectures de type Auto-Encodeur}
 
-Nous allons maintenant présenter des méthodes non supervisées non-linéaires qui peuvent être utilisées par la suite pour
+Nous allons maintenant présenter des méthodes non supervisées non linéaires qui peuvent être utilisées par la suite pour
 l'initialisation de réseaux de neurones.
 Depuis la formalisation la plus classique de l'auto-encodeur
 \textbf{(AE)}~\citep{Gallinari87} , nous présenterons le \textit{Denoising
@@ -405,7 +409,7 @@ le \textit{Higher-Order Contractive Auto-Encoder}
 \textbf{(CAE+H)}~\citep{Salah+al-2011}.
 
 L'auto-encodeur classique se décompose en un encodeur et un décodeur.
-L'encodeur le plus commun effectue une transformation affine des données paramétrisée par une
+L'encodeur le plus commun effectue une transformation affine des données paramétrée par une
 matrice de poids $W\in\mathcal{M}_{m\times d}(\mathbb{R})$ et un vecteur de biais $b\in\mathbb{R}^m$ où $m$ désigne le
 nombre d'unités cachées du modèle.
 Cette transformation est suivie d'une non-linéarité $s:\mathbb{R}^m \rightarrow
@@ -453,18 +457,18 @@ suivantes.
 malheureusement nombreux. En voici une liste non exhaustive et des exemples de
 valeurs typiques à raffiner par une recherche des hyperparamètres optimaux: le
 nombre d'unités cachées ($1,000$), la fonction d'activation de l'encodeur ou et
-du décodeur (fonction sigmoide), la fonction de perte utilisée (MSE ou Entropie
+du décodeur (fonction sigmoïde), la fonction de perte utilisée (erreur quadratique ou entropie
 croisée), le pas de gradient ($\lbrace 10^{-1},\dots,10^{-6}\rbrace$).  \\
 
 Une fois une certaine expertise pratique acquise avec l'entraînement de ce
-genre d'architectures, l'espace des hyperparamètres à explorer qui peut
+genre d'architecture, l'espace des hyperparamètres à explorer qui peut
 paraître exponentiellement grand au premier abord peut se réduire à quelques
-valeurs.  Une astuce consiste à effectuer un échantillonage plus intelligent
-d'hyper-paramètres \citep{rnn14} plutôt qu'une recherche par grille classique.
+valeurs.  Une astuce consiste à effectuer un échantillonnage plus intelligent
+d'hyperparamètres \citep{rnn14} plutôt qu'une recherche par grille classique.
 
 \subsubsection{Auto-Encodeur Débruitant}
 
-On présente ici l'Auto-Encodeur Débruitant, en anglais \textit{Denoising
+On présente ici l'auto-encodeur débruitant, en anglais \textit{Denoising
 Auto-Encoder} (DAE)~\citep{VincentPLarochelleH2008}.  L'idée du DAE est qu'à partir de l'observation bruitée ou partielle
 d'une entrée on doit être capable de reconnaître (reconstruire) l'entrée
 originale. À un très haut niveau, on peut penser qu'en tant qu'êtres humains,
@@ -472,7 +476,7 @@ nous sommes capables de reconnaître des objets partiellement occultés ou aussi
 bien à partir d'un son et d'une image, nous sommes en mesure de reconnaître un
 film déjà vu en ne voyant que certaines séquences.  \\
 
-Plutôt que de minimiser la perte classique Eq.~\ref{eq:ae}, on bruite artificiellement l'entrée originale
+Plutôt que de minimiser la perte classique (Eq.~\ref{eq:ae}), on bruite artificiellement l'entrée originale
 $x$ et on force l'auto-encodeur à reconstruire l'entrée originale à partir de
 la version bruitée $\tilde{x}$:
 
@@ -501,7 +505,7 @@ de bruit.
 
 \subsubsection{Auto-Encodeur Contractant}
 
-On présente ici l'Auto-Encodeur Contractant, en anglais \textit{Contractive
+On présente ici l'auto-encodeur contractant, en anglais \textit{Contractive
 Auto-Encoder}~\citep{Rifai+al-2011}. Contrairement à la PCA qui extrait les
 directions de variations \textbf{globales} présente dans les exemples
 d'apprentissage, le CAE apprend des directions de variations \textbf{locales}.
@@ -559,7 +563,7 @@ erreur de reconstruction et invariance de la représentation.
 
 \subsubsection{Auto-Encodeur Contractant d'Ordre Supérieur}
 
-Si le fait de pénaliser le premier ordre de la dérivée (jacobien) de l'encodeur
+Si le fait de pénaliser le premier ordre de la dérivée (Jacobien) de l'encodeur
 par rapport à l'entrée est bénéfique, il paraît naturel d'ajouter une pénalisation
 concernant les ordres supérieurs (Hessien, troisième ordre, ...) au CAE
 original (Eq.~\ref{eq:cae}).  C'est l'idée présente derrière l'auto-encodeur
@@ -575,7 +579,7 @@ partielles de la perte $\mathcal{J}$ par rapport aux paramètres $\theta$. Pour 
 la $k^{\textrm{ième}}$ dérivée de l'encodeur (avec $m$ unités cachées) par
 rapport à l'entrée (de dimension $d$) a une complexité algorithmique de
 $O(md^k)$.  Calculer les dérivées partielles de cette dérivée par rapport aux
-paramètres du modèles a un coût prohibitif. Pour éviter ce calcul, on utilise donc
+paramètres du modèle a un coût prohibitif. Pour éviter ce calcul, on utilise donc
 une approximation stochastique de la Hessienne (voir \cite{Salah+al-2011} pour
 la preuve):
 
@@ -599,7 +603,7 @@ L'inconvénient est de ne plus savoir exactement quels ordres sont pénalisés e
 quelle est la contribution de chacun des ordres qui permet d'apprendre de
 meilleures caractéristiques. 
 
-En utilisant cette approximation,  on aboutit à la perte du \textbf{CAE+H} avec
+En utilisant cette approximation,  on aboutit à la perte du CAE+H avec
 une taille de lot $n_c$ et $\epsilon_i \rightsquigarrow \mathcal{N}(0,\sigma)$:
 
 \begin{equation}
@@ -618,25 +622,25 @@ la norme de la Hessienne.
 Il existe de nombreuses autres méthodes d'extraction de caractéristiques qui
 n'ont pas été détaillées ici. Comme méthodes d'extraction de caractéristiques
 linéaires, on trouve par exemple l'analyse en composantes indépendantes, en
-anglais \textit{Independent Component Analysis}~\citep{Comon94,Hyvarinen-2001}.
+anglais \textit{Independent Component Analysis} (ICA)~\citep{Comon94,Hyvarinen-2001}.
 Cette méthode peut être utilisée pour la séparation aveugle de sources.  \\
 
-Deux types de méthodes d'extraction de caractéristiques non-linéaire  ont aussi
+Deux types de méthodes d'extraction de caractéristiques non linéaire  ont aussi
 fait l'objet de récentes avancées: les méthodes {\bf sparses}
 \citep{ranzato-08,koray-psd-08,Koray-08} qui utilisent une pénalité sur les
 activations de l'encodeur (afin de le pousser à prendre la valeur $0$ - inactif
-- dans le cas d'une sigmoide)  ou les modèles {\bf génératifs} basés sur des
-  fonctions d'énergie \citep{ranzato-unsup-07} comme les Machines de Boltzmann
-  Restreintes, en anglais \textit{Restricted Boltzmann Machine}
+- dans le cas d'une sigmoïde)  ou les modèles {\bf génératifs} basés sur des
+  fonctions d'énergie \citep{ranzato-unsup-07} comme les machines de Boltzmann
+  restreintes, en anglais \textit{Restricted Boltzmann Machine} (RBM)
   \citep{Tieleman08}.  Ces méthodes ont été utilisées avec succès pour
-  l'initialisation de réseaux de neurones de type Perceptron Multi-Couches
-  \citep{HintonG2006,ranzato-08,koray-psd-08,Koray-08} ou Réseaux
+  l'initialisation de réseaux de neurones de type MLP
+  \citep{HintonG2006,ranzato-08,koray-psd-08,Koray-08} ou réseaux
   convolutionnels \citep{koray-nips-10-small}. 
 
 \subsection{Déplacement sur la Variété}
 \label{sec:surfing}
 
-D'après "l'hypothèse de variété", les distributions de données naturelles en
+D'après ``l'hypothèse de variété'', les distributions de données naturelles en
 haute dimension seraient concentrées le long de variétés de plus faible
 dimension.  En observant les vecteurs propres $V_{.i}(x)$ d'une PCA apprise à
 partir de l'ensemble $\mathcal{D}_{10-ppv}(x)$ des 10 plus proches voisins d'un
@@ -645,7 +649,7 @@ potentielles directions de variations autour de ce point central $x$.  Ces
 directions forment un repère local orthonormé centré en ce point
 $\mathcal{B}_{x}=\lbrace V_{.i}(x)~|~U_{i,i} > \epsilon\rbrace$ (voir Notation
 \ref{sec:pca}). À partir de ces directions, on peut former un hyperplan tangent
-local $\mathcal{H}_{x}=\lbrace x + v~|~v\in\textrm{span}(\mmathcal{B}_{x}) \rbrace$ à ce point
+local $\mathcal{H}_{x}=\lbrace x + v~|~v\in \textrm{span} (\mathcal{B}_{x}) \rbrace$ à ce point
 $x$~\citep{Dauphin-et-al-NIPS2011}.
 
 L'hyperplan tangent local $\mathcal{H}_{x}$ est un nouvel ensemble de points
@@ -667,7 +671,7 @@ x_{i,j,\alpha} = x_{i} + \alpha (x_{i} - x_{j})
 \end{equation}
 
 avec $\alpha \in ]0,1[$. Il est aussi possible d'effectuer une approximation
-non-linéaire de la variété si cette interpolation a lieu dans l'espace des
+non linéaire de la variété si cette interpolation a lieu dans l'espace des
 représentations $h(x)$ et que l'on revient dans l'espace original des $x$ par une
 simple reconstruction du décodeur. Avec la notation de l'équation
 \ref{eq:autoenc}, on obtient:
@@ -689,30 +693,30 @@ Dans les sections précédentes, nous avons toujours supposé que les données d
 $\mathcal{D}_{train}$, $\mathcal{D}_{valid}$ et $\mathcal{D}_{test}$
 provenaient de la même distribution. Dans le paradigme du transfert de domaine,
 cette hypothèse n'est plus valable. Cependant, ce n'est pas pour autant qu'il
-faut reconstruire les ensembles de données afin de satisfaire cette
-contrainte de distribution identique. Il est plus intelligent de proposer un
-apprentissage transductif afin de pouvoir transférer nos connaissances apprises
-à partir de $\mathcal{D}_{train}$ sur les ensembles $\mathcal{D}_{valid}$ et
+faut reconstruire les ensembles de données afin de satisfaire cette contrainte
+de distribution identique. Il est plus intelligent de proposer un apprentissage
+transductif afin de pouvoir transférer nos connaissances apprises à partir de
+$\mathcal{D}_{train}$ sur les ensembles $\mathcal{D}_{valid}$ et
 $\mathcal{D}_{test}$. Le transfert d'apprentissage transductif suppose que la
 distribution sous-jacente à $\mathcal{D}_{valid}$ et $\mathcal{D}_{test}$
 partage de manière limitée ou non le support de la distribution sous-jacente à
-$\mathcal{D}_{train}$. Pour une revue complète des différents types de
+$\mathcal{D}_{train}$. La notion de support partagé de l'apprentissage
+transductif suppose que les variations des exemples dans $\mathcal{D}_{valid}$
+ou $\mathcal{D}_{test}$ sont un sous-ensemble des variations de
+$\mathcal{D}_{train}$.  Nous pouvons imaginer un exemple comme nous verrons
+dans le chapitre \ref{chap:utlc} où $\mathcal{D}_{train}$ contiendrait toutes
+les images de chiffres $\lbrace 0,\dots,9 \rbrace$ tandis que l'ensemble
+$\mathcal{D}_{valid}$ contiendrait seulement les chiffres $\lbrace 0,1,2
+\rbrace$ et $\mathcal{D}_{test}$ les chiffres $\lbrace 5,6,7 \rbrace$.
+
+Pour une revue complète des différents types de
 transfert d'apprentissage (inductif, non supervisé et transductif), on réfère
 le lecteur à la revue de littérature sur ce sujet par \citep{Pan-transfer}.
 
 \subsubsection{PCA Transductive}
 
-Cette approche est transductive et suppose donc que les variations des exemples
-dans $\mathcal{D}_{valid}$ ou $\mathcal{D}_{test}$ sont un sous-ensemble des
-variations de $\mathcal{D}_{train}$.  Nous pouvons imaginer un exemple comme
-nous verrons dans le Chapitre \ref{chap:utlc} où $\mathcal{D}_{train}$
-contiendrait toutes les images de chiffres $\lbrace 0,\dots,9 \rbrace$ tandis
-que l'ensemble $\mathcal{D}_{valid}$ contiendrait seulement les chiffres
-$\lbrace 0,1,2 \rbrace$ et $\mathcal{D}_{test}$ les chiffres $\lbrace 5,6,7
-\rbrace$.
-
 La PCA transductive n'est pas entraînée à partir de $\mathcal{D}_{train}$. Une
-fois que le processus d'apprentissage non-supervisé de $h(x)$ sur l'ensemble
+fois que le processus d'apprentissage non supervisé de $h(x)$ sur l'ensemble
 $\mathcal{D}_{train}$ est achevé, on entraîne la PCA transductive sur la
 représentation apprise $h(x)$ avec $x\in\mathcal{D}_{valid}$ ou
 $x\in\mathcal{D}_{test}$. On entraîne une PCA par ensemble, il y aura donc deux
@@ -731,16 +735,25 @@ $\mathcal{D}_{test}$. On peut assimiler ces variations "en trop" à du bruit. La
 représentation $h(x)$ conserve donc toutes les variations jusqu'à la PCA
 transductive apprise à partir de $h(x)$ qui elle, ne se concentre que sur les
 variations spécifiques à l'ensemble de données en question,
+$\mathcal{D}_{valid}$ ou $\mathcal{D}_{test}$. Cette PCA transductive permet
+alors un transfert de domaine de $\mathcal{D}_{train}$ vers
 $\mathcal{D}_{valid}$ ou $\mathcal{D}_{test}$. 
 
 \subsubsection{Finetuning}
 
-Nous disposons d'une masse de données non labelées considérable sur le web.
-Lorsque notre ensemble de données labelées $\mathcal{D}_{small-labeled}$ est de
-quatité réduite, il peut être intéressant d'apprendre une représentation non
-supervisé sur un grand ensemble de données non labelées
+Il est possible d'appliquer cette notion d'apprentissage transductif à un
+réseau de neurones. L'idée est ici d'effectuer un apprentissage non supervisé
+sur un ensemble $\mathcal{D}_{big-unlabeled}$ pour ensuite procéder à un
+apprentissage supervisé par {\bf finetuning} sur un ensemble
+$\mathcal{D}_{small-labeled}$. On effectue alors un transfert de domaine de
+$\mathcal{D}_{big-unlabeled}$ vers $\mathcal{D}_{small-labeled}$.
+
+En pratique, nous disposons d'une masse de données non étiquetées considérable sur le web.
+Lorsque notre ensemble de données étiquetées $\mathcal{D}_{small-labeled}$ est de
+quatité réduite, il peut être intéressant d'apprendre une représentation de façon non
+supervisée sur un grand ensemble de données non étiquetées
 $\mathcal{D}_{big-unlabeled}$ partageant les mêmes structures que les données
-de $\mathcal{D}_{small-labeled}$, par exemples ces données sont toutes des
+de $\mathcal{D}_{small-labeled}$, par exemple ces données sont toutes des
 images d'objets. Par la suite cette représentation est utilisée comme point
 d'initialisation pour un apprentissage supervisé d'un réseau de neurones
 profond. On peut alors parler de transfert de connaissances apprises sur un
@@ -756,22 +769,30 @@ séquences, on utilise en général dans ce cas des réseaux de neurones récurr
 Dans le cadre de l'apprentissage supervisé simple
 (Section~\ref{sec:supervised}), nos ensembles $\mathcal{D}_{train}$,
 $\mathcal{D}_{valid}$ et  $\mathcal{D}_{test}$  sont composés des entrées
-$x\in\mathbb{R}^{d}$ et un label $y\in\{1,\dots ,C\}$ qui leur est associé.
+$x\in\mathbb{R}^{d}$ et une étiquette $y\in\{1,\dots ,C\}$ qui leur est associé.
 Pour la classification de séquences, les données sont séquentielles et pour une
 séquence de longueur $T$, on a $x=\lbrace x_{i}\in\mathbb{R}^{d}
 \rbrace_{i=1}^{T}$ et $y=\lbrace y_{i}\in\{1,\dots ,C\}_{i=1}^{T}\}$.
 
 En traitement du langage naturel par exemple (Chapitre \ref{chap:rnn}), chaque
-entrée est une séquence de mots et le label $y$ est constitué d'une séquence de
+entrée est une séquence de mots et l'étiquette $y$ est constitué d'une séquence de
 classes associées à chacun des mots (Figure \ref{fig:iob}). À noter que la
 longueur $T$ de la séquence n'est pas uniforme dans l'ensemble de données et
 peut varier.
 
-\subsection{Conditional Random Fields}
+\subsection{Champs Aléatoires Conditionnels}
 
-Une des méthodes de classification de séquences les plus utilisées sont les CRFs \citep{rnn6} et leurs variantes.
-La probabilité conditionnelle de modéliser une sortie $y$ conditionnellement à
-$x$ pour une chaîne linéaire s'écrit sous la forme suivante:
+Une des méthodes de classification de séquences les plus utilisées sont les
+champs aléatoires conditionnels, en anglais \textit{Conditional Random Fields}
+(CRF) \citep{rnn6} et leurs variantes. Un CRF est un modèle graphique non
+dirigé composé d'un ensemble de sommets $\boldsymbol{X}$ et $\boldsymbol{Y}$ qui
+correspondent aux variables observées et aux variables de sortie. Ces deux
+ensembles sont disjoints et le modèle graphique permet d'estimer la probabilité
+conditionnelle $\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X})$.
+
+La probabilité conditionnelle de
+modéliser une sortie $y$ conditionnellement à $x$ pour une chaîne linéaire
+s'écrit sous la forme suivante:
 
 \begin{equation}
 f_{\theta}(y~\vert~x) = \frac{1}{Z(x)}\prod_{t=1}^{T}\exp{H(y_{t-1}, y_{t}, x_{t}})
@@ -813,18 +834,18 @@ peut l'approcher par des méthodes à base de gradient.
 
 \subsection{Réseaux de Neurones Récurrents}
 
-Les réseaux de neurones récurrents sont des architectures profondes. Si on
-compare aux architectures profondes habituelles à $m$ couches, la rétro-propagation
+Les réseaux de neurones récurrents (RNN) sont des architectures profondes. Si on
+compare aux architectures profondes habituelles à $m$ couches, la rétropropagation
 du gradient au travers des $m$ couches revient à effectuer une
-rétro-propagation dans le temps pour $m$ unités de temps dans le passé.
+rétropropagation dans le temps pour $m$ unités de temps dans le passé.
 
 L'architecture de réseau récurrent de base \citep{rnn16} garde une trace des
-représentations du passé au travers de ses connections récurrentes.  La
+représentations du passé au travers de ses connexions récurrentes.  La
 représentation $h_{t}(x)$ peut donc être vue comme un résumé des états
 précédents $\lbrace h_{k}(x)\rbrace_{k=0}^{t-1}$.
 
 Il existe plusieurs architectures de réseaux de neurones récurrents possibles
-(Elman, Jordan, uni-directionnel, bi-directionnel) \citep{rnn15}, nous
+(Elman, Jordan, unidirectionnel, bidirectionnel) \citep{rnn15}, nous
 décrivons ici la forme la plus simple. Pour un RNN de type Elman pour une séquence
 d'entrées $\lbrace x_{i}\in\mathbb{R}^{d}\rbrace_{i=1}^{T}$ on a la
 représentation $\lbrace h_{i}(x)\in\mathbb{R}^{d_h}\rbrace_{i=1}^{T}$ à $d_h$
